@@ -1,0 +1,31 @@
+---
+title: "Data Exploration"
+author: "Joshua Meza-Fidalgo, Jess Ozog & Britney Pepper"
+date: '2022-04-02'
+output: pdf_document
+---
+
+```{r setup}
+library(dplyr)
+library(ggplot2)
+library(tidyverse)
+
+getwd()
+
+Stranding_Data <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Processed/strandings_final.csv")
+```
+
+
+```{r Data Exploration}
+class(Stranding_Data)
+
+str(Stranding_Data)
+
+dim(Stranding_Data)
+
+length(Stranding_Data)
+```
+
+```{r Data Exploration part 2}
+summary(Stranding_Data)
+```
