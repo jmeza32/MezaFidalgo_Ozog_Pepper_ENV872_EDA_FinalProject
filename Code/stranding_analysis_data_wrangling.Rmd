@@ -69,6 +69,6 @@ Strandings_Clean <- rbind(TurtleStrandings, PinnipedStrandings, OdontoceteStrand
 Strandings_Final <- Strandings_Clean %>%
   select(Family, common_name:Date, Year, latitude:longitude)
 
-
+write.csv(Strandings_Final, row.names = TRUE, file = "../Data/Processed/strandings_final.csv")
 ```
 
