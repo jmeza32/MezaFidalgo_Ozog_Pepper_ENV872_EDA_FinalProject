@@ -1,0 +1,30 @@
+---
+title: "Pinniped Analysis"
+author: "Joshua Meza-Fidalgo"
+date: '2022-04-02'
+output: pdf_document
+---
+
+```{r setup}
+library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+library(ggridges)
+library(agricolae)
+library(lubridate)
+library(corrplot)
+library(htmltools)
+
+getwd()
+
+Stranding_Data <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Processed/strandings_final.csv")
+```
+
+```{r Additional data wrangling}
+Pinniped_Stranding_Data <- Stranding_Data %>%
+  filter(Family == "Pinnipeds")
+```
+

@@ -26,6 +26,13 @@ dim(Stranding_Data)
 length(Stranding_Data)
 ```
 
+```{r}
+head(Stranding_Data)
+tail(Stranding_Data)
+```
+
+
+
 ```{r Data Exploration part 2}
 summary(Stranding_Data)
 ```
