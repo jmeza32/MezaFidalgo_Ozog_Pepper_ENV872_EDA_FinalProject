@@ -1,6 +1,6 @@
 ---
 title: "Stranding Analysis"
-author: "Britney Pepper, Josh Meza-Fidalgo, & Jess Ozog"
+author: "Britney Pepper, Joshua Meza-Fidalgo, & Jess Ozog"
 date: "4/2/2022"
 output: html_document
 ---
