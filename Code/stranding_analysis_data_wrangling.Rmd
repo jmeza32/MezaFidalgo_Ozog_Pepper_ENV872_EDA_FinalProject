@@ -5,7 +5,7 @@ date: "4/2/2022"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r Initial Setup, include=FALSE, warning = FALSE}
 getwd()
 
 library(tidyverse)
@@ -13,7 +13,7 @@ library(tidyr)
 library(lubridate)
 library(dplyr)
 
-Strandings <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Raw/OBIS_seamap_strandings_mystic.csv")
+Strandings <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
 
 Strandings_Parsed_1 <- Strandings %>%
   select(common_name, species_name, date_time, latitude, longitude)
@@ -22,12 +22,53 @@ Strandings_Parsed_1$Date <- sapply(strsplit(as.character(Strandings_Parsed_1$dat
 Strandings_Parsed_1$Time <- sapply(strsplit(as.character(Strandings_Parsed_1$date_time), " "), "[", 2)
 
 Strandings_Parsed_2 <- Strandings_Parsed_1 %>%
-  select(common_name, species_name, Date, latitude, longitude)
+  select(common_name, species_name, Date, latitude, longitude) 
+  
 
+Strandings_Parsed_2$Date <- as.Date(Strandings_Parsed_2$Date, format = "%m/%d/%Y")
 
+Strandings_Parsed_2 <- mutate(Strandings_Parsed_2, Year = year(Date))
 ```
 
 
+```{r Family Wrangling, include = FALSE, warning = FALSE}
+TurtleStrandings <- Strandings_Parsed_2 %>%
+  filter(common_name %in% c("Leatherback Sea Turtle", "Loggerhead Sea Turtle", "Green Sea Turtle", "Kemp's Ridley", "Turtles"))
+
+TurtleStrandings$Family <- c("Turtles")
 
 
+
+PinnipedStrandings <- Strandings_Parsed_2 %>%
+  filter(common_name %in% c("pinnipeds", "Harbor Seal", "Atlantic gray seal", "Harp Seal", "Hooded Seal"))
+
+PinnipedStrandings$Family <- c("Pinnipeds")
+
+
+
+OdontoceteStrandings <- Strandings_Parsed_2 %>%
+  filter(common_name %in% c("Short-beaked Common Dolphin", "toothed whales", "Long-finned Pilot Whale", "Harbor Porpoise", 
+                          "Atlantic White-sided Dolphin", "Striped Dolphin", "Common Bottlenose Dolphin", "Sowerby's Beaked Whale", 
+                          "Pygmy Sperm Whale", "Risso's Dolphin", "Short-finned Pilot Whale", "Dwarf Sperm Whale", "Blainville's Beaked Whale"))
+
+OdontoceteStrandings$Family <- c("Odontocetes")
+
+
+
+
+MysticeteStrandings <- Strandings_Parsed_2 %>%
+  filter(common_name %in% c("cetaceans", "Humpback Whale", "Minke Whale", "Fin Whale", "North Atlantic Right Whale", "baleen whales", "Blue Whale"))
+
+MysticeteStrandings$Family <- c("Mysticetes")
+```
+
+
+```{r Final Dataset Prep}
+Strandings_Clean <- rbind(TurtleStrandings, PinnipedStrandings, OdontoceteStrandings, MysticeteStrandings) 
+
+Strandings_Final <- Strandings_Clean %>%
+  select(Family, common_name:Date, Year, latitude:longitude)
+
+
+```
 
