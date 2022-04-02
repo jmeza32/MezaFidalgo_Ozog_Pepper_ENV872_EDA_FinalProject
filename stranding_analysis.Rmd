@@ -1,5 +1,5 @@
 ---
-title: "Stranding Analysis"
+title: "Stranding Analysis Setup"
 author: "Britney Pepper, Joshua Meza-Fidalgo, & Jess Ozog"
 date: "4/2/2022"
 output: html_document
@@ -7,13 +7,16 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(lubridate)
 
-#test
+Strandings <- read.csv("../MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
 
-#test from Josh
+Strandings_Parsed <- Strandings %>%
+  select(common_name, species_name, date_time, latitude, longitude)
 
-#test 2
-
+Strandings_Clean <- Strandings_Parsed %>%
+  separate(Strandings_Parsed, date_time, c("Date","Time", sep = " " ))
 ```
 
 
