@@ -67,6 +67,9 @@ Strandings_Clean <- rbind(TurtleStrandings, PinnipedStrandings, OdontoceteStrand
 Strandings_Final <- Strandings_Clean %>%
   select(Family, common_name:Date, Year, latitude:longitude)
 
+# remove the single point from 1976 (row 1081)
+Strandings_Final <- Strandings_Final[-1081,]
+  
 write.csv(Strandings_Final, row.names = TRUE, file = "../Data/Processed/strandings_final.csv")
 ```
 
