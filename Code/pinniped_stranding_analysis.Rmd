@@ -108,7 +108,7 @@ summary(Pinniped_ts_trend1)
 #Pinniped_ts_decomp <- stl(Pinniped_ts, s.window = 22)
 ```
 
-We fail to reject the null hypothesis that the pinniped stranding daata is stationary based on a p-value of 0.09
+We fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-value of 0.09
 
 
 ```{r Time Series Analysis Part 2}
