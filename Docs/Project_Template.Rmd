@@ -5,9 +5,9 @@ output:
     fig_caption: yes
     number_sections: yes
 geometry: margin=2.54cm
-title: "Insert title of project here"
-subtitle: "Web address for GitHub repository"
-author: "Name"
+title: "Marine Stranding Analysis"
+subtitle: "https://github.com/jmeza32/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject.git"
+author: "Joshua Meza-Fidalgo, Jess Ozog & Britney Pepper"
 fontsize: 12pt
 mainfont: Times New Roman
 
@@ -29,6 +29,7 @@ mainfont: Times New Roman
 # Set your ggplot theme
 
 # Load your datasets
+
 
 ```
 
