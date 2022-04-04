@@ -2,10 +2,15 @@
 title: "Pinniped Analysis"
 author: "Joshua Meza-Fidalgo"
 date: '2022-04-02'
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
-```{r Setup, warning= FALSE}
+
+>Set Up
+
+```{r Setup, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidyr)
 library(lubridate)
@@ -22,13 +27,16 @@ library(leaflet)
 library(mapview)
 library(RColorBrewer)
 library(leafsync)
-
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
 
 getwd()
 
 mytheme <- theme_bw() +
   theme(axis.text = element_text(color = "black"), 
-        legend.position = "top")
+        legend.position = "right")
 theme_set(mytheme)
 ```
 
@@ -47,13 +55,16 @@ Pinniped_Stranding_Totals <- Strandings_Totals %>%
 ```
 
 
+>Pinniped Data Exploration
+
 ```{r Pinniped Data Exploration}
 summary(Pinniped_Stranding_Data)
 
 ggplot(Pinniped_Stranding_Data) +
   geom_bar(aes(x = Year, fill = common_name)) +
   ylab("Count") +
-  labs(title = "Total Pinniped Strandings per Year by Species")
+  labs(title = "Total Pinniped Strandings per Year by Species") + 
+  scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped"))
 ```
 
 ```{r Geospatial Exploration}
@@ -65,13 +76,43 @@ mapview(Pinniped_sf)
 
 
 
+>Pinniped Analysis
+
+
+>>Linear Regression
 
 Null Hypothesis: There is no effect of year on the total number of pinniped strandings
 Alternative Hypothesis: There is an effect of year on the total number of pinniped strandings
 
-```{r}
+```{r Regression Model}
 Pinniped_Model <- lm(data = Pinniped_Stranding_Totals, Pinnipeds_Total ~ Year)
 summary(Pinniped_Model)
 ```
 
 We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027 and adjusted R-squared value of 0.18.  The low adjusted R-squared value indicates that this model explains relatively little of the variability in total yearly pinniped strandings.  This variability could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
+
+
+>>Temporal
+
+
+Null Hypothesis: The pinniped stranding data is stationary
+Alternative Hypothesis: The pinniped stranding data is not stationary
+
+```{r Time Series Analysis}
+Pinniped_ts <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+
+Pinniped_ts_trend1 <- Kendall::SeasonalMannKendall(Pinniped_ts)
+
+summary(Pinniped_ts_trend1)
+
+#Pinniped_ts_decomp <- stl(Pinniped_ts, s.window = 22)
+```
+
+We fail to reject the null hypothesis that the pinniped stranding daata is stationary based on a p-value of 0.09
+
+
+```{r Time Series Analysis Part 2}
+#Pinniped_ts_trend2 <- trend::smk.test(Pinniped_ts)
+
+#summary(Pinniped_ts_trend2)
+```
