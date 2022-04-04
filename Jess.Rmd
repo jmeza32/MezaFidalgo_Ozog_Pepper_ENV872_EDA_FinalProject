@@ -9,22 +9,46 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+### trying to do turtle analysis :)
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+```{r turtles}
+library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+library(ggridges)
+library(agricolae)
+library(lubridate)
+library(corrplot)
+library(htmltools)
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+getwd()
 
-```{r cars}
-summary(cars)
+mytheme <- theme_bw() +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "right")
+theme_set(mytheme)
+
+Strandings <- read.csv("./Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+
+Turtle_Stranding_Data <- Strandings %>%
+  filter(Family == "Turtles") %>%
+  select(Family:longitude)
 ```
 
-## Including Plots
+```{r turtles2}
+summary(Turtle_Stranding_Data)
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+ggplot(Turtle_Stranding_Data) +
+  geom_bar(aes(x = Year, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Turtle Strandings per Year by Species") +
+  scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green (Chelonia mydas)", "Kemp's Ridley (Lepidochelys kempii)", "Leatherback (Dermochelys coriacea)", "Loggerhead (Caretta caretta)", "Unidentified Turtle"))
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r turtles3}
+
+
+```
