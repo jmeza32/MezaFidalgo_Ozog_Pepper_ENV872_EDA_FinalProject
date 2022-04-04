@@ -60,7 +60,35 @@ ggplot(Stranding_Data) +
   ylab("Count") +
   labs(title = "Total Strandings per Year")
 ```
+```{r messaround}
+# this code creates a new data frame of the year and number of strandings that year
+Strandings_Sum <- Stranding_Data %>%
+  group_by(Year) %>%
+  summarise(Sum = n())
 
+# now try to add columns to that data frame of the breakdown of the totals of each group
+Strandings_Turtles <- Stranding_Data %>%
+  filter(Family == "Turtles") %>%
+  group_by(Year) %>%
+  summarise(Turtles_Total = n())
 
+Strandings_Pinniped <- Stranding_Data %>%
+  filter(Family == "Pinnipeds") %>%
+  group_by(Year) %>%
+  summarise(Pinnipeds_Total = n())
 
+# needed to add a row for 1994
+Strandings_Mysticetes <- Stranding_Data %>%
+  filter(Family == "Mysticetes") %>%
+  group_by(Year) %>%
+  summarise(Mysticetes_Total = n()) %>%
+  add_row(Year = 1994, Mysticetes_Total=0) %>%
+  arrange(Year)
 
+Strandings_Odontocetes <- Stranding_Data %>%
+  filter(Family == "Odontocetes") %>%
+  group_by(Year) %>%
+  summarise(Odontocetes_Total = n())
+
+Strandings_Totals <- cbind(Strandings_Sum, Strandings_Turtles[,2], Strandings_Pinniped[,2], Strandings_Mysticetes[,2], Strandings_Odontocetes[,2])
+```
