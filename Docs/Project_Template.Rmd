@@ -34,7 +34,7 @@ mainfont: Times New Roman
 ```
 
 
-# Rationale and Research Questions
+## Rationale and Research Questions
 * Contains clear context for research topic
 * Contains rationale for dataset of choice
 * Contains one or more questions of an appropriate scope for the project
@@ -43,53 +43,64 @@ mainfont: Times New Roman
 
 Aquarium scientists maintain data on marine mammal and sea turtle strandings and sightings as a means of monitoring the behavior and health of these animals, always vigilant for changes in patterns that might signal an unusual event such as a viral outbreak or a toxic algal bloom. The condition of these animals reveals much about the health of our oceans.
 
-Marine animal strandings can be an indicator of the health of our oceans. 
+Marine animal strandings can be an indicator of the health of our oceans. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of viral outbreaks or toxic algal blooms. Being able to monitor these animals 
+-heath impacts on humans --> it something is harming animals, will it harm us when we comsume seafood
+-monitor over the years to see if there were any trends on increases in strandings
+
 
 
 \newpage
 
-# Dataset Information
+## Dataset Information
 * Describes source and content of data
 * Details the wrangling process from raw to processed data
 * Contains a table summarizing the dataset structure
 
 
 Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
-
+-contains whales, dolphins, and sea turtles
+-number of different species in each family
+-datum WGS:1984
+-raw data
+-output table --> take from data_wrangling file
 
 
 \newpage
 
-# Exploratory Analysis 
+## Exploratory Analysis 
 * Flow between text and visualizations is cohesive
 * Relevant exploratory information is visualized
 
 
 
+
 \newpage
 
-# Analysis
+## Analysis
 * Flow between text and visualizations is cohesive
 * Visualizations and statistical tests pertain directly to specific questions 
 * Statistical results are reported in plain language with relevant statistical output in parentheses 
 * Findings are reported clearly in relation to research questions
 
 
+1. **Pinnipeds**:
 
-## Question 1: <insert specific question here and add additional subsections for additional questions below, if needed>
-
--look at any time trends within each family
--any years that have significantly different number of strandings
--spatial analysis --> hotspot analysis
-
-## Question 2: 
+*Question 1*: <insert specific question here and add additional subsections for additional questions below, if needed>
 
 
+2. **Whales**:
+
+*Question 1*: <insert specific question here and add additional subsections for additional questions below, if needed>
+
+
+3. **Turtles**:
+
+*Question 1*: <insert specific question here and add additional subsections for additional questions below, if needed>
 
 
 \newpage
 
-# Summary and Conclusions
+## Summary and Conclusions
 * Major findings are summarized
 * Conclusions relate back to the original research context 
 
