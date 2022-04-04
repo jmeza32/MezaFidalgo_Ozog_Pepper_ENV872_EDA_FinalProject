@@ -5,13 +5,21 @@ date: '2022-04-02'
 output: pdf_document
 ---
 
-```{r setup}
+```{r Setup}
 library(dplyr)
 library(ggplot2)
 library(tidyverse)
 
 getwd()
 
+mytheme <- theme_bw() +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top")
+theme_set(mytheme)
+```
+
+
+```{r Data Prep}
 Stranding_Data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
 Stranding_Data <- Stranding_Data %>%
@@ -24,6 +32,8 @@ class(Stranding_Data)
 
 str(Stranding_Data)
 
+colnames(Stranding_Data)
+
 dim(Stranding_Data)
 
 length(Stranding_Data)
@@ -35,22 +45,21 @@ head(Stranding_Data)
 tail(Stranding_Data)
 ```
 
-Error in tempfile(pattern = "_rs_rdf_", tmpdir = outputFolder, fileext = ".rdf") : 
-temporary name too long
-
-
-```{r Data Exploration}
+```{r Data Summary}
 summary(Stranding_Data)
 ```
 
-```{r}
+```{r Visually Exploring Data}
+ggplot(Stranding_Data) +
+  geom_bar(aes(x = Family, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Family")
 
+ggplot(Stranding_Data) +
+  geom_bar(aes(x = Year, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Year")
 ```
-
-
-
-
-
 
 
 
