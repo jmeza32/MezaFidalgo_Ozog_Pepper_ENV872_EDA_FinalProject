@@ -5,7 +5,7 @@ date: '2022-04-02'
 output: pdf_document
 ---
 
-```{r setup}
+```{r Setup}
 library(tidyverse)
 library(tidyr)
 library(lubridate)
@@ -20,11 +20,30 @@ library(htmltools)
 
 getwd()
 
-Stranding_Data <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Processed/strandings_final.csv")
+mytheme <- theme_bw() +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top")
+theme_set(mytheme)
 ```
 
-```{r Additional data wrangling}
+
+```{r Data Setup}
+Stranding_Data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+
 Pinniped_Stranding_Data <- Stranding_Data %>%
-  filter(Family == "Pinnipeds")
+  filter(Family == "Pinnipeds") %>%
+  select(Family:longitude)
 ```
+
+
+```{r Pinniped Data Exploration}
+summary(Pinniped_Stranding_Data)
+
+ggplot(Pinniped_Stranding_Data) +
+  geom_bar(aes(x = Year, fill = species_name)) +
+  ylab("Count") +
+  labs(title = "Total Pinniped Strandings per Year by Species")
+      
+```
+
 
