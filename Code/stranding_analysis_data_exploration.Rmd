@@ -91,4 +91,14 @@ Strandings_Odontocetes <- Stranding_Data %>%
   summarise(Odontocetes_Total = n())
 
 Strandings_Totals <- cbind(Strandings_Sum, Strandings_Turtles[,2], Strandings_Pinniped[,2], Strandings_Mysticetes[,2], Strandings_Odontocetes[,2])
+
+write.csv(Strandings_Totals, row.names = TRUE, file = "../Data/Processed/strandings_totals.csv")
+```
+
+
+```{r Geospatial Exploration}
+Strandings_sf <- Stranding_Data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(Strandings_sf, zcol = "Family")
 ```

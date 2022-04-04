@@ -37,7 +37,6 @@ TurtleStrandings <- Strandings_Parsed_2 %>%
 TurtleStrandings$Family <- c("Turtles")
 
 
-
 PinnipedStrandings <- Strandings_Parsed_2 %>%
   filter(common_name %in% c("pinnipeds", "Harbor Seal", "Atlantic gray seal", "Harp Seal", "Hooded Seal"))
 
