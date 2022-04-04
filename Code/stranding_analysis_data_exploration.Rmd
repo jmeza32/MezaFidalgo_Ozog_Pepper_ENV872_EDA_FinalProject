@@ -12,7 +12,7 @@ library(tidyverse)
 
 getwd()
 
-Stranding_Data <- read.csv("../Data/Processed/strandings_final.csv")
+Stranding_Data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
 Stranding_Data <- Stranding_Data %>%
   select(Family:longitude)
@@ -35,10 +35,17 @@ head(Stranding_Data)
 tail(Stranding_Data)
 ```
 
+Error in tempfile(pattern = "_rs_rdf_", tmpdir = outputFolder, fileext = ".rdf") : 
+temporary name too long
+
+
 ```{r Data Exploration}
 summary(Stranding_Data)
 ```
 
+```{r}
+
+```
 
 
 
