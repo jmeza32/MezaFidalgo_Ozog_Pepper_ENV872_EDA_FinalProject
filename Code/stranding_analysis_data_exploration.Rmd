@@ -12,7 +12,10 @@ library(tidyverse)
 
 getwd()
 
-Stranding_Data <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Processed/strandings_final.csv")
+Stranding_Data <- read.csv("../Data/Processed/strandings_final.csv")
+
+Stranding_Data <- Stranding_Data %>%
+  select(Family:longitude)
 ```
 
 
@@ -26,13 +29,22 @@ dim(Stranding_Data)
 length(Stranding_Data)
 ```
 
-```{r}
+```{r Data Exploration}
 head(Stranding_Data)
+
 tail(Stranding_Data)
 ```
 
-
-
-```{r Data Exploration part 2}
+```{r Data Exploration}
 summary(Stranding_Data)
 ```
+
+
+
+
+
+
+
+
+
+

@@ -4,10 +4,6 @@ author: "Britney Pepper, Joshua Meza-Fidalgo, & Jess Ozog"
 date: "4/2/2022"
 output: html_document
 ---
-
-
-
-
 ```{r Initial Setup, include=FALSE, warning = FALSE}
 getwd()
 
@@ -16,7 +12,7 @@ library(tidyr)
 library(lubridate)
 library(dplyr)
 
-Strandings <- read.csv("C:/Users/mezaf/OneDrive/Desktop/EDA872/Environmental_Data_Analytics_2022/FINALPROJECT/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject/Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
+Strandings <- read.csv("../Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
 
 Strandings_Parsed_1 <- Strandings %>%
   select(common_name, species_name, date_time, latitude, longitude)
@@ -55,7 +51,6 @@ OdontoceteStrandings <- Strandings_Parsed_2 %>%
                           "Pygmy Sperm Whale", "Risso's Dolphin", "Short-finned Pilot Whale", "Dwarf Sperm Whale", "Blainville's Beaked Whale"))
 
 OdontoceteStrandings$Family <- c("Odontocetes")
-
 
 
 
