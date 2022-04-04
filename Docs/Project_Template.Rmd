@@ -41,10 +41,10 @@ mainfont: Times New Roman
 
 
 
-Aquarium scientists maintain data on marine mammal and sea turtle strandings and sightings as a means of monitoring the behavior and health of these animals, always vigilant for changes in patterns that might signal an unusual event such as a viral outbreak or a toxic algal bloom. The condition of these animals reveals much about the health of our oceans.
+Scientists at Mystic Aquarium maintain data on marine mammal and sea turtle strandings as a means of monitoring the behavior and health of these animals, always vigilant for changes in patterns that might signal an unusual event such as a viral outbreak or a toxic algal bloom. The condition of these animals reveals much about the health of our oceans.
 
 Marine animal strandings can be an indicator of the health of our oceans. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of viral outbreaks or toxic algal blooms. Being able to monitor these animals 
--heath impacts on humans --> it something is harming animals, will it harm us when we comsume seafood
+-heath impacts on humans --> it something is harming animals, will it harm us when we consume seafood
 -monitor over the years to see if there were any trends on increases in strandings
 
 
@@ -85,8 +85,9 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 
 1. **Pinnipeds**:
 
-*Question 1*: <insert specific question here and add additional subsections for additional questions below, if needed>
+*Question 1*: Are there years where the number of pinniped strandings are significantly different?
 
+*Question 2*: Are there trends in pinniped strandings based off of this dataset?
 
 2. **Whales**:
 
