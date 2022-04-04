@@ -17,6 +17,12 @@ library(agricolae)
 library(lubridate)
 library(corrplot)
 library(htmltools)
+library(sf)
+library(leaflet)
+library(mapview)
+library(RColorBrewer)
+library(leafsync)
+
 
 getwd()
 
@@ -43,7 +49,13 @@ ggplot(Pinniped_Stranding_Data) +
   geom_bar(aes(x = Year, fill = species_name)) +
   ylab("Count") +
   labs(title = "Total Pinniped Strandings per Year by Species")
-      
+```
+
+```{r Geospatial Exploration}
+Pinniped_sf <- Pinniped_Stranding_Data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(Pinniped_sf)
 ```
 
 
