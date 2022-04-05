@@ -8,7 +8,7 @@ output:
 ---
 >Set Up
 
-```{r Setup}
+```{r Setup, warning = FALSE, message = FALSE}
 library(tidyverse)
 library(tidyr)
 library(lubridate)
