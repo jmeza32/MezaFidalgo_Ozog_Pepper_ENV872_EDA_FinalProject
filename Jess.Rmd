@@ -23,6 +23,15 @@ library(agricolae)
 library(lubridate)
 library(corrplot)
 library(htmltools)
+library(sf)
+library(leaflet)
+library(mapview)
+library(RColorBrewer)
+library(leafsync)
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
 
 getwd()
 
@@ -36,6 +45,11 @@ Strandings <- read.csv("./Data/Processed/strandings_final.csv", stringsAsFactors
 Turtle_Stranding_Data <- Strandings %>%
   filter(Family == "Turtles") %>%
   select(Family:longitude)
+
+Strandings_Totals <- read.csv("./Data/Processed/strandings_totals.csv", stringsAsFactors = TRUE)
+
+Turtle_Stranding_Totals <- Strandings_Totals %>%
+  select(Year, Turtles_Total)
 ```
 
 ```{r turtles2}
@@ -49,6 +63,64 @@ ggplot(Turtle_Stranding_Data) +
 ```
 
 ```{r turtles3}
+# create spatial frame of turtle data
+Turtle_sf <- Turtle_Stranding_Data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+mapview(Turtle_sf)
 
+# used UTM Zone 19 (data spans across UTM zone 18 and 19)
+Turtle_sf_utm <- st_transform(Turtle_sf, 32619)
+mapview(Turtle_sf_utm)
+
+# find average lat and longs
+avgLong_Turtle <- mean(Turtle_Stranding_Data$longitude)
+avgLat_Turtle <- mean(Turtle_Stranding_Data$latitude)
+avg_Turtle_coords <- data.frame(avgLong_Turtle, avgLat_Turtle)
+
+# center point of the turtle strandings 
+avg_Turtle_sf <- avg_Turtle_coords %>%
+  st_as_sf(coords = c("avgLong_Turtle", "avgLat_Turtle"), crs = 4326)
+avg_Turtle_sf_utm <- st_transform(avg_Turtle_sf, 32619)
+mapview(avg_Turtle_sf_utm)
+
+# try to do distance things???
+distance_matrix <- st_distance(Turtle_sf_utm, avg_Turtle_sf_utm, pairwise=T)
+
+#Compute the mean of each row (each EPA site)
+mean_distances <-  rowMeans(distance_matrix)
+
+#Add as a column to the epa sites
+Turtle_sf_utm  <-  Turtle_sf_utm %>% 
+  bind_cols(mean_distance = mean_distances)
+
+# make a pretty map 
+mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mean Stranding Point")
+```
+
+```{r turtles4}
+Turtle_Model <- lm(data = Turtle_Stranding_Totals, Turtles_Total ~ Year)
+summary(Turtle_Model)
+```
+
+```{r turtle5}
+Turtle_ts <- ts(Turtle_Stranding_Totals, start = c(1990,1), frequency = 1)
+
+Turtle_ts_trend1 <- Kendall::SeasonalMannKendall(Turtle_ts)
+
+summary(Turtle_ts_trend1)
+```
+reject the null (p-value = 0.012815)
+
+
+
+
+See if there is a difference in strandings in spring/summer vs fall/winter 
+Spring/Summer = April – Sept
+Fall/Winter = Oct – March 
+-	Add month column
+-	Select spring/summer months
+-	Select fall/winter months 
+```{r turtles6}
 
 ```
+
