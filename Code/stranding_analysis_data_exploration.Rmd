@@ -66,7 +66,7 @@ ggplot(Stranding_Data) +
   labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
-```{r messaround}
+```{r Annual Data Development}
 # this code creates a new data frame of the year and number of strandings that year
 Annual_Strandings_Sum <- Stranding_Data %>%
   group_by(Year) %>%
@@ -83,23 +83,64 @@ Annual_Strandings_Pinniped <- Stranding_Data %>%
   group_by(Year) %>%
   summarise(Pinnipeds_Total = n())
 
-# needed to add a row for 1994
-Annual_Strandings_Mysticetes <- Stranding_Data %>%
-  filter(Family == "Mysticetes") %>%
-  group_by(Year) %>%
-  summarise(Mysticetes_Total = n()) %>%
-  add_row(Year = 1994, Mysticetes_Total=0) %>%
-  arrange(Year)
-
 Annual_Strandings_Odontocetes <- Stranding_Data %>%
   filter(Family == "Odontocetes") %>%
   group_by(Year) %>%
   summarise(Odontocetes_Total = n())
 
+
+Annual_Strandings_Mysticetes <- Stranding_Data %>%
+  filter(Family == "Mysticetes") %>%
+  group_by(Year) %>%
+  summarise(Mysticetes_Total = n()) %>%
+  add_row(Year = 1994, Mysticetes_Total=0)
+
+
+
 Annual_Strandings_Totals <- cbind(Annual_Strandings_Sum, Annual_Strandings_Turtles[,2], Annual_Strandings_Pinniped[,2], Annual_Strandings_Mysticetes[,2], Annual_Strandings_Odontocetes[,2])
 
 write.csv(Annual_Strandings_Totals, row.names = TRUE, file = "../Data/Processed/annual_strandings_totals.csv")
+
 ```
+
+
+```{r Monthly Data Development}
+Monthly_Strandings_Sum <- Stranding_Data %>%
+  group_by(Month) %>%
+  summarise(Sum = n())
+
+Monthly_Strandings_Turtles <- Stranding_Data %>%
+  filter(Family == "Turtles") %>%
+  group_by(Month) %>%
+  summarise(Turtles_Total = n()) %>%
+  add_row(Month = 1, Turtles_Total=0) %>%
+  add_row(Month = 10, Turtles_Total=0)
+
+
+Monthly_Strandings_Pinniped <- Stranding_Data %>%
+  filter(Family == "Pinnipeds") %>%
+  group_by(Month) %>%
+  summarise(Pinnipeds_Total = n())
+
+Monthly_Strandings_Odontocetes <- Stranding_Data %>%
+  filter(Family == "Odontocetes") %>%
+  group_by(Month) %>%
+  summarise(Odontocetes_Total = n())
+
+
+Monthly_Strandings_Mysticetes <- Stranding_Data %>%
+  filter(Family == "Mysticetes") %>%
+  group_by(Month) %>%
+  summarise(Mysticetes_Total = n()) %>%
+  add_row(Month = 1, Mysticetes_Total=0) %>%
+  add_row(Month = 10, Mysticetes_Total=0)
+
+
+Monthly_Strandings_Totals <- cbind(Monthly_Strandings_Sum, Monthly_Strandings_Turtles[,2], Monthly_Strandings_Pinniped[,2], Monthly_Strandings_Mysticetes[,2], Monthly_Strandings_Odontocetes[,2])
+
+write.csv(Monthly_Strandings_Totals, row.names = TRUE, file = "../Data/Processed/monthly_strandings_totals.csv")
+```
+
 
 
 ```{r Geospatial Exploration}
