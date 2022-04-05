@@ -59,6 +59,12 @@ ggplot(Stranding_Data) +
   geom_bar(aes(x = Year, fill = Family)) +
   ylab("Count") +
   labs(title = "Total Strandings per Year")
+
+ggplot(Stranding_Data) +
+  geom_bar(aes(x = Month, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 ```{r messaround}
 # this code creates a new data frame of the year and number of strandings that year
