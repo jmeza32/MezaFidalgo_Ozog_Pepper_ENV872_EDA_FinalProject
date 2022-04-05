@@ -62,19 +62,22 @@ theme_set(mytheme)
 
 
 # Rationale and Research Questions
-* Contains clear context for research topic
-* Contains rationale for dataset of choice
-* Contains one or more questions of an appropriate scope for the project
-
-
 
 Scientists at Mystic Aquarium maintain data on marine mammal and sea turtle strandings as a means of monitoring the behavior and health of these animals, always vigilant for changes in patterns that might signal an unusual event such as a viral outbreak or a toxic algal bloom. The condition of these animals reveals much about the health of our oceans.
 
-Marine animal strandings can be an indicator of the health of our oceans. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of viral outbreaks or toxic algal blooms. Being able to monitor these animals 
+Marine animal and sea turtle strandings can be an unusual event or indicator of the health of our oceans. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of issues that may not be transparent. Some example of these issues could be viral outbreaks or toxic algal blooms. Because humans have a close knit relationship with the ocean, 
+
+
+
+Being able to monitor these populations  
+
+
 -heath impacts on humans --> it something is harming animals, will it harm us when we consume seafood
 -monitor over the years to see if there were any trends on increases in strandings
 
-
+* Contains clear context for research topic
+* Contains rationale for dataset of choice
+* Contains one or more questions of an appropriate scope for the project
 
 \newpage
 
