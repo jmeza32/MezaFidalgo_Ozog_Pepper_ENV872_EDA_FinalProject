@@ -136,7 +136,7 @@ head(strandings_final)
 
 1. **Pinnipeds**:
 
-*Question 1*: Are there years where the number of pinniped strandings are significantly different?
+*Question 1*: Are there years or months where the number of pinniped strandings are significantly different?
 
 *Question 2*: Are there trends in pinniped strandings based off of this dataset?
 
