@@ -26,7 +26,8 @@ Strandings_Parsed_2 <- Strandings_Parsed_1 %>%
 
 Strandings_Parsed_2$Date <- as.Date(Strandings_Parsed_2$Date, format = "%m/%d/%Y")
 
-Strandings_Parsed_2 <- mutate(Strandings_Parsed_2, Year = year(Date))
+Strandings_Parsed_2 <- mutate(Strandings_Parsed_2, Year = year(Date)) %>%
+                      mutate(Strandings_Parsed_2, Month = month(Date))
 ```
 
 
@@ -64,7 +65,7 @@ MysticeteStrandings$Family <- c("Mysticetes")
 Strandings_Clean <- rbind(TurtleStrandings, PinnipedStrandings, OdontoceteStrandings, MysticeteStrandings) 
 
 Strandings_Final <- Strandings_Clean %>%
-  select(Family, common_name:Date, Year, latitude:longitude)
+  select(Family, common_name:Date, Year, Month, latitude:longitude)
 
 # remove the single point from 1976 (row 1081)
 Strandings_Final <- Strandings_Final[-1081,]
@@ -72,3 +73,12 @@ Strandings_Final <- Strandings_Final[-1081,]
 write.csv(Strandings_Final, row.names = TRUE, file = "../Data/Processed/strandings_final.csv")
 ```
 
+```{r trying to do seasonal data things}
+spring_summer = c(4,5,6,7,8,9)
+fall_winter = c(10,11,12,1,2,3)
+
+Turtle_Seasonal <- Strandings_Final %>%
+                    filter(Family == "Turtles") %>%
+                    group_by(Year, Month) %>%
+                    summarise(Total = n())
+```
