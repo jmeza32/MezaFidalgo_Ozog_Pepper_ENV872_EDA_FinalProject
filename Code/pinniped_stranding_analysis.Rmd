@@ -48,9 +48,12 @@ Pinniped_Stranding_Data <- Stranding_Data %>%
 
 Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "%Y-%m-%d")
 
+
+
+
 Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
 
-Annual_Pinniped_Stranding_Totals <- Annual_Strandings_Totals %>%
+Annual_Pinniped_Strandings <- Annual_Strandings_Totals %>%
   select(Year, Pinnipeds_Total)
 ```
 
@@ -76,6 +79,10 @@ ggplot(Pinniped_Stranding_Data) +
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
+No apparent trend based on yearly data, possible seasonal trend based on month/season.
+
+
+
 ```{r Geospatial Exploration}
 Pinniped_sf <- Pinniped_Stranding_Data %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
@@ -94,7 +101,7 @@ Null Hypothesis: There is no effect of year on the total number of pinniped stra
 Alternative Hypothesis: There is an effect of year on the total number of pinniped strandings
 
 ```{r ANOVA Model}
-Pinniped_Model <- aov(data = Annual_Pinniped_Stranding_Totals, Pinnipeds_Total ~ Year)
+Pinniped_Model <- aov(data = Annual_Pinniped_Strandings, Pinnipeds_Total ~ Year)
 
 Pinniped_Model
 
@@ -147,7 +154,7 @@ Null Hypothesis: The yearly pinniped stranding data is stationary
 Alternative Hypothesis: The yearly pinniped stranding data is not stationary
 
 ```{r Annual Time Series Analysis}
-Pinniped_ts <- ts(Annual_Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+Pinniped_ts <- ts(Annual_Pinniped_Strandings, start = c(1990,1), frequency = 1)
 
 Pinniped_ts_trend_annual <- Kendall::SeasonalMannKendall(Pinniped_ts)
 
