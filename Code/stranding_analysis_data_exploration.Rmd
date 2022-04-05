@@ -14,7 +14,7 @@ getwd()
 
 mytheme <- theme_bw() +
   theme(axis.text = element_text(color = "black"), 
-        legend.position = "top")
+        legend.position = "right")
 theme_set(mytheme)
 ```
 
