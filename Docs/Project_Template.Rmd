@@ -21,7 +21,7 @@ mainfont: Times New Roman
 
 
 ```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
-knitr::include_graphics('../Data/CSC_0075.png')
+knitr::include_graphics('../Data/Images/CSC_0075.png')
 
 ```
 
@@ -71,21 +71,22 @@ theme_set(mytheme)
 
 # Rationale and Research Questions
 
-Scientists at Mystic Aquarium maintain data on marine mammal and sea turtle strandings as a means of monitoring the behavior and health of these animals, always vigilant for changes in patterns that might signal an unusual event such as a viral outbreak or a toxic algal bloom. The condition of these animals reveals much about the health of our oceans.
+Marine animal and sea turtle strandings can be an unusual event or indicator of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of issues that may not be transparent. Some example of these issues could be viral outbreaks or toxic algal blooms in lower trophic level populations. Because humans demand and consume seafood, understanding the problems that arise are essential in helping us to 
 
-Marine animal and sea turtle strandings can be an unusual event or indicator of the health of our oceans. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of issues that may not be transparent. Some example of these issues could be viral outbreaks or toxic algal blooms. Because humans have a close knit relationship with the ocean, 
+the health of our oceans.
 
-
+-monitor over the years to see if there were any trends on increases in strandings
 
 Being able to monitor these populations  
 
 
--heath impacts on humans --> it something is harming animals, will it harm us when we consume seafood
--monitor over the years to see if there were any trends on increases in strandings
+The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. 
 
-* Contains clear context for research topic
-* Contains rationale for dataset of choice
-* Contains one or more questions of an appropriate scope for the project
+appropriate schope of the project//questions to answer
+-changes over the years
+-seasonality differences
+-time series analysis
+
 
 \newpage
 
@@ -103,6 +104,16 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 -coordinate system: 
 -raw data
 -output table --> take from data_wrangling file
+
+
+
+-take eval=FALSE out after adding in the data 
+```{r - Table summary of the dataset structure, echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE }
+colnames(strandings_final)
+head(strandings_final)
+
+```
+
 
 
 \newpage
@@ -156,7 +167,7 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 -------------
 
 ```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Fin Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
-knitr::include_graphics('../Data/CSC_1077.png')
+knitr::include_graphics('../Data/Images/CSC_1077.png')
 
 ```
 
@@ -171,4 +182,4 @@ knitr::include_graphics('../Data/CSC_1077.png')
 
 2. Smith, A. 2014. Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011. Data downloaded from OBIS-SEAMAP (http://seamap.env.duke.edu/dataset/945) on 2022-04-02.
 
-
+**Photos**: Special thanks to Joshua Meza-Fidalgo for providing whale photos for us to use.
