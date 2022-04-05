@@ -1,17 +1,23 @@
 ---
-output: 
+title: "Marine Mammal and Sea Turtle Stranding Analysis"
+author: "Joshua Meza-Fidalgo, Jess Ozog & Britney Pepper"
+output:
+  html_document:
+    df_print: paged
+    theme:
+       bg: "#bfe6df"
+       fg: "#000000"
   pdf_document:
     keep_tex: yes
     fig_caption: yes
     number_sections: yes
+subtitle: https://github.com/jmeza32/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject.git
 geometry: margin=2.54cm
-title: "Marine Stranding Analysis"
-subtitle: "https://github.com/jmeza32/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject.git"
-author: "Joshua Meza-Fidalgo, Jess Ozog & Britney Pepper"
 fontsize: 12pt
 mainfont: Times New Roman
-
 ---
+
+--------------
 
 \newpage
 \tableofcontents 
@@ -23,10 +29,31 @@ mainfont: Times New Roman
 
 ```{r setup, include=FALSE}
 # Set your working directory
+getwd()
 
-# Load your packages
+# Load packages
+library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+library(ggridges)
+library(agricolae)
+library(lubridate)
+library(corrplot)
+library(htmltools)
+library(sf)
+library(leaflet)
+library(mapview)
+library(RColorBrewer)
+library(leafsync)
 
 # Set your ggplot theme
+mytheme <- theme_classic(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top")
+theme_set(mytheme)
 
 # Load your datasets
 
@@ -34,7 +61,7 @@ mainfont: Times New Roman
 ```
 
 
-## Rationale and Research Questions
+# Rationale and Research Questions
 * Contains clear context for research topic
 * Contains rationale for dataset of choice
 * Contains one or more questions of an appropriate scope for the project
@@ -51,7 +78,7 @@ Marine animal strandings can be an indicator of the health of our oceans. Seeing
 
 \newpage
 
-## Dataset Information
+# Dataset Information
 * Describes source and content of data
 * Details the wrangling process from raw to processed data
 * Contains a table summarizing the dataset structure
@@ -61,13 +88,15 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 -contains whales, dolphins, and sea turtles
 -number of different species in each family
 -datum WGS:1984
+-transforming to UTM --> 18 (32619) or 19 ()
+-coordinate system: 
 -raw data
 -output table --> take from data_wrangling file
 
 
 \newpage
 
-## Exploratory Analysis 
+# Exploratory Analysis 
 * Flow between text and visualizations is cohesive
 * Relevant exploratory information is visualized
 
@@ -76,7 +105,7 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 
 \newpage
 
-## Analysis
+# Analysis
 * Flow between text and visualizations is cohesive
 * Visualizations and statistical tests pertain directly to specific questions 
 * Statistical results are reported in plain language with relevant statistical output in parentheses 
@@ -103,7 +132,7 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 
 \newpage
 
-## Summary and Conclusions
+# Summary and Conclusions
 * Major findings are summarized
 * Conclusions relate back to the original research context 
 
@@ -113,7 +142,7 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 \newpage
 
 
-## References
+# References
 
 **Data**: <https://seamap.env.duke.edu/dataset/945> 
 

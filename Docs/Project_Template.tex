@@ -5,7 +5,7 @@
 \documentclass[
   12pt,
 ]{article}
-\title{Marine Stranding Analysis}
+\title{Marine Mammal and Sea Turtle Stranding Analysis}
 \usepackage{etoolbox}
 \makeatletter
 \providecommand{\subtitle}[1]{% add subtitle to \maketitle
@@ -49,7 +49,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={Marine Stranding Analysis},
+  pdftitle={Marine Mammal and Sea Turtle Stranding Analysis},
   pdfauthor={Joshua Meza-Fidalgo, Jess Ozog \& Britney Pepper},
   hidelinks,
   pdfcreator={LaTeX via pandoc}}
@@ -79,6 +79,8 @@
 \begin{document}
 \maketitle
 
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
 \newpage
 \tableofcontents 
 \newpage
@@ -88,7 +90,7 @@
 \newpage
 
 \hypertarget{rationale-and-research-questions}{%
-\subsection{Rationale and Research
+\section{Rationale and Research
 Questions}\label{rationale-and-research-questions}}
 
 \begin{itemize}
@@ -113,13 +115,13 @@ oceans. Seeing patterns in the strandings of marine mammals and sea
 turtles can be indicative of viral outbreaks or toxic algal blooms.
 Being able to monitor these animals -heath impacts on humans
 --\textgreater{} it something is harming animals, will it harm us when
-we comsume seafood -monitor over the years to see if there were any
+we consume seafood -monitor over the years to see if there were any
 trends on increases in strandings
 
 \newpage
 
 \hypertarget{dataset-information}{%
-\subsection{Dataset Information}\label{dataset-information}}
+\section{Dataset Information}\label{dataset-information}}
 
 \begin{itemize}
 \tightlist
@@ -133,13 +135,14 @@ trends on increases in strandings
 
 Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 -contains whales, dolphins, and sea turtles -number of different species
-in each family -datum WGS:1984 -raw data -output table --\textgreater{}
-take from data\_wrangling file
+in each family -datum WGS:1984 -transforming to UTM --\textgreater{} 18
+(32619) or 19 () -coordinate system: -raw data -output table
+--\textgreater{} take from data\_wrangling file
 
 \newpage
 
 \hypertarget{exploratory-analysis}{%
-\subsection{Exploratory Analysis}\label{exploratory-analysis}}
+\section{Exploratory Analysis}\label{exploratory-analysis}}
 
 \begin{itemize}
 \tightlist
@@ -152,7 +155,7 @@ take from data\_wrangling file
 \newpage
 
 \hypertarget{analysis}{%
-\subsection{Analysis}\label{analysis}}
+\section{Analysis}\label{analysis}}
 
 \begin{itemize}
 \tightlist
@@ -168,36 +171,22 @@ take from data\_wrangling file
   Findings are reported clearly in relation to research questions
 \end{itemize}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  \textbf{Pinnipeds}:
-\end{enumerate}
+\hypertarget{pinnipeds}{%
+\subsection{\texorpdfstring{\textbf{Pinnipeds}:}{Pinnipeds:}}\label{pinnipeds}}
 
 \emph{Question 1}: \textless insert specific question here and add
 additional subsections for additional questions below, if
 needed\textgreater{}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
-\item
-  \textbf{Whales}:
-\end{enumerate}
+\hypertarget{whales}{%
+\subsection{\texorpdfstring{\textbf{Whales}:}{Whales:}}\label{whales}}
 
 \emph{Question 1}: \textless insert specific question here and add
 additional subsections for additional questions below, if
 needed\textgreater{}
 
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
-\item
-  \textbf{Turtles}:
-\end{enumerate}
+\hypertarget{turtles}{%
+\subsection{\texorpdfstring{\textbf{Turtles}:}{Turtles:}}\label{turtles}}
 
 \emph{Question 1}: \textless insert specific question here and add
 additional subsections for additional questions below, if
@@ -206,7 +195,7 @@ needed\textgreater{}
 \newpage
 
 \hypertarget{summary-and-conclusions}{%
-\subsection{Summary and Conclusions}\label{summary-and-conclusions}}
+\section{Summary and Conclusions}\label{summary-and-conclusions}}
 
 \begin{itemize}
 \tightlist
@@ -219,7 +208,7 @@ needed\textgreater{}
 \newpage
 
 \hypertarget{references}{%
-\subsection{References}\label{references}}
+\section{References}\label{references}}
 
 \textbf{Data}: \url{https://seamap.env.duke.edu/dataset/945}
 
