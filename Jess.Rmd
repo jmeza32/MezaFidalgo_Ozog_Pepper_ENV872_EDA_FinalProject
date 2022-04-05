@@ -95,6 +95,40 @@ Turtle_sf_utm  <-  Turtle_sf_utm %>%
 
 # make a pretty map 
 mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mean Stranding Point")
+
+
+
+
+
+# try to make a table of the total number of points within each distance range 
+distances <- c(20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000)
+
+# points within 20,000m
+Turtle_20 <- Turtle_sf_utm %>%
+  filter(mean_distance < 20000) %>%
+  add_column(distance_group = NA) %>%
+  mutate(distance_group == "< 20,000")
+
+# points between 20,000m - 40,000m
+Turtle_20_40 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 20000) %>%
+  filter(mean_distance < 40000) %>%
+  add_column(distance_group = NA) %>%
+  summarise(distance_group == "20,000 - 40,000")
+
+Turtle_20000 <- Turtle_sf_utm %>%
+  filter(mean_distance < 20000) %>%
+  add_column(distance_group = NA) %<%
+  summarise(distance_group == "< 20,000")
+Turtle_20000 <- Turtle_sf_utm %>%
+  filter(mean_distance < 20000) %>%
+  add_column(distance_group = NA) %<%
+  summarise(distance_group == "< 20,000")
+Turtle_20000 <- Turtle_sf_utm %>%
+  filter(mean_distance < 20000) %>%
+  add_column(distance_group = NA) %<%
+  summarise(distance_group == "< 20,000")
+
 ```
 
 ```{r turtles4}

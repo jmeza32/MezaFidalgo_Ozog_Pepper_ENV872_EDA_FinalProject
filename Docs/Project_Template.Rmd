@@ -17,7 +17,15 @@ fontsize: 12pt
 mainfont: Times New Roman
 ---
 
---------------
+-------------
+
+
+```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
+knitr::include_graphics('../Data/CSC_0075.png')
+
+```
+
+-------------
 
 \newpage
 \tableofcontents 
@@ -135,6 +143,7 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 
 \newpage
 
+
 # Summary and Conclusions
 * Major findings are summarized
 * Conclusions relate back to the original research context 
@@ -144,6 +153,15 @@ Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 
 \newpage
 
+-------------
+
+```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Fin Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
+knitr::include_graphics('../Data/CSC_1077.png')
+
+```
+
+
+-------------
 
 # References
 
