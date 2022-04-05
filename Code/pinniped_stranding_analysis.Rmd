@@ -6,8 +6,6 @@ output:
   html_document:
     df_print: paged
 ---
-
-
 >Set Up
 
 ```{r Setup, warning = FALSE, message = FALSE}
@@ -79,21 +77,56 @@ mapview(Pinniped_sf)
 >Pinniped Analysis
 
 
->>Linear Regression
+>>Statisical Analysis
 
 Null Hypothesis: There is no effect of year on the total number of pinniped strandings
 Alternative Hypothesis: There is an effect of year on the total number of pinniped strandings
 
-```{r Regression Model}
-Pinniped_Model <- lm(data = Pinniped_Stranding_Totals, Pinnipeds_Total ~ Year)
+```{r ANOVA Model}
+Pinniped_Model <- aov(data = Pinniped_Stranding_Totals, Pinnipeds_Total ~ Year)
 summary(Pinniped_Model)
 ```
 
-We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027 and adjusted R-squared value of 0.18.  The low adjusted R-squared value indicates that this model explains relatively little of the variability in total yearly pinniped strandings.  This variability could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
+We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027.  This  effect could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
 
 
->>Temporal
+>>Geospatial Analysis
 
+```{r}
+Pinniped_sf_utm <- st_transform(Pinniped_sf,32619)
+#The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
+
+Pinniped_sf_utm$geometry
+
+
+long_mean <- mean(Pinniped_Stranding_Data$longitude)
+lat_mean <- mean(Pinniped_Stranding_Data$latitude)
+
+Pinniped_Stranding_Mean_Point <- data.frame(long_mean, lat_mean)
+
+Pinniped_Mean_sf <- Pinniped_Stranding_Mean_Point %>%
+  st_as_sf(coords = c("long_mean", "lat_mean"), crs = 4326)
+
+Pinniped_Mean_UTM <- st_transform(Pinniped_Mean_sf,32619)
+
+
+Pinniped_Distance_Matrix <- st_distance(Pinniped_sf_utm, Pinniped_sf_utm, pairwise = T)
+
+mean_distance <-  rowMeans(Pinniped_Distance_Matrix)
+
+Pinniped_sf_utm  <-  Pinniped_sf_utm %>% 
+  bind_cols(mean_distance = mean_distance)
+```
+
+```{r}
+mapview(Pinniped_sf_utm, 
+        zcol = "mean_distance",
+        layer.name = "Distance (m) from Mean Stranding Point")
+```
+
+
+
+>>Temporal Analysis
 
 Null Hypothesis: The pinniped stranding data is stationary
 Alternative Hypothesis: The pinniped stranding data is not stationary
@@ -104,15 +137,9 @@ Pinniped_ts <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
 Pinniped_ts_trend1 <- Kendall::SeasonalMannKendall(Pinniped_ts)
 
 summary(Pinniped_ts_trend1)
-
-#Pinniped_ts_decomp <- stl(Pinniped_ts, s.window = 22)
 ```
 
 We fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-value of 0.09
 
 
-```{r Time Series Analysis Part 2}
-#Pinniped_ts_trend2 <- trend::smk.test(Pinniped_ts)
 
-#summary(Pinniped_ts_trend2)
-```
