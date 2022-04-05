@@ -46,9 +46,11 @@ Pinniped_Stranding_Data <- Stranding_Data %>%
   filter(Family == "Pinnipeds") %>%
   select(Family:longitude)
 
-Strandings_Totals <- read.csv("../Data/Processed/strandings_totals.csv", stringsAsFactors = TRUE)
+Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "%Y-%m-%d")
 
-Pinniped_Stranding_Totals <- Strandings_Totals %>%
+Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+
+Annual_Pinniped_Stranding_Totals <- Annual_Strandings_Totals %>%
   select(Year, Pinnipeds_Total)
 ```
 
@@ -63,6 +65,15 @@ ggplot(Pinniped_Stranding_Data) +
   ylab("Count") +
   labs(title = "Total Pinniped Strandings per Year by Species") + 
   scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped"))
+
+
+ggplot(Pinniped_Stranding_Data) +
+  geom_bar(aes(x = Month, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Pinniped Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped")) +
+  scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
 ```{r Geospatial Exploration}
@@ -83,17 +94,11 @@ Null Hypothesis: There is no effect of year on the total number of pinniped stra
 Alternative Hypothesis: There is an effect of year on the total number of pinniped strandings
 
 ```{r ANOVA Model}
-Pinniped_Model <- aov(data = Pinniped_Stranding_Totals, Pinnipeds_Total ~ Year)
+Pinniped_Model <- aov(data = Annual_Pinniped_Stranding_Totals, Pinnipeds_Total ~ Year)
 
 Pinniped_Model
 
 summary.aov(Pinniped_Model)
-
-Pinniped_Model2 <- aov(data = Pinniped_Stranding_Totals, Pinnipeds_Total ~ factor(Year))
-
-Pinniped_Model2
-
-summary.aov(Pinniped_Model2)
 ```
 
 We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027.  This  effect could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
@@ -138,18 +143,56 @@ Knowing where the "mean" stranding location is could allow for a study of that a
 
 >>Temporal Analysis
 
-Null Hypothesis: The pinniped stranding data is stationary
-Alternative Hypothesis: The pinniped stranding data is not stationary
+Null Hypothesis: The yearly pinniped stranding data is stationary
+Alternative Hypothesis: The yearly pinniped stranding data is not stationary
 
-```{r Time Series Analysis}
-Pinniped_ts <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+```{r Annual Time Series Analysis}
+Pinniped_ts <- ts(Annual_Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
 
-Pinniped_ts_trend1 <- Kendall::SeasonalMannKendall(Pinniped_ts)
+Pinniped_ts_trend_annual <- Kendall::SeasonalMannKendall(Pinniped_ts)
 
-summary(Pinniped_ts_trend1)
+summary(Pinniped_ts_trend_annual)
 ```
 
-We fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-value of 0.09
+We fail to reject the null hypothesis that the yearly pinniped stranding data is stationary based on a p-value of 0.09
 
 
 
+
+Null Hypothesis: The seasonal pinniped stranding data is stationary
+Alternative Hypothesis: The seasonal pinniped stranding data is not stationary
+
+```{r Monthly Time Series Analysis}
+f_month <- month(first(Pinniped_Stranding_Data$Date))
+f_year <- year(first(Pinniped_Stranding_Data$Date))
+Pinniped_ts_monthly <- ts(Pinniped_Stranding_Data,
+                   start=c(f_year,f_month),
+                   frequency=12) 
+
+Pinniped_ts_trend_monthly <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
+
+summary(Pinniped_ts_trend_monthly)
+
+
+Pinniped_ts_seasonal <- ts(Pinniped_Stranding_Data,
+                   start=c(f_year,f_month),
+                   frequency=4)
+
+Pinniped_ts_trend_seasonal <- Kendall::SeasonalMannKendall(Pinniped_ts_seasonal)
+
+summary(Pinniped_ts_trend_seasonal)
+```
+
+We reject the null hypothesis that the yearly pinniped stranding data is stationary based on a p-value of 8.8818e-16.
+
+
+
+```{r Seasonal Time Series Analysis}
+Pinniped_ts_seasonal <- ts(Pinniped_Stranding_Data,
+                   start=c(f_year,f_month),
+                   frequency=4)
+
+Pinniped_ts_trend_seasonal <- Kendall::SeasonalMannKendall(Pinniped_ts_seasonal)
+
+summary(Pinniped_ts_trend_seasonal)
+```

@@ -92,7 +92,7 @@ Annual_Strandings_Odontocetes <- Stranding_Data %>%
 
 Annual_Strandings_Totals <- cbind(Annual_Strandings_Sum, Annual_Strandings_Turtles[,2], Annual_Strandings_Pinniped[,2], Annual_Strandings_Mysticetes[,2], Annual_Strandings_Odontocetes[,2])
 
-write.csv(Annual_Strandings_Totals, row.names = TRUE, file = "../Data/Processed/strandings_totals.csv")
+write.csv(Annual_Strandings_Totals, row.names = TRUE, file = "../Data/Processed/annual_strandings_totals.csv")
 ```
 
 
