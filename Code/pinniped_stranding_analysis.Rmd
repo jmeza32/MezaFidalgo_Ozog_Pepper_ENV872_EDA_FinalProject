@@ -65,7 +65,7 @@ Monthly_Pinniped_Strandings <- Monthly_Strandings_Totals %>%
 
 
 
-Pinniped_Stranding_Numbers <- Pinniped_Stranding_Data %>%
+Pinniped_Stranding_Totals <- Pinniped_Stranding_Data %>%
                     filter(Family == "Pinnipeds") %>%
                     group_by(Date) %>%
                     summarise(Total = n())
@@ -233,41 +233,34 @@ kable(Pinniped_distances)
 Null Hypothesis: The pinniped stranding data is stationary
 Alternative Hypothesis: The pinniped stranding data is not stationary
 
-```{r Time Series}
-f_month <- month(first(Pinniped_Stranding_Numbers$Date))
-f_year <- year(first(Pinniped_Stranding_Numbers$Date))
+```{r Monthly Time Series}
+f_month <- month(first(Pinniped_Stranding_Totals$Date))
+f_year <- year(first(Pinniped_Stranding_Totals$Date))
 
 
-Pinniped_ts_yearly <- ts(Pinniped_Stranding_Numbers$Total, 
-                  start = c(f_year, f_month), 
-                  frequency = 22)
-
-Pinniped_ts_yearly_decomp <- stl(Pinniped_ts_yearly, s.window = "periodic")
-plot(Pinniped_ts_yearly_decomp)
-
-
-
-Pinniped_ts_monthly <- ts(Pinniped_Stranding_Numbers$Total, 
+Pinniped_ts_monthly <- ts(Pinniped_Stranding_Totals$Total, 
                   start = c(f_year, f_month), 
                   frequency = 12)
  
 Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
 plot(Pinniped_ts_monthly_decomp)
 
-```
-
-
-```{r Trends}
-Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
-
-summary(Pinniped_ts_yearly_trend)
-
 Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 
 summary(Pinniped_ts_monthly_trend)
+
 ```
 
-We fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-values of 0.42 and 0.48, however, plots indicate seasonality.  This seasonality could be linked to after the pupping season when juveniles strike out on their own and are still trying to figure things out.
+
+
+
+```{r Yearly Time Series}
+Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+
+Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
+
+summary(Pinniped_ts_yearly_trend)
+```
 
 
 
