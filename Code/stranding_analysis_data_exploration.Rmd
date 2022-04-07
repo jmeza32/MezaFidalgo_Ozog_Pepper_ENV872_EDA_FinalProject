@@ -6,9 +6,26 @@ output: pdf_document
 ---
 
 ```{r Setup}
-library(dplyr)
-library(ggplot2)
 library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+library(ggridges)
+library(agricolae)
+library(lubridate)
+library(corrplot)
+library(htmltools)
+library(sf)
+library(leaflet)
+library(mapview)
+library(RColorBrewer)
+library(leafsync)
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
 
 getwd()
 
