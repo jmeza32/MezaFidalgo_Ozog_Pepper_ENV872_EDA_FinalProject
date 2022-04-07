@@ -1,0 +1,222 @@
+---
+title: "Marine Stranding Analysis -- Britney's File #1 :)"
+author: "Britney Pepper"
+date: "4/2/2022"
+output: html_document
+  html_document:
+    df_print: paged
+---
+
+#Setup
+```{r Setup, warning = FALSE, message = FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+#Working Directory
+getwd()
+
+#Load packages
+library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+library(ggridges)
+library(agricolae)
+library(lubridate)
+library(corrplot)
+library(htmltools)
+library(sf)
+library(leaflet)
+library(mapview)
+library(RColorBrewer)
+library(leafsync)
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
+
+#Set theme
+mytheme <- theme_bw() +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "right")
+theme_set(mytheme)
+```
+
+
+#Load Data
+```{r Data}
+stranding_data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+
+#Odontocetes Data
+odontocete_stranding_data <- stranding_data %>%
+  filter(Family == "Odontocetes") %>%
+  select(Family:longitude)
+
+#Setting the date
+odontocete_stranding_data$Date <- as.Date(odontocete_stranding_data$Date, format = "%Y-%m-%d")
+
+
+#Annual Strandings
+annual_strandings_totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+
+annual_odontocetes_strandings <- annual_strandings_totals %>%
+  select(Year, Odontocetes_Total)
+
+#Monthly Strandings
+monthly_strandings_totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+
+monthly_odontocetes_strandings <- monthly_strandings_totals %>%
+  select(Month, Odontocetes_Total)
+
+
+
+#Odontocete Stranding Numbers
+odontocete_stranding_numbers <- odontocete_stranding_data %>%
+                    filter(Family == "Odontocetes") %>%
+                    group_by(Date) %>%
+                    summarise(Total = n())
+```
+
+
+
+#Odontocete Data Exploration
+```{r Pinniped Data Exploration}
+summary(odontocete_stranding_data)
+
+#By year
+ggplot(odontocete_stranding_data) +
+  geom_bar(aes(x = Year, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Odontocete Strandings per Year by Species") +
+  scale_fill_discrete(name = "Odontocete Species", labels = c("Atlantic White-sided Dolphin", "Blainville's Beaked Whale","Common Bottlenose Dolphin", "Dwarf Sperm Whale", "Harbor Porpoise","Long-finned Pilot Whale", "Pygmy Sperm Whale", "Risso's Dolphin", "Short-beaked Common Dolphin", "Short-finned Pilot Whale", "Sowerby's Beaked Whale", "Striped Dolphin", "Unidentified Toothed Whales"))
+
+#By month
+ggplot(odontocete_stranding_data) +
+  geom_bar(aes(x = Month, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Odontocete Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Odontocete Species", labels = c("Atlantic White-sided Dolphin", "Blainville's Beaked Whale","Common Bottlenose Dolphin", "Dwarf Sperm Whale", "Harbor Porpoise","Long-finned Pilot Whale", "Pygmy Sperm Whale", "Risso's Dolphin", "Short-beaked Common Dolphin", "Short-finned Pilot Whale", "Sowerby's Beaked Whale", "Striped Dolphin", "Unidentified Toothed Whales")) +
+  scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+```
+
+There appears to be an increasing trend in the number of odontocete strandings as the years progress.
+There may be possible seasonal trend based on season, where the spring and early summer see a greater number of strandings than the other seasons.
+
+
+
+```{r Geospatial Exploration}
+odontocete_sf <- odontocete_stranding_data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(odontocete_sf)
+```
+
+
+
+#Odontocete Analysis
+##Statisical Analysis
+
+Null Hypothesis 1: There is no effect of year on the total number of pinniped strandings
+Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
+
+Null Hypothesis 2: There is no effect of month on the total number of pinniped strandings
+Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
+
+```{r ANOVA Models}
+Pinniped_Model <- aov(data = Annual_Pinniped_Strandings, Pinnipeds_Total ~ Year)
+
+Pinniped_Model
+
+summary.aov(Pinniped_Model)
+
+Pinniped_Model2 <- aov(data = Monthly_Pinniped_Strandings, Pinnipeds_Total ~ Month)
+
+Pinniped_Model2
+
+summary.aov(Pinniped_Model2)
+```
+
+We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027.  We also reject the null hypothesis that there is no effect of month on the total number of pinniped strandings due to a p-value of 0.018.  These  effects could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
+
+
+
+>>Geospatial Analysis
+
+```{r}
+Pinniped_sf_utm <- st_transform(Pinniped_sf,32619)
+#The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
+
+Pinniped_sf_utm$geometry
+
+
+long_mean <- mean(Pinniped_Stranding_Data$longitude)
+lat_mean <- mean(Pinniped_Stranding_Data$latitude)
+
+Pinniped_Stranding_Mean_Point <- data.frame(long_mean, lat_mean)
+
+Pinniped_Mean_sf <- Pinniped_Stranding_Mean_Point %>%
+  st_as_sf(coords = c("long_mean", "lat_mean"), crs = 4326)
+
+Pinniped_Mean_UTM <- st_transform(Pinniped_Mean_sf,32619)
+
+
+Pinniped_Distance_Matrix <- st_distance(Pinniped_sf_utm, Pinniped_sf_utm, pairwise = T)
+
+mean_distance <-  rowMeans(Pinniped_Distance_Matrix)
+
+Pinniped_sf_utm  <-  Pinniped_sf_utm %>% 
+  bind_cols(mean_distance = mean_distance)
+```
+
+```{r}
+mapview(Pinniped_sf_utm, 
+        zcol = "mean_distance",
+        layer.name = "Distance (m) from Mean Stranding Point")
+```
+
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why pinniped strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. 
+
+
+
+>>Temporal Analysis
+
+Null Hypothesis: The pinniped stranding data is stationary
+Alternative Hypothesis: The pinniped stranding data is not stationary
+
+```{r Time Series}
+f_month <- month(first(Pinniped_Stranding_Numbers$Date))
+f_year <- year(first(Pinniped_Stranding_Numbers$Date))
+
+
+Pinniped_ts_yearly <- ts(Pinniped_Stranding_Numbers$Total, 
+                  start = c(f_year, f_month), 
+                  frequency = 22)
+
+Pinniped_ts_yearly_decomp <- stl(Pinniped_ts_yearly, s.window = "periodic")
+plot(Pinniped_ts_yearly_decomp)
+
+
+
+Pinniped_ts_monthly <- ts(Pinniped_Stranding_Numbers$Total, 
+                  start = c(f_year, f_month), 
+                  frequency = 12)
+ 
+Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
+plot(Pinniped_ts_monthly_decomp)
+
+```
+
+
+```{r Trends}
+Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
+
+summary(Pinniped_ts_yearly_trend)
+
+Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
+
+summary(Pinniped_ts_monthly_trend)
+```
+
+We  fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-values of 0.42 and 0.48, however, plots indicate seasonality.  This seasonality could be linked to after the pupping season when juveniles strike out on their own and are still trying to figure things out.
