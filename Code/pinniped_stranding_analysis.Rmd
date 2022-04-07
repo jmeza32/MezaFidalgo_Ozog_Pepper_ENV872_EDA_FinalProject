@@ -51,7 +51,6 @@ Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "
 
 
 
-
 Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
 
 Annual_Pinniped_Strandings <- Annual_Strandings_Totals %>%
