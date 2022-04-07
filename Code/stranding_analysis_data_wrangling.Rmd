@@ -73,13 +73,3 @@ Strandings_Final <- Strandings_Final[-1081,]
 write.csv(Strandings_Final, row.names = TRUE, file = "../Data/Processed/strandings_final.csv")
 ```
 
-
-```{r trying to do seasonal data things}
-spring_summer = c(4,5,6,7,8,9)
-fall_winter = c(10,11,12,1,2,3)
-
-Turtle_Seasonal <- Strandings_Final %>%
-                    filter(Family == "Turtles") %>%
-                    group_by(Year, Month) %>%
-                    summarise(Total = n())
-```
