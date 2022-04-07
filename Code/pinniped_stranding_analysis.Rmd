@@ -211,7 +211,7 @@ Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 summary(Pinniped_ts_monthly_trend)
 ```
 
-We  fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-values of 0.42 and 0.48, however, plots indicate seasonality.  This seasonality could be linked to after the pupping season when juveniles strike out on their own and are still trying to figure things out.
+We fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-values of 0.42 and 0.48, however, plots indicate seasonality.  This seasonality could be linked to after the pupping season when juveniles strike out on their own and are still trying to figure things out.
 
 
 
