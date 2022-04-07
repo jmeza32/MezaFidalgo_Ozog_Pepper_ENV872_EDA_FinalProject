@@ -20,7 +20,7 @@ mainfont: Times New Roman
 -------------
 
 
-```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
+```{r echo = FALSE, comment = FALSE, warning = FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
 knitr::include_graphics('../Data/Images/CSC_0075.png')
 
 ```
@@ -35,7 +35,7 @@ knitr::include_graphics('../Data/Images/CSC_0075.png')
 \listoffigures 
 \newpage
 
-```{r setup, include=FALSE}
+```{r setup, include = FALSE}
 # Set your working directory
 getwd()
 
@@ -60,18 +60,26 @@ library(leafsync)
 # Set your ggplot theme
 mytheme <- theme_classic(base_size = 14) +
   theme(axis.text = element_text(color = "black"), 
-        legend.position = "top")
+        legend.position = "right")
 theme_set(mytheme)
-
-# Load your datasets
-
-
 ```
+
+
+```{r data loading, echo = FALSE}
+Strandings <- read.csv("../Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
+
+Stranding_Final <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+
+Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+
+Monthly_Strandings_Totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+```
+
 
 
 # Rationale and Research Questions
 
-Marine animal and sea turtle strandings can be an unusual event or indicator of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some example of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine animal and sea turtle strandings, we get insight on the health of our oceans.
+Marine mammal and sea turtle strandings can be unusual events or indicators of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some example of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine mammal and sea turtle strandings, we get insight on the health of our oceans.
 
 The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
 
@@ -79,26 +87,35 @@ The dataset that we chose to work on is the Mystic Aquarium's marine mammal and 
 \newpage
 
 # Dataset Information
-* Describes source and content of data
 * Details the wrangling process from raw to processed data
 * Contains a table summarizing the dataset structure
 
 
 Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
--contains whales, dolphins, and sea turtles
--number of different species in each family
--datum WGS:1984
--transforming to UTM --> 18 (32619) or 19 ()
--coordinate system: 
--raw data
--output table --> take from data_wrangling file
+
+* Contains whales, dolphins, and sea turtles
+* Number of different species in each family
+* Only one stranding record from 1976, the rest start at 1990, so that 1976 record was excluded from analysis 
+* Coordinate system: WGS 1984
+* Transformed to UTM Zone 19 for geospatial analysis
+
+* Data Wrangling
+  * Selected for data columns we wanted to parse down dataset
+  * Reformatted the date
+  * Wrangled data to include a family column for each animal group (mysticetes, odontocetes, pinnipeds, and turtles)
+  * Further wrangling was conducted to determine and isolate yearly and monthly stranding totals
 
 
+```{r - Table summary of the dataset structure, message = FALSE, warning = FALSE}
+#take eval=FALSE out after adding in the data 
+colnames(Strandings)
+head(Strandings)
 
--take eval=FALSE out after adding in the data 
-```{r - Table summary of the dataset structure, echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE }
-colnames(strandings_final)
-head(strandings_final)
+colnames(Strandings_Final)
+head(Strandings_Final)
+
+colnames(strandings_totals)
+head(strandings_totals)
 
 ```
 
