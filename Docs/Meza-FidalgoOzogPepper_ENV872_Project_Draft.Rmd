@@ -96,7 +96,7 @@ Our objective is to analyze animal strandings over the years to see if there any
 
 # Dataset Information
 
-The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. It contains the number of whale (odontocetes and mysticetes), dolphin, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. The latitude ranged from 41.00 to 41.86 while the longitude was from -73.65 to -71.10. Within the dataset, there are a total of 1,141 strandings, of which 885 were marine mammals and 256 were sea turtles. We data was provided using the datum WGS: 1984 and we performed a data transformation into UTM 19 (32619).
+The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. It contains the number of whale (odontocetes and mysticetes), dolphin, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. The latitude ranged from 41.00 to 41.86 while the longitude was from -73.65 to -71.10. Within the dataset, there are a total of 1,141 strandings, of which 885 were marine mammals and 256 were sea turtles. We data was provided using the datum WGS: 1984 (4326) and we performed a data transformation into UTM 19 (32619).
 
 
 Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
