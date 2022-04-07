@@ -35,6 +35,7 @@ library(trend)
 library(zoo)
 library(Kendall)
 library(tseries)
+library(knitr)
 
 #Set theme
 mytheme <- theme_bw() +
@@ -118,105 +119,153 @@ mapview(odontocete_sf)
 #Odontocete Analysis
 ##Statisical Analysis
 
-Null Hypothesis 1: There is no effect of year on the total number of pinniped strandings
-Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
+Null Hypothesis 1: There is no effect of year on the total number of odontocete strandings
+Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings
 
-Null Hypothesis 2: There is no effect of month on the total number of pinniped strandings
-Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
+Null Hypothesis 2: There is no effect of month on the total number of odontocete strandings
+Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings
 
 ```{r ANOVA Models}
-Pinniped_Model <- aov(data = Annual_Pinniped_Strandings, Pinnipeds_Total ~ Year)
+odontocete_model <- aov(data = annual_odontocetes_strandings, Odontocetes_Total ~ Year)
+odontocete_model
 
-Pinniped_Model
+summary.aov(odontocete_model)
 
-summary.aov(Pinniped_Model)
+odontocete_model2 <- aov(data = monthly_odontocetes_strandings, Odontocetes_Total ~ Month)
+odontocete_model2
 
-Pinniped_Model2 <- aov(data = Monthly_Pinniped_Strandings, Pinnipeds_Total ~ Month)
-
-Pinniped_Model2
-
-summary.aov(Pinniped_Model2)
+summary.aov(odontocete_model2)
 ```
 
-We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027.  We also reject the null hypothesis that there is no effect of month on the total number of pinniped strandings due to a p-value of 0.018.  These  effects could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
+We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
 
 
 
->>Geospatial Analysis
-
-```{r}
-Pinniped_sf_utm <- st_transform(Pinniped_sf,32619)
+#Geospatial Analysis
+```{r Geospatial Analysis}
+#Transform the data to UTM 19
+odontocete_sf_utm <- st_transform(odontocete_sf,32619)
 #The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
 
-Pinniped_sf_utm$geometry
+odontocete_sf_utm$geometry
 
 
-long_mean <- mean(Pinniped_Stranding_Data$longitude)
-lat_mean <- mean(Pinniped_Stranding_Data$latitude)
+odo_long_mean <- mean(odontocete_stranding_data$longitude)
+odo_lat_mean <- mean(odontocete_stranding_data$latitude)
 
-Pinniped_Stranding_Mean_Point <- data.frame(long_mean, lat_mean)
+odontocete_stranding_mean_point <- data.frame(odo_long_mean, odo_lat_mean)
 
-Pinniped_Mean_sf <- Pinniped_Stranding_Mean_Point %>%
-  st_as_sf(coords = c("long_mean", "lat_mean"), crs = 4326)
+odontocete_mean_sf <- odontocete_stranding_mean_point %>%
+  st_as_sf(coords = c("odo_long_mean", "odo_lat_mean"), crs = 4326)
 
-Pinniped_Mean_UTM <- st_transform(Pinniped_Mean_sf,32619)
+odontocete_mean_utm <- st_transform(odontocete_mean_sf,32619)
 
+odontocete_distance_matrix <- st_distance(odontocete_sf_utm, odontocete_sf_utm, pairwise = T)
 
-Pinniped_Distance_Matrix <- st_distance(Pinniped_sf_utm, Pinniped_sf_utm, pairwise = T)
+odo_mean_distance <-  rowMeans(odontocete_distance_matrix)
 
-mean_distance <-  rowMeans(Pinniped_Distance_Matrix)
-
-Pinniped_sf_utm  <-  Pinniped_sf_utm %>% 
-  bind_cols(mean_distance = mean_distance)
+odontocete_sf_utm  <-  odontocete_sf_utm %>% 
+  bind_cols(odo_mean_distance = odo_mean_distance)
 ```
 
-```{r}
-mapview(Pinniped_sf_utm, 
-        zcol = "mean_distance",
+```{r Mapping the mean distance}
+mapview(odontocete_sf_utm, 
+        zcol = "odo_mean_distance",
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why pinniped strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. 
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
 
 
 
->>Temporal Analysis
 
-Null Hypothesis: The pinniped stranding data is stationary
-Alternative Hypothesis: The pinniped stranding data is not stationary
+```{r Distance Table}
+# points within 40,000m
+odontocete_40 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance < 40000) %>%
+  mutate(distance_group = "< 40,000")
 
-```{r Time Series}
-f_month <- month(first(Pinniped_Stranding_Numbers$Date))
-f_year <- year(first(Pinniped_Stranding_Numbers$Date))
+# points between 40,000m - 60,000m
+odontocete_40_60 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 40000 & odo_mean_distance < 60000) %>%
+  mutate(distance_group = "40,000 - 60,000")
+
+# points between 60,000m - 80,000m
+odontocete_60_80 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 60000 & odo_mean_distance < 80000) %>%
+  mutate(distance_group = "60,000 - 80,000")
+
+# points between 80,000m - 100,000m
+odontocete_80_100 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 80000 & odo_mean_distance < 100000) %>%
+  mutate(distance_group = "80,000 - 100,000")
+
+# points between 100,000m - 120,000m
+odontocete_100_120 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 100000 & odo_mean_distance < 120000) %>%
+  mutate(distance_group = "100,000 - 120,000")
+
+# points between 120,000m - 140,000m
+odontocete_120_140 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 120000 & odo_mean_distance < 140000) %>%
+  mutate(distance_group = "120,000 - 140,000")
+
+# points between 140,000m - 160,000m
+odontocete_140_160 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 140000 & odo_mean_distance < 160000) %>%
+  mutate(distance_group = "140,000 - 160,000")
+
+# points greater than 160,000m
+odontocete_160 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 160000) %>%
+  mutate(distance_group = "> 160,000")
+
+# row bind the distance dataframes
+odontocete_sf_utm_final <- rbind(odontocete_40, odontocete_40_60, odontocete_60_80, odontocete_80_100, odontocete_100_120, odontocete_120_140, odontocete_140_160, odontocete_160)
+
+odontocete_distances <- odontocete_sf_utm_final %>%
+  group_by(distance_group) %>%
+  summarise(totals_by_distance = n()) %>%
+  st_drop_geometry() %>%
+  arrange(totals_by_distance)
+
+kable(odontocete_distances)
+```
 
 
-Pinniped_ts_yearly <- ts(Pinniped_Stranding_Numbers$Total, 
-                  start = c(f_year, f_month), 
-                  frequency = 22)
+#Temporal Analysis
+Null Hypothesis: The odontocetes stranding data is stationary
+Alternative Hypothesis: The odontocetes stranding data is not stationary
 
-Pinniped_ts_yearly_decomp <- stl(Pinniped_ts_yearly, s.window = "periodic")
-plot(Pinniped_ts_yearly_decomp)
+```{r Monthly Time Series}
+odo_f_month <- month(first(odontocete_stranding_numbers$Date))
 
-
-
-Pinniped_ts_monthly <- ts(Pinniped_Stranding_Numbers$Total, 
-                  start = c(f_year, f_month), 
+odontocete_ts_monthly <- ts(odontocete_stranding_numbers$Total, 
+                  start = c(odo_f_year, odo_f_month), 
                   frequency = 12)
  
-Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
-plot(Pinniped_ts_monthly_decomp)
+odontocete_ts_monthly_decomp <- stl(odontocete_ts_monthly, s.window = "periodic")
+plot(odontocete_ts_monthly_decomp)
+
+odontocete_ts_monthly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_monthly)
+
+summary(odontocete_ts_monthly_trend)
 
 ```
+Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
 
 
-```{r Trends}
-Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
 
-summary(Pinniped_ts_yearly_trend)
+```{r Yearly Time Series}
+odo_f_year <- year(first(odontocete_stranding_numbers$Date))
 
-Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
+odontocete_ts_yearly <- ts(odontocete_stranding_numbers, start = c(1990,1), frequency = 1)
 
-summary(Pinniped_ts_monthly_trend)
+odontocete_ts_yearly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_yearly)
+
+summary(odontocete_ts_yearly_trend)
 ```
+Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary. 
 
-We  fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-values of 0.42 and 0.48, however, plots indicate seasonality.  This seasonality could be linked to after the pupping season when juveniles strike out on their own and are still trying to figure things out.
+
+
