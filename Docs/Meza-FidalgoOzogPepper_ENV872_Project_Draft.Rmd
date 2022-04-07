@@ -81,16 +81,27 @@ Monthly_Strandings_Totals <- read.csv("../Data/Processed/monthly_strandings_tota
 
 Marine mammal and sea turtle strandings can be unusual events or indicators of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some example of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine mammal and sea turtle strandings, we get insight on the health of our oceans.
 
-The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
+Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
 
 
 \newpage
 
 # Dataset Information
+<<<<<<< HEAD
+=======
+
+The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. It contains the number of whale (odontocetes and mysticetes), dolphin, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. The latitude ranged from 41.00 to 41.86 while the longitude was from -73.65 to -71.10. Within the dataset, there are a total of 1,141 strandings, of which 885 were marine mammals and 256 were sea turtles. We data was provided using the datum WGS: 1984 and we performed a data transformation into UTM 19 (32619).
+
+
+-output table --> take from data_wrangling file
+
+* Describes source and content of data
+>>>>>>> 85633980f470914ec3b4a36de03e1bc06c593051
 * Details the wrangling process from raw to processed data
 * Contains a table summarizing the dataset structure
 
 
+<<<<<<< HEAD
 Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
 
 * Contains whales, dolphins, and sea turtles
@@ -116,6 +127,13 @@ head(Strandings_Final)
 
 colnames(strandings_totals)
 head(strandings_totals)
+=======
+
+NOTE: take eval=FALSE out after adding in the data 
+```{r - Table summary of the dataset structure, echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE }
+colnames(strandings_final)
+head(strandings_final)
+>>>>>>> 85633980f470914ec3b4a36de03e1bc06c593051
 
 ```
 
