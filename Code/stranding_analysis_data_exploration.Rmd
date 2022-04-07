@@ -66,6 +66,8 @@ ggplot(Stranding_Data) +
   labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
+
+
 ```{r Annual Data Development}
 # this code creates a new data frame of the year and number of strandings that year
 Annual_Strandings_Sum <- Stranding_Data %>%
