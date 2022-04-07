@@ -20,47 +20,47 @@ theme_set(mytheme)
 
 
 ```{r Data Prep}
-Stranding_Data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+Strandings_Final <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
-Stranding_Data <- Stranding_Data %>%
+Strandings_Final <- Strandings_Final %>%
   select(Family:longitude)
 ```
 
 
 ```{r Data Exploration}
-class(Stranding_Data)
+class(Strandings_Final)
 
-str(Stranding_Data)
+str(Strandings_Final)
 
-colnames(Stranding_Data)
+colnames(Strandings_Final)
 
-dim(Stranding_Data)
+dim(Strandings_Final)
 
-length(Stranding_Data)
+length(Strandings_Final)
 ```
 
-```{r Data Exploration}
-head(Stranding_Data)
+```{r Data Exploration 2}
+head(Strandings_Final)
 
-tail(Stranding_Data)
+tail(Strandings_Final)
 ```
 
 ```{r Data Summary}
-summary(Stranding_Data)
+summary(Strandings_Final)
 ```
 
 ```{r Visually Exploring Data}
-ggplot(Stranding_Data) +
+ggplot(Strandings_Final) +
   geom_bar(aes(x = Family, fill = Family)) +
   ylab("Count") +
   labs(title = "Total Strandings per Family")
 
-ggplot(Stranding_Data) +
+ggplot(Strandings_Final) +
   geom_bar(aes(x = Year, fill = Family)) +
   ylab("Count") +
   labs(title = "Total Strandings per Year")
 
-ggplot(Stranding_Data) +
+ggplot(Strandings_Final) +
   geom_bar(aes(x = Month, fill = Family)) +
   ylab("Count") +
   labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
@@ -70,28 +70,28 @@ ggplot(Stranding_Data) +
 
 ```{r Annual Data Development}
 # this code creates a new data frame of the year and number of strandings that year
-Annual_Strandings_Sum <- Stranding_Data %>%
+Annual_Strandings_Sum <- Strandings_Final %>%
   group_by(Year) %>%
   summarise(Sum = n())
 
 # now try to add columns to that data frame of the breakdown of the totals of each group
-Annual_Strandings_Turtles <- Stranding_Data %>%
+Annual_Strandings_Turtles <- Strandings_Final %>%
   filter(Family == "Turtles") %>%
   group_by(Year) %>%
   summarise(Turtles_Total = n())
 
-Annual_Strandings_Pinniped <- Stranding_Data %>%
+Annual_Strandings_Pinniped <- Strandings_Final %>%
   filter(Family == "Pinnipeds") %>%
   group_by(Year) %>%
   summarise(Pinnipeds_Total = n())
 
-Annual_Strandings_Odontocetes <- Stranding_Data %>%
+Annual_Strandings_Odontocetes <- Strandings_Final %>%
   filter(Family == "Odontocetes") %>%
   group_by(Year) %>%
   summarise(Odontocetes_Total = n())
 
 
-Annual_Strandings_Mysticetes <- Stranding_Data %>%
+Annual_Strandings_Mysticetes <- Strandings_Final %>%
   filter(Family == "Mysticetes") %>%
   group_by(Year) %>%
   summarise(Mysticetes_Total = n()) %>%
@@ -107,11 +107,11 @@ write.csv(Annual_Strandings_Totals, row.names = TRUE, file = "../Data/Processed/
 
 
 ```{r Monthly Data Development}
-Monthly_Strandings_Sum <- Stranding_Data %>%
+Monthly_Strandings_Sum <- Strandings_Final %>%
   group_by(Month) %>%
   summarise(Sum = n())
 
-Monthly_Strandings_Turtles <- Stranding_Data %>%
+Monthly_Strandings_Turtles <- Strandings_Final %>%
   filter(Family == "Turtles") %>%
   group_by(Month) %>%
   summarise(Turtles_Total = n()) %>%
@@ -119,18 +119,18 @@ Monthly_Strandings_Turtles <- Stranding_Data %>%
   add_row(Month = 10, Turtles_Total=0)
 
 
-Monthly_Strandings_Pinniped <- Stranding_Data %>%
+Monthly_Strandings_Pinniped <- Strandings_Final %>%
   filter(Family == "Pinnipeds") %>%
   group_by(Month) %>%
   summarise(Pinnipeds_Total = n())
 
-Monthly_Strandings_Odontocetes <- Stranding_Data %>%
+Monthly_Strandings_Odontocetes <- Strandings_Final %>%
   filter(Family == "Odontocetes") %>%
   group_by(Month) %>%
   summarise(Odontocetes_Total = n())
 
 
-Monthly_Strandings_Mysticetes <- Stranding_Data %>%
+Monthly_Strandings_Mysticetes <- Strandings_Final %>%
   filter(Family == "Mysticetes") %>%
   group_by(Month) %>%
   summarise(Mysticetes_Total = n()) %>%
@@ -146,8 +146,9 @@ write.csv(Monthly_Strandings_Totals, row.names = TRUE, file = "../Data/Processed
 
 
 ```{r Geospatial Exploration}
-Strandings_sf <- Stranding_Data %>%
+Strandings_sf <- Strandings_Final %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
 mapview(Strandings_sf, zcol = "Family")
 ```
+
