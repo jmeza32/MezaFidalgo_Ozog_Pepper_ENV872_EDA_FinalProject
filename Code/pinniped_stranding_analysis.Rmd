@@ -63,7 +63,6 @@ Monthly_Pinniped_Strandings <- Monthly_Strandings_Totals %>%
 
 
 
-
 Pinniped_Stranding_Totals <- Pinniped_Stranding_Data %>%
                     filter(Family == "Pinnipeds") %>%
                     group_by(Date) %>%
@@ -92,7 +91,7 @@ ggplot(Pinniped_Stranding_Data) +
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
-No apparent trend based on yearly data, possible seasonal trend based on month/season.
+Possible overall trend based and possible monthly/seasonal trend.
 
 
 
@@ -229,8 +228,8 @@ kable(Pinniped_distances)
 
 >>Temporal Analysis
 
-Null Hypothesis: The pinniped stranding data is stationary
-Alternative Hypothesis: The pinniped stranding data is not stationary
+Null Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is stationary
+Alternative Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
 
 ```{r Monthly Time Series}
 f_month <- month(first(Pinniped_Stranding_Totals$Date))
