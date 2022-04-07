@@ -22,7 +22,6 @@ mainfont: Times New Roman
 
 ```{r echo = FALSE, comment = FALSE, warning = FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
 knitr::include_graphics('../Data/Images/CSC_0075.png')
-
 ```
 
 -------------
