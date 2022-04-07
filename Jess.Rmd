@@ -32,6 +32,7 @@ library(trend)
 library(zoo)
 library(Kendall)
 library(tseries)
+library(knitr)
 
 getwd()
 
@@ -58,8 +59,16 @@ summary(Turtle_Stranding_Data)
 ggplot(Turtle_Stranding_Data) +
   geom_bar(aes(x = Year, fill = common_name)) +
   ylab("Count") +
-  labs(title = "Total Turtle Strandings per Year by Species") +
+  labs(title = "Total Sea Turtle Strandings per Year by Species") +
   scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green (Chelonia mydas)", "Kemp's Ridley (Lepidochelys kempii)", "Leatherback (Dermochelys coriacea)", "Loggerhead (Caretta caretta)", "Unidentified Turtle"))
+
+ggplot(Turtle_Stranding_Data) +
+  geom_bar(aes(x = Month, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Sea Turtle Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green (Chelonia mydas)", "Kemp's Ridley (Lepidochelys kempii)", "Leatherback (Dermochelys coriacea)", "Loggerhead (Caretta caretta)", "Unidentified Turtle")) +
+  scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
 ```{r turtles3}
@@ -91,44 +100,69 @@ mean_distances <-  rowMeans(distance_matrix)
 
 #Add as a column to the epa sites
 Turtle_sf_utm  <-  Turtle_sf_utm %>% 
-  bind_cols(mean_distance = mean_distances)
+  bind_cols(mean_distance = mean_distances) 
 
 # make a pretty map 
 mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mean Stranding Point")
+```
 
 
-
-
-
-# try to make a table of the total number of points within each distance range 
-distances <- c(20000, 40000, 60000, 80000, 100000, 120000, 140000, 160000)
-
+```{r turtle table}
 # points within 20,000m
 Turtle_20 <- Turtle_sf_utm %>%
   filter(mean_distance < 20000) %>%
-  add_column(distance_group = NA) %>%
-  mutate(distance_group == "< 20,000")
+  mutate(distance_group = "< 20,000")
 
 # points between 20,000m - 40,000m
 Turtle_20_40 <- Turtle_sf_utm %>%
-  filter(mean_distance >= 20000) %>%
-  filter(mean_distance < 40000) %>%
-  add_column(distance_group = NA) %>%
-  summarise(distance_group == "20,000 - 40,000")
+  filter(mean_distance >= 20000 & mean_distance < 40000) %>%
+  mutate(distance_group = "20,000 - 40,000")
 
-Turtle_20000 <- Turtle_sf_utm %>%
-  filter(mean_distance < 20000) %>%
-  add_column(distance_group = NA) %<%
-  summarise(distance_group == "< 20,000")
-Turtle_20000 <- Turtle_sf_utm %>%
-  filter(mean_distance < 20000) %>%
-  add_column(distance_group = NA) %<%
-  summarise(distance_group == "< 20,000")
-Turtle_20000 <- Turtle_sf_utm %>%
-  filter(mean_distance < 20000) %>%
-  add_column(distance_group = NA) %<%
-  summarise(distance_group == "< 20,000")
+# points between 40,000m - 60,000m
+Turtle_40_60 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 40000 & mean_distance < 60000) %>%
+  mutate(distance_group = "40,000 - 60,000")
 
+# points between 60,000m - 80,000m
+Turtle_60_80 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 60000 & mean_distance < 80000) %>%
+  mutate(distance_group = "60,000 - 80,000")
+
+# points between 80,000m - 100,000m
+Turtle_80_100 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 80000 & mean_distance < 100000) %>%
+  mutate(distance_group = "80,000 - 100,000")
+
+# points between 100,000m - 120,000m
+Turtle_100_120 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 100000 & mean_distance < 120000) %>%
+  mutate(distance_group = "100,000 - 120,000")
+
+# points between 120,000m - 140,000m
+Turtle_120_140 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 120000 & mean_distance < 140000) %>%
+  mutate(distance_group = "120,000 - 140,000")
+
+# points between 140,000m - 160,000m
+Turtle_140_160 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 140000 & mean_distance < 160000) %>%
+  mutate(distance_group = "140,000 - 160,000")
+
+# points greater than 160,000m
+Turtle_160 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 160000) %>%
+  mutate(distance_group = "> 160,000")
+
+# row bind the distance dataframes
+Turtle_sf_utm_final <- rbind(Turtle_20, Turtle_20_40,Turtle_40_60,Turtle_60_80,Turtle_80_100,Turtle_100_120,Turtle_120_140,Turtle_140_160,Turtle_160)
+
+Turtle_distances <- Turtle_sf_utm_final %>%
+  group_by(distance_group) %>%
+  summarise(totals_by_distance = n()) %>%
+  st_drop_geometry() %>%
+  arrange(totals_by_distance)
+
+kable(Turtle_distances)
 ```
 
 ```{r turtles4}
@@ -144,17 +178,3 @@ Turtle_ts_trend1 <- Kendall::SeasonalMannKendall(Turtle_ts)
 summary(Turtle_ts_trend1)
 ```
 reject the null (p-value = 0.012815)
-
-
-
-
-See if there is a difference in strandings in spring/summer vs fall/winter 
-Spring/Summer = April – Sept
-Fall/Winter = Oct – March 
--	Add month column
--	Select spring/summer months
--	Select fall/winter months 
-```{r turtles6}
-
-```
-
