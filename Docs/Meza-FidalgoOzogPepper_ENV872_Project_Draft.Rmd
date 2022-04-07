@@ -1,0 +1,178 @@
+---
+title: "Marine Mammal and Sea Turtle Stranding Analysis"
+author: "Joshua Meza-Fidalgo, Jess Ozog & Britney Pepper"
+output:
+  html_document:
+    df_print: paged
+    theme:
+       bg: "#bfe6df"
+       fg: "#000000"
+  pdf_document:
+    keep_tex: yes
+    fig_caption: yes
+    number_sections: yes
+subtitle: https://github.com/jmeza32/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalProject.git
+geometry: margin=2.54cm
+fontsize: 12pt
+mainfont: Times New Roman
+---
+
+-------------
+
+
+```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
+knitr::include_graphics('../Data/Images/CSC_0075.png')
+
+```
+
+-------------
+
+\newpage
+\tableofcontents 
+\newpage
+\listoftables 
+\newpage
+\listoffigures 
+\newpage
+
+```{r setup, include=FALSE}
+# Set your working directory
+getwd()
+
+# Load packages
+library(tidyverse)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(cowplot)
+library(ggplot2)
+library(ggridges)
+library(agricolae)
+library(lubridate)
+library(corrplot)
+library(htmltools)
+library(sf)
+library(leaflet)
+library(mapview)
+library(RColorBrewer)
+library(leafsync)
+
+# Set your ggplot theme
+mytheme <- theme_classic(base_size = 14) +
+  theme(axis.text = element_text(color = "black"), 
+        legend.position = "top")
+theme_set(mytheme)
+
+# Load your datasets
+
+
+```
+
+
+# Rationale and Research Questions
+
+Marine animal and sea turtle strandings can be an unusual event or indicator of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some example of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine animal and sea turtle strandings, we get insight on the health of our oceans.
+
+The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
+
+
+\newpage
+
+# Dataset Information
+* Describes source and content of data
+* Details the wrangling process from raw to processed data
+* Contains a table summarizing the dataset structure
+
+
+Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
+-contains whales, dolphins, and sea turtles
+-number of different species in each family
+-datum WGS:1984
+-transforming to UTM --> 18 (32619) or 19 ()
+-coordinate system: 
+-raw data
+-output table --> take from data_wrangling file
+
+
+
+-take eval=FALSE out after adding in the data 
+```{r - Table summary of the dataset structure, echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE }
+colnames(strandings_final)
+head(strandings_final)
+
+```
+
+
+
+\newpage
+
+# Exploratory Analysis 
+* Flow between text and visualizations is cohesive
+* Relevant exploratory information is visualized
+
+
+
+
+\newpage
+
+# Analysis
+* Flow between text and visualizations is cohesive
+* Visualizations and statistical tests pertain directly to specific questions 
+* Statistical results are reported in plain language with relevant statistical output in parentheses 
+* Findings are reported clearly in relation to research questions
+
+
+1. **Pinnipeds**:
+
+*Question 1*: Are there years or months where the number of pinniped strandings are significantly different?
+
+*Question 2*: Are there trends in pinniped strandings based off of this dataset?
+
+2. **Whales**:
+
+*Question 1*: Are there years or months where the number of toothed whales (odontocetes) strandings are significantly different?
+
+*Question 2*: Are there trends in toothed whale (odontocetes) strandings based off of this dataset?
+
+*Question 3*: Are there years or months where the number of baleen whales (mysticetes) strandings are significantly different?
+
+*Question 4*: Are there trends in baleen whale (mysticetes) strandings based off of this dataset?
+
+3. **Turtles**:
+
+*Question 1*: Are there years or months where the number of turtle strandings are significantly different?
+
+*Question 2*: Are there trends in turtle strandings based off of this dataset?
+
+
+\newpage
+
+
+# Summary and Conclusions
+* Major findings are summarized
+* Conclusions relate back to the original research context 
+
+
+
+
+\newpage
+
+-------------
+
+```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Fin Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
+knitr::include_graphics('../Data/Images/CSC_1077.png')
+
+```
+
+
+-------------
+
+# References
+
+**Data**: <https://seamap.env.duke.edu/dataset/945> 
+
+1. Halpin, P.N., A.J. Read, E. Fujioka, B.D. Best, B. Donnelly, L.J. Hazen, C. Kot, K. Urian, E. LaBrecque, A. Dimatteo, J. Cleary, C. Good, L.B. Crowder, and K.D. Hyrenbach. 2009. OBIS-SEAMAP: The world data center for marine mammal, sea bird, and sea turtle distributions. Oceanography. 22(2):104-115.
+
+2. Smith, A. 2014. Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011. Data downloaded from OBIS-SEAMAP (http://seamap.env.duke.edu/dataset/945) on 2022-04-02.
+
+**Photos**: Special thanks to Joshua Meza-Fidalgo for providing whale photos for us to use.
