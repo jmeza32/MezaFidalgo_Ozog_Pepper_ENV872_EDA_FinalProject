@@ -5,6 +5,9 @@ date: '2022-04-02'
 output:
   html_document:
     df_print: paged
+  pdf_document: default
+editor_options:
+  chunk_output_type: inline
 ---
 >Set Up
 
@@ -91,7 +94,18 @@ ggplot(Pinniped_Stranding_Data) +
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
-Possible overall trend based and possible monthly/seasonal trend.
+
+```{r, message = FALSE}
+Pinniped_Stranding_Plot <-
+ggplot(Annual_Pinniped_Strandings, aes(x = Year, y = Pinnipeds_Total)) +
+  geom_line() +
+  ylab("Pinniped Strandings") +
+  geom_smooth( method = lm )
+
+print(Pinniped_Stranding_Plot)
+```
+
+Possible overall increasing trend in pinniped strandings and possible monthly/seasonal trend.
 
 
 
@@ -246,10 +260,9 @@ plot(Pinniped_ts_monthly_decomp)
 Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 
 summary(Pinniped_ts_monthly_trend)
-
 ```
 
-
+Fail to reject the H0 that monthly pinniped strandings are stationary, with a p-value of 0.48, but there could be some seasonality based on this graph.
 
 
 ```{r Yearly Time Series}
@@ -260,6 +273,7 @@ Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
 summary(Pinniped_ts_yearly_trend)
 ```
 
+Reject the H0 that yearly pinniped strandings are stationary with a p-value or 2.22e-16.
 
 
 
