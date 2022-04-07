@@ -98,9 +98,10 @@ ggplot(Pinniped_Stranding_Data) +
 ```{r, message = FALSE}
 Pinniped_Stranding_Plot <-
 ggplot(Annual_Pinniped_Strandings, aes(x = Year, y = Pinnipeds_Total)) +
-  geom_line() +
+  geom_line(color = "red") +
   ylab("Pinniped Strandings") +
-  geom_smooth( method = lm )
+  geom_smooth(method = lm) +
+  labs(title = "Pinniped Strandings Per Year")
 
 print(Pinniped_Stranding_Plot)
 ```
