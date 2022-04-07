@@ -9,9 +9,10 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-### trying to do turtle analysis :)
+### Turtle Stranding : Set Up
 
-```{r turtles}
+```{r turtle set up}
+# load packages
 library(tidyverse)
 library(tidyr)
 library(lubridate)
@@ -34,34 +35,44 @@ library(Kendall)
 library(tseries)
 library(knitr)
 
+# working directory and theme
 getwd()
-
 mytheme <- theme_bw() +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "right")
 theme_set(mytheme)
 
+# read in the strandings data
 Strandings <- read.csv("./Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
-
 Turtle_Stranding_Data <- Strandings %>%
   filter(Family == "Turtles") %>%
   select(Family:longitude)
+Turtle_Stranding_Data$Date <- as.Date(Turtle_Stranding_Data$Date, format = "%Y-%m-%d")
 
+# read in the total strandings data
 Strandings_Totals <- read.csv("./Data/Processed/strandings_totals.csv", stringsAsFactors = TRUE)
-
 Turtle_Stranding_Totals <- Strandings_Totals %>%
   select(Year, Turtles_Total)
+
+# turtle strandings summed by date
+Turtle_Stranding_by_date <- Turtle_Stranding_Data %>%
+                    group_by(Date) %>%
+                    summarise(Total = n())
 ```
 
-```{r turtles2}
+## Turtle Stranding: Exploratory Analysis
+
+```{r turtle exploratory analysis}
 summary(Turtle_Stranding_Data)
 
+# plot of the turtle strandings by year
 ggplot(Turtle_Stranding_Data) +
   geom_bar(aes(x = Year, fill = common_name)) +
   ylab("Count") +
   labs(title = "Total Sea Turtle Strandings per Year by Species") +
   scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green (Chelonia mydas)", "Kemp's Ridley (Lepidochelys kempii)", "Leatherback (Dermochelys coriacea)", "Loggerhead (Caretta caretta)", "Unidentified Turtle"))
 
+# plot of turtle strandings by month
 ggplot(Turtle_Stranding_Data) +
   geom_bar(aes(x = Month, fill = common_name)) +
   ylab("Count") +
@@ -71,7 +82,9 @@ ggplot(Turtle_Stranding_Data) +
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
-```{r turtles3}
+## Turtle Stranding: Spaital Analysis
+
+```{r turtle spatial analysis}
 # create spatial frame of turtle data
 Turtle_sf <- Turtle_Stranding_Data %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
@@ -92,12 +105,10 @@ avg_Turtle_sf <- avg_Turtle_coords %>%
 avg_Turtle_sf_utm <- st_transform(avg_Turtle_sf, 32619)
 mapview(avg_Turtle_sf_utm)
 
-# try to do distance things???
+# find how far each stranding is from the mean stranding location
 distance_matrix <- st_distance(Turtle_sf_utm, avg_Turtle_sf_utm, pairwise=T)
-
 #Compute the mean of each row (each EPA site)
 mean_distances <-  rowMeans(distance_matrix)
-
 #Add as a column to the epa sites
 Turtle_sf_utm  <-  Turtle_sf_utm %>% 
   bind_cols(mean_distance = mean_distances) 
@@ -106,6 +117,7 @@ Turtle_sf_utm  <-  Turtle_sf_utm %>%
 mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mean Stranding Point")
 ```
 
+## Turtle Stranding: Spaital Table
 
 ```{r turtle table}
 # points within 20,000m
@@ -154,7 +166,9 @@ Turtle_160 <- Turtle_sf_utm %>%
   mutate(distance_group = "> 160,000")
 
 # row bind the distance dataframes
-Turtle_sf_utm_final <- rbind(Turtle_20, Turtle_20_40,Turtle_40_60,Turtle_60_80,Turtle_80_100,Turtle_100_120,Turtle_120_140,Turtle_140_160,Turtle_160)
+Turtle_sf_utm_final <- rbind(Turtle_20, Turtle_20_40,Turtle_40_60,
+                             Turtle_60_80,Turtle_80_100,Turtle_100_120,
+                             Turtle_120_140,Turtle_140_160,Turtle_160)
 
 Turtle_distances <- Turtle_sf_utm_final %>%
   group_by(distance_group) %>%
@@ -165,16 +179,35 @@ Turtle_distances <- Turtle_sf_utm_final %>%
 kable(Turtle_distances)
 ```
 
-```{r turtles4}
+## Turtle Stranding: Statistical Analysis
+
+```{r turtles statistical analysis}
 Turtle_Model <- lm(data = Turtle_Stranding_Totals, Turtles_Total ~ Year)
 summary(Turtle_Model)
 ```
 
-```{r turtle5}
-Turtle_ts <- ts(Turtle_Stranding_Totals, start = c(1990,1), frequency = 1)
+## Turtle Stranding: Time Series
 
-Turtle_ts_trend1 <- Kendall::SeasonalMannKendall(Turtle_ts)
+```{r turtle time series}
+# time series by year
+Turtle_ts_yearly <- ts(Turtle_Stranding_by_date, start = c(1990,1), frequency = 1)
 
-summary(Turtle_ts_trend1)
+# time series by month
+f_month <- month(first(Turtle_Stranding_by_date$Date))
+f_year <- year(first(Turtle_Stranding_by_date$Date))
+Turtle_ts_monthly <- ts(Turtle_Stranding_by_date$Total, 
+                  start = c(f_year, f_month), 
+                  frequency = 12)
+# monthly decomposition 
+Turtle_ts_monthly_decomp <- stl(Turtle_ts_monthly, s.window = "periodic")
+plot(Turtle_ts_monthly_decomp)
+
+# Trends
+Turtle_ts_yearly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_yearly)
+summary(Turtle_ts_yearly_trend)
+
+Turtle_ts_monthly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_monthly)
+summary(Turtle_ts_monthly_trend)
 ```
-reject the null (p-value = 0.012815)
+
+```
