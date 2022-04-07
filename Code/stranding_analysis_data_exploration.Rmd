@@ -5,7 +5,7 @@ date: '2022-04-02'
 output: pdf_document
 ---
 
-```{r Setup}
+```{r Setup, warning = FALSE}
 library(tidyverse)
 library(tidyr)
 library(lubridate)
