@@ -1,5 +1,5 @@
 ---
-title: "Marine Stranding Analysis -- Britney's File #1 :)"
+title: "Marine Stranding Analysis -- Britney's File #2 :)"
 author: "Britney Pepper"
 date: "4/2/2022"
 output: html_document
@@ -35,6 +35,7 @@ library(trend)
 library(zoo)
 library(Kendall)
 library(tseries)
+library(knitr)
 
 #Set theme
 mytheme <- theme_bw() +
@@ -49,173 +50,219 @@ theme_set(mytheme)
 stranding_data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
 #Mysticetes Data
-mysticetes_stranding_data <- stranding_data %>%
+mysticete_stranding_data <- stranding_data %>%
   filter(Family == "Mysticetes") %>%
   select(Family:longitude)
 
 #Setting the date
-mysticetes_stranding_data$Date <- as.Date(mysticetes_stranding_data$Date, format = "%Y-%m-%d")
+mysticete_stranding_data$Date <- as.Date(mysticete_stranding_data$Date, format = "%Y-%m-%d")
+
+
+#Annual Strandings
+annual_strandings_totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+
+annual_mysticetes_strandings <- annual_strandings_totals %>%
+  select(Year, Mysticetes_Total)
+
+#Monthly Strandings
+monthly_strandings_totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+
+monthly_mysticetes_strandings <- monthly_strandings_totals %>%
+  select(Month, Mysticetes_Total)
 
 
 
-Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
-
-Annual_Pinniped_Strandings <- Annual_Strandings_Totals %>%
-  select(Year, Pinnipeds_Total)
-
-Monthly_Strandings_Totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
-
-Monthly_Pinniped_Strandings <- Monthly_Strandings_Totals %>%
-  select(Month, Pinnipeds_Total)
-
-
-
-
-Pinniped_Stranding_Numbers <- Pinniped_Stranding_Data %>%
-                    filter(Family == "Pinnipeds") %>%
+#Mysticete Stranding Numbers
+mysticete_stranding_numbers <- mysticete_stranding_data %>%
+                    filter(Family == "Mysticetes") %>%
                     group_by(Date) %>%
                     summarise(Total = n())
 ```
 
 
->Pinniped Data Exploration
 
+#Mysticete Data Exploration
 ```{r Pinniped Data Exploration}
-summary(Pinniped_Stranding_Data)
+summary(mysticete_stranding_data)
 
-ggplot(Pinniped_Stranding_Data) +
+#By year
+ggplot(mysticete_stranding_data) +
   geom_bar(aes(x = Year, fill = common_name)) +
   ylab("Count") +
-  labs(title = "Total Pinniped Strandings per Year by Species") + 
-  scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped"))
+  labs(title = "Total Mysticete Strandings per Year by Species") +
+  scale_fill_discrete(name = "Mysticete Species", labels = c("Baleen Whale","Blue Whale", "Unknown Cetaceans",  "Fin Whale", "Humpback Whale", "Minke Whale", "North Atlantic Right Whale"))
 
-
-ggplot(Pinniped_Stranding_Data) +
+#By month
+ggplot(mysticete_stranding_data) +
   geom_bar(aes(x = Month, fill = common_name)) +
   ylab("Count") +
-  labs(title = "Total Pinniped Strandings per Month by Species") + 
-  scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped")) +
+  labs(title = "Total Mysticete Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Mysticete Species", labels = c("Baleen Whale","Blue Whale", "Unknown Cetaceans",  "Fin Whale", "Humpback Whale", "Minke Whale", "North Atlantic Right Whale")) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
-No apparent trend based on yearly data, possible seasonal trend based on month/season.
+There appears to be an increasing trend in the number of mysticete strandings as the years progress.
+There also appears to be a seasonal trend based on season, where the months of June and July have a much greater ammount of strandings than the rest of the year. 
 
 
 
 ```{r Geospatial Exploration}
-Pinniped_sf <- Pinniped_Stranding_Data %>%
+mysticete_sf <- mysticete_stranding_data %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
-mapview(Pinniped_sf)
+mapview(mysticete_sf)
 ```
 
 
 
->Pinniped Analysis
+#Mysticete Analysis
+##Statisical Analysis
 
+Null Hypothesis 1: There is no effect of year on the total number of mysticete strandings
+Alternative Hypothesis 1: There is an effect of year on the total number of mysticete strandings
 
->>Statisical Analysis
-
-Null Hypothesis 1: There is no effect of year on the total number of pinniped strandings
-Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
-
-Null Hypothesis 2: There is no effect of month on the total number of pinniped strandings
-Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
+Null Hypothesis 2: There is no effect of month on the total number of mysticete strandings
+Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings
 
 ```{r ANOVA Models}
-Pinniped_Model <- aov(data = Annual_Pinniped_Strandings, Pinnipeds_Total ~ Year)
+mysticete_model <- aov(data = annual_mysticetes_strandings, Mysticetes_Total ~ Year)
+mysticete_model
+summary.aov(mysticete_model)
 
-Pinniped_Model
-
-summary.aov(Pinniped_Model)
-
-Pinniped_Model2 <- aov(data = Monthly_Pinniped_Strandings, Pinnipeds_Total ~ Month)
-
-Pinniped_Model2
-
-summary.aov(Pinniped_Model2)
+mysticete_model2 <- aov(data = monthly_mysticetes_strandings, Mysticetes_Total ~ Month)
+mysticete_model2
+summary.aov(mysticete_model2)
 ```
 
-We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings due to a p-value of 0.027.  We also reject the null hypothesis that there is no effect of month on the total number of pinniped strandings due to a p-value of 0.018.  These  effects could likely be explained by differing environmental factors each year, however our dataset did not include such data.  This could be an avenue of further research for a future project, if such environmental data is available.    
+We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
 
 
 
->>Geospatial Analysis
-
-```{r}
-Pinniped_sf_utm <- st_transform(Pinniped_sf,32619)
+#Geospatial Analysis
+```{r Geospatial Analysis}
+#Transform the data to UTM 19
+mysticete_sf_utm <- st_transform(mysticete_sf,32619)
 #The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
 
-Pinniped_sf_utm$geometry
+mysticete_sf_utm$geometry
 
 
-long_mean <- mean(Pinniped_Stranding_Data$longitude)
-lat_mean <- mean(Pinniped_Stranding_Data$latitude)
+myst_long_mean <- mean(mysticete_stranding_data$longitude)
+myst_lat_mean <- mean(mysticete_stranding_data$latitude)
 
-Pinniped_Stranding_Mean_Point <- data.frame(long_mean, lat_mean)
+mysticete_stranding_mean_point <- data.frame(myst_long_mean, myst_lat_mean)
 
-Pinniped_Mean_sf <- Pinniped_Stranding_Mean_Point %>%
-  st_as_sf(coords = c("long_mean", "lat_mean"), crs = 4326)
+mysticete_mean_sf <- mysticete_stranding_mean_point %>%
+  st_as_sf(coords = c("myst_long_mean", "myst_lat_mean"), crs = 4326)
 
-Pinniped_Mean_UTM <- st_transform(Pinniped_Mean_sf,32619)
+mysticete_mean_utm <- st_transform(mysticete_mean_sf,32619)
 
+mysticete_distance_matrix <- st_distance(mysticete_sf_utm, mysticete_sf_utm, pairwise = T)
 
-Pinniped_Distance_Matrix <- st_distance(Pinniped_sf_utm, Pinniped_sf_utm, pairwise = T)
+myst_mean_distance <-  rowMeans(mysticete_distance_matrix)
 
-mean_distance <-  rowMeans(Pinniped_Distance_Matrix)
-
-Pinniped_sf_utm  <-  Pinniped_sf_utm %>% 
-  bind_cols(mean_distance = mean_distance)
+mysticete_sf_utm  <-  mysticete_sf_utm %>% 
+  bind_cols(myst_mean_distance = myst_mean_distance)
 ```
 
-```{r}
-mapview(Pinniped_sf_utm, 
-        zcol = "mean_distance",
+```{r Mapping the mean distance}
+mapview(mysticete_sf_utm, 
+        zcol = "myst_mean_distance",
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why pinniped strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. 
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
 
 
 
->>Temporal Analysis
 
-Null Hypothesis: The pinniped stranding data is stationary
-Alternative Hypothesis: The pinniped stranding data is not stationary
+```{r Distance Table}
+# points within 40,000m
+mysticete_40 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance < 40000) %>%
+  mutate(distance_group = "< 40,000")
 
-```{r Time Series}
-f_month <- month(first(Pinniped_Stranding_Numbers$Date))
-f_year <- year(first(Pinniped_Stranding_Numbers$Date))
+# points between 40,000m - 60,000m
+mysticete_40_60 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 40000 & myst_mean_distance < 60000) %>%
+  mutate(distance_group = "40,000 - 60,000")
+
+# points between 60,000m - 80,000m
+mysticete_60_80 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 60000 & myst_mean_distance < 80000) %>%
+  mutate(distance_group = "60,000 - 80,000")
+
+# points between 80,000m - 100,000m
+mysticete_80_100 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 80000 & myst_mean_distance < 100000) %>%
+  mutate(distance_group = "80,000 - 100,000")
+
+# points between 100,000m - 120,000m
+mysticete_100_120 <-mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 100000 & myst_mean_distance < 120000) %>%
+  mutate(distance_group = "100,000 - 120,000")
+
+# points between 120,000m - 140,000m
+mysticete_120_140 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 120000 & myst_mean_distance < 140000) %>%
+  mutate(distance_group = "120,000 - 140,000")
+
+# points between 140,000m - 160,000m
+mysticete_140_160 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 140000 & myst_mean_distance < 160000) %>%
+  mutate(distance_group = "140,000 - 160,000")
+
+# points greater than 160,000m
+mysticete_160 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 160000) %>%
+  mutate(distance_group = "> 160,000")
+
+# row bind the distance dataframes
+mysticete_sf_utm_final <- rbind(mysticete_40, mysticete_40_60, mysticete_60_80, mysticete_80_100, mysticete_100_120, mysticete_120_140, mysticete_140_160, mysticete_160)
+
+mysticete_distances <- mysticete_sf_utm_final %>%
+  group_by(distance_group) %>%
+  summarise(totals_by_distance = n()) %>%
+  st_drop_geometry() %>%
+  arrange(totals_by_distance)
+
+kable(mysticete_distances)
+```
 
 
-Pinniped_ts_yearly <- ts(Pinniped_Stranding_Numbers$Total, 
-                  start = c(f_year, f_month), 
-                  frequency = 22)
+#Temporal Analysis
+Null Hypothesis: The mysticete stranding data is stationary
+Alternative Hypothesis: The mysticete stranding data is not stationary
 
-Pinniped_ts_yearly_decomp <- stl(Pinniped_ts_yearly, s.window = "periodic")
-plot(Pinniped_ts_yearly_decomp)
+```{r Monthly Time Series}
+myst_f_month <- month(first(mysticete_stranding_numbers$Date))
+myst_f_year <- year(first(mysticete_stranding_numbers$Date))
 
-
-
-Pinniped_ts_monthly <- ts(Pinniped_Stranding_Numbers$Total, 
-                  start = c(f_year, f_month), 
+mysticete_ts_monthly <- ts(mysticete_stranding_numbers$Total, 
+                  start = c(myst_f_year, myst_f_month), 
                   frequency = 12)
  
-Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
-plot(Pinniped_ts_monthly_decomp)
+mysticete_ts_monthly_decomp <- stl(mysticete_ts_monthly, s.window = "periodic")
+plot(mysticete_ts_monthly_decomp)
+
+mysticete_ts_monthly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_monthly)
+
+summary(mysticete_ts_monthly_trend)
 
 ```
+Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
 
 
-```{r Trends}
-Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
 
-summary(Pinniped_ts_yearly_trend)
+```{r Yearly Time Series}
+myst_f_year <- year(first(mysticete_stranding_numbers$Date))
 
-Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
+mysticete_ts_yearly <- ts(mysticete_stranding_numbers, start = c(1990,1), frequency = 1)
 
-summary(Pinniped_ts_monthly_trend)
+mysticete_ts_yearly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_yearly)
+
+summary(mysticete_ts_yearly_trend)
 ```
+Because the 2-sided p-value was less 4.84e-05, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary. 
 
-We  fail to reject the null hypothesis that the pinniped stranding data is stationary based on a p-values of 0.42 and 0.48, however, plots indicate seasonality.  This seasonality could be linked to after the pupping season when juveniles strike out on their own and are still trying to figure things out.

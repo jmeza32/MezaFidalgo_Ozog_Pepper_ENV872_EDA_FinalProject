@@ -55,6 +55,12 @@ library(leaflet)
 library(mapview)
 library(RColorBrewer)
 library(leafsync)
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
+library(knitr)
+library(magrittr)
 
 # Set your ggplot theme
 mytheme <- theme_classic(base_size = 14) +
@@ -65,20 +71,21 @@ theme_set(mytheme)
 
 
 ```{r data loading, echo = FALSE}
+#Raw Data
 Strandings <- read.csv("../Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
 
+#Final Strandings file - Data Exploration
 Strandings_Final <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
-
 Strandings_Final <- Strandings_Final %>%
   select(Family:longitude)
   
+#Final annual stranding file - Data Exploration
 Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
-
 Annual_Strandings_Totals <- Annual_Strandings_Totals %>%
   select(Year:Odontocetes_Total)
 
+#Final monthly stranding file - Data Exploration
 Monthly_Strandings_Totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
-
 Monthly_Strandings_Totals <- Monthly_Strandings_Totals %>%
   select(Month:Odontocetes_Total)
 ```
@@ -96,28 +103,29 @@ Our objective is to analyze animal strandings over the years to see if there any
 
 # Dataset Information
 
-The dataset that we chose to work on is the Mystic Aquarium's marine mammal and sea turtle stranding data from 1976 to 2011. It contains the number of whale (odontocetes and mysticetes), dolphin, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. The latitude ranged from 41.00 to 41.86 while the longitude was from -73.65 to -71.10. Within the dataset, there are a total of 1,141 strandings, of which 885 were marine mammals and 256 were sea turtles. We data was provided using the datum WGS: 1984 (4326) and we performed a data transformation into UTM 19 (32619).
+<center>***Table 1**: Dataset Information*</center>
+
+Detail            | Description
+------------------|----------------------------------------
+Data Source       | OBIS-SEAMAP  - Mystic Aquarium
+Retrieved From    | https://seamap.env.duke.edu/dataset/945
+Variables Used    | Family, Common Name, Species Name, Date, Year, Month, Latitude, Longitude, Total Strandings, Strandings by Species
+Data Range        | March 18, 1976 to December, 29, 2011
 
 
-Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
-
-* Contains whales, dolphins, and sea turtles
-* Number of different species in each family
-* Only one stranding record from 1976, the rest start at 1990, so that 1976 record was excluded from analysis 
-* Coordinate system: WGS 1984
-* Transformed to UTM Zone 19 for geospatial analysis
-
-* Data Wrangling
-  * Selected for data columns we wanted to parse down dataset
-  * Reformatted the date
-  * Wrangled data to include a family column for each animal group (mysticetes, odontocetes, pinnipeds, and turtles)
-  * Further wrangling was conducted to determine and isolate yearly and monthly stranding totals
 
 
-```{r - Table summary of the dataset structure, message = FALSE, warning = FALSE}
+
+The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
+
+The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. We data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes, mysticetes, pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
+
+
+```{r - Table summary of the dataset structure, message = FALSE, warning = FALSE, echo = FALSE}
 colnames(Strandings)
 
 colnames(Strandings_Final)
+
 head(Strandings_Final)
 
 head(Annual_Strandings_Totals)
@@ -131,10 +139,43 @@ head(Monthly_Strandings_Totals)
 \newpage
 
 # Exploratory Analysis 
-* Flow between text and visualizations is cohesive
-* Relevant exploratory information is visualized
+
+We initially decided that it would be best to look at the data wholisticlly to get a better feel for the trends in teh data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
+
+<center>***Figure 1**: Total Strandings per Family*</center>
+```{r Visually Exploring the Data 1, message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(Strandings_Final) +
+  geom_bar(aes(x = Family, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Family")
+```
 
 
+<center>***Figure 2**: Total Strandings per Year*</center>
+```{r Visually Exploring the Data 2, message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(Strandings_Final) +
+  geom_bar(aes(x = Year, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Year")
+```
+
+
+<center>***Figure 3**: Total Strandings per Month*</center>
+```{r Visually Exploring the Data 3, message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(Strandings_Final) +
+  geom_bar(aes(x = Month, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+```
+
+<center>***Map 1**: Geospatial Exploration of each Family*</center>
+```{r Geospatial Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+Strandings_sf <- Strandings_Final %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(Strandings_sf, zcol = "Family")
+```
 
 
 \newpage
@@ -146,11 +187,18 @@ head(Monthly_Strandings_Totals)
 * Findings are reported clearly in relation to research questions
 
 
+NOTE-- Did we ever do an analysis for the entire data set without dividing it by family????
+
+
+Because we decided to divide the data into groups by their families, we conducted separate analysis for each of them.
+
+
 1. **Pinnipeds**:
 
 *Question 1*: Are there years or months where the number of pinniped strandings are significantly different?
 
 *Question 2*: Are there trends in pinniped strandings based off of this dataset?
+
 
 2. **Whales**:
 
@@ -161,6 +209,7 @@ head(Monthly_Strandings_Totals)
 *Question 3*: Are there years or months where the number of baleen whales (mysticetes) strandings are significantly different?
 
 *Question 4*: Are there trends in baleen whale (mysticetes) strandings based off of this dataset?
+
 
 3. **Turtles**:
 

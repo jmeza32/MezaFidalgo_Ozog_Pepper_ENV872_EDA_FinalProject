@@ -239,6 +239,7 @@ Alternative Hypothesis: The odontocetes stranding data is not stationary
 
 ```{r Monthly Time Series}
 odo_f_month <- month(first(odontocete_stranding_numbers$Date))
+odo_f_year <- year(first(odontocete_stranding_numbers$Date))
 
 odontocete_ts_monthly <- ts(odontocete_stranding_numbers$Total, 
                   start = c(odo_f_year, odo_f_month), 

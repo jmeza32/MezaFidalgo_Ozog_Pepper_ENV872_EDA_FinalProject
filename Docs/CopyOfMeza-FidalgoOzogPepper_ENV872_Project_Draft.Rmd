@@ -15,21 +15,17 @@ subtitle: https://github.com/jmeza32/MezaFidalgo_Ozog_Pepper_ENV872_EDA_FinalPro
 geometry: margin=2.54cm
 fontsize: 12pt
 mainfont: Times New Roman
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
-------------------------------------------------------------------------
+-------------
 
-```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
+
+```{r echo = FALSE, comment = FALSE, warning = FALSE, fig.cap = "Deceased Humpback Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
 knitr::include_graphics('../Data/Images/CSC_0075.png')
-
 ```
 
-------------------------------------------------------------------------
+-------------
 
-```{=tex}
 \newpage
 \tableofcontents 
 \newpage
@@ -37,8 +33,8 @@ knitr::include_graphics('../Data/Images/CSC_0075.png')
 \newpage
 \listoffigures 
 \newpage
-```
-```{r setup, include=FALSE}
+
+```{r setup, include = FALSE}
 # Set your working directory
 getwd()
 
@@ -59,142 +55,197 @@ library(leaflet)
 library(mapview)
 library(RColorBrewer)
 library(leafsync)
+library(trend)
+library(zoo)
+library(Kendall)
+library(tseries)
+library(knitr)
+library(magrittr)
 
 # Set your ggplot theme
 mytheme <- theme_classic(base_size = 14) +
   theme(axis.text = element_text(color = "black"), 
-        legend.position = "top")
+        legend.position = "right")
 theme_set(mytheme)
-
-# Load your datasets
-
-
 ```
+
+
+```{r data loading, echo = FALSE}
+#Raw Data
+Strandings <- read.csv("../Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
+
+#Final Strandings file - Data Exploration
+Strandings_Final <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+Strandings_Final <- Strandings_Final %>%
+  select(Family:longitude)
+  
+#Final annual stranding file - Data Exploration
+Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+Annual_Strandings_Totals <- Annual_Strandings_Totals %>%
+  select(Year:Odontocetes_Total)
+
+#Final monthly stranding file - Data Exploration
+Monthly_Strandings_Totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+Monthly_Strandings_Totals <- Monthly_Strandings_Totals %>%
+  select(Month:Odontocetes_Total)
+```
+
+
 
 # Rationale and Research Questions
 
-Marine animal and sea turtle strandings can be an unusual event or
-indicator of problems in our ocean ecosystems. Seeing patterns in the
-strandings of marine mammals and sea turtles can be indicative of issues
-that may not be transparent. Some example of these issues could be viral
-outbreaks or toxic algal blooms in lower trophic level populations.
-Because humans demand and consume seafood, understanding the problems
-that arise are essential in helping us to
+Marine mammal and sea turtle strandings can be unusual events or indicators of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some example of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine mammal and sea turtle strandings, we get insight on the health of our oceans.
 
-the health of our oceans.
+Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
 
--monitor over the years to see if there were any trends on increases in
-strandings
-
-Being able to monitor these populations
-
-The dataset that we chose to work on is the Mystic Aquarium's marine
-mammal and sea turtle stranding data from 1976 to 2011.
-
-appropriate schope of the project//questions to answer -changes over the
-years -seasonality differences -time series analysis
 
 \newpage
 
 # Dataset Information
 
--   Describes source and content of data
--   Details the wrangling process from raw to processed data
--   Contains a table summarizing the dataset structure
+<center>***Table 1**: Dataset Information*</center>
 
-Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011
--contains whales, dolphins, and sea turtles -number of different species
-in each family -datum WGS:1984 -transforming to UTM --> 18 (32619) or 19
-() -coordinate system: -raw data -output table --> take from
-data_wrangling file
+Detail            | Description
+------------------|----------------------------------------
+Data Source       | OBIS-SEAMAP  - Mystic Aquarium
+Retrieved From    | https://seamap.env.duke.edu/dataset/945
+Variables Used    | Family, Common Name, Species Name, Date, Year, Month, Latitude, Longitude, Total Strandings, Strandings by Species
+Data Range        | March 18, 1976 to December, 29, 2011
 
--take eval=FALSE out after adding in the data
 
-```{r - Table summary of the dataset structure, echo=FALSE, message=FALSE, warning=FALSE, eval=FALSE }
-colnames(strandings_final)
-head(strandings_final)
 
+
+
+The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
+
+The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. We data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes, mysticetes, pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
+
+
+```{r - Table summary of the dataset structure, message = FALSE, warning = FALSE, echo = FALSE}
+colnames(Strandings)
+
+colnames(Strandings_Final)
+
+head(Strandings_Final)
+
+head(Annual_Strandings_Totals)
+
+head(Monthly_Strandings_Totals)
 ```
+
+
+
 
 \newpage
 
-# Exploratory Analysis
+# Exploratory Analysis 
 
--   Flow between text and visualizations is cohesive
--   Relevant exploratory information is visualized
+We initially decided that it would be best to look at the data wholisticlly to get a better feel for the trends in teh data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
+
+<center>***Figure 1**: Total Strandings per Family*</center>
+```{r Visually Exploring the Data 1, message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(Strandings_Final) +
+  geom_bar(aes(x = Family, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Family")
+```
+
+
+<center>***Figure 2**: Total Strandings per Year*</center>
+```{r Visually Exploring the Data 2, message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(Strandings_Final) +
+  geom_bar(aes(x = Year, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Year")
+```
+
+
+<center>***Figure 3**: Total Strandings per Month*</center>
+```{r Visually Exploring the Data 3, message = FALSE, warning = FALSE, echo = FALSE}
+ggplot(Strandings_Final) +
+  geom_bar(aes(x = Month, fill = Family)) +
+  ylab("Count") +
+  labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+```
+
+<center>***Map 1**: Geospatial Exploration of each Family*</center>
+```{r Geospatial Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+Strandings_sf <- Strandings_Final %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(Strandings_sf, zcol = "Family")
+```
+
 
 \newpage
 
 # Analysis
+* Flow between text and visualizations is cohesive
+* Visualizations and statistical tests pertain directly to specific questions 
+* Statistical results are reported in plain language with relevant statistical output in parentheses 
+* Findings are reported clearly in relation to research questions
 
--   Flow between text and visualizations is cohesive
--   Visualizations and statistical tests pertain directly to specific
-    questions
--   Statistical results are reported in plain language with relevant
-    statistical output in parentheses
--   Findings are reported clearly in relation to research questions
 
-1.  **Pinnipeds**:
+NOTE-- Did we ever do an analysis for the entire data set without dividing it by family????
 
-*Question 1*: Are there years or months where the number of pinniped
-strandings are significantly different?
 
-*Question 2*: Are there trends in pinniped strandings based off of this
-dataset?
+Because we decided to divide the data into groups by their families, we conducted separate analysis for each of them.
 
-2.  **Whales**:
 
-*Question 1*: Are there years or months where the number of toothed
-whales (odontocetes) strandings are significantly different?
+1. **Pinnipeds**:
 
-*Question 2*: Are there trends in toothed whale (odontocetes) strandings
-based off of this dataset?
+*Question 1*: Are there years or months where the number of pinniped strandings are significantly different?
 
-*Question 3*: Are there years or months where the number of baleen
-whales (mysticetes) strandings are significantly different?
+*Question 2*: Are there trends in pinniped strandings based off of this dataset?
 
-*Question 4*: Are there trends in baleen whale (mysticetes) strandings
-based off of this dataset?
 
-3.  **Turtles**:
+2. **Whales**:
 
-*Question 1*: Are there years or months where the number of turtle
-strandings are significantly different?
+*Question 1*: Are there years or months where the number of toothed whales (odontocetes) strandings are significantly different?
 
-*Question 2*: Are there trends in turtle strandings based off of this
-dataset?
+*Question 2*: Are there trends in toothed whale (odontocetes) strandings based off of this dataset?
+
+*Question 3*: Are there years or months where the number of baleen whales (mysticetes) strandings are significantly different?
+
+*Question 4*: Are there trends in baleen whale (mysticetes) strandings based off of this dataset?
+
+
+3. **Turtles**:
+
+*Question 1*: Are there years or months where the number of turtle strandings are significantly different?
+
+*Question 2*: Are there trends in turtle strandings based off of this dataset?
+
 
 \newpage
+
 
 # Summary and Conclusions
+* Major findings are summarized
+* Conclusions relate back to the original research context 
 
--   Major findings are summarized
--   Conclusions relate back to the original research context
+
+
 
 \newpage
 
-------------------------------------------------------------------------
+-------------
 
 ```{r echo=FALSE, comment=FALSE, warning=FALSE, fig.cap = "Deceased Fin Whale - Joshua Meza-Fidalgo, 2020", fig.align="right", out.width='100%'}
 knitr::include_graphics('../Data/Images/CSC_1077.png')
 
 ```
 
-------------------------------------------------------------------------
+
+-------------
 
 # References
 
-**Data**: <https://seamap.env.duke.edu/dataset/945>
+**Data**: <https://seamap.env.duke.edu/dataset/945> 
 
-1.  Halpin, P.N., A.J. Read, E. Fujioka, B.D. Best, B. Donnelly, L.J.
-    Hazen, C. Kot, K. Urian, E. LaBrecque, A. Dimatteo, J. Cleary, C.
-    Good, L.B. Crowder, and K.D. Hyrenbach. 2009. OBIS-SEAMAP: The world
-    data center for marine mammal, sea bird, and sea turtle
-    distributions. Oceanography. 22(2):104-115.
+1. Halpin, P.N., A.J. Read, E. Fujioka, B.D. Best, B. Donnelly, L.J. Hazen, C. Kot, K. Urian, E. LaBrecque, A. Dimatteo, J. Cleary, C. Good, L.B. Crowder, and K.D. Hyrenbach. 2009. OBIS-SEAMAP: The world data center for marine mammal, sea bird, and sea turtle distributions. Oceanography. 22(2):104-115.
 
-2.  Smith, A. 2014. Mystic Aquarium's marine mammal and sea turtle
-    stranding data 1976-2011. Data downloaded from OBIS-SEAMAP
-    (<http://seamap.env.duke.edu/dataset/945>) on 2022-04-02.
+2. Smith, A. 2014. Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011. Data downloaded from OBIS-SEAMAP (http://seamap.env.duke.edu/dataset/945) on 2022-04-02.
 
-**Photos**: Special thanks to Joshua Meza-Fidalgo for providing whale
-photos for us to use.
+**Photos**: Special thanks to Joshua Meza-Fidalgo for providing whale photos for us to use.
