@@ -187,6 +187,12 @@ mapview(Strandings_sf, zcol = "Family")
 * Findings are reported clearly in relation to research questions
 
 
+NOTE-- Did we ever do an analysis for the entire data set without dividing it by family????
+
+
+Because we decided to divide the data into groups by their families, we conducted separate analysis for each of them.
+
+
 1. **Pinnipeds**:
 
 *Question 1*: Are there years or months where the number of pinniped strandings are significantly different?
