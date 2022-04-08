@@ -140,7 +140,7 @@ head(Monthly_Strandings_Totals)
 
 # Exploratory Analysis 
 
-We initially decided that it would be best to look at the data wholisticlly to get a better feel for the trends in teh data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
+We initially decided that it would be best to look at the data holistically to get a better feel for the trends in the data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
 
 <center>***Figure 1**: Total Strandings per Family*</center>
 ```{r Visually Exploring the Data 1, message = FALSE, warning = FALSE, echo = FALSE}
