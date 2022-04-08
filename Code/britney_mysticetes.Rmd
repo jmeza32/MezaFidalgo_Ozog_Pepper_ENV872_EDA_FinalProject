@@ -142,33 +142,33 @@ We reject the null hypothesis that there is no effect of year on the total numbe
 #Geospatial Analysis
 ```{r Geospatial Analysis}
 #Transform the data to UTM 19
-odontocete_sf_utm <- st_transform(odontocete_sf,32619)
+mysticete_sf_utm <- st_transform(mysticete_sf,32619)
 #The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
 
-odontocete_sf_utm$geometry
+mysticete_sf_utm$geometry
 
 
-odo_long_mean <- mean(odontocete_stranding_data$longitude)
-odo_lat_mean <- mean(odontocete_stranding_data$latitude)
+myst_long_mean <- mean(mysticete_stranding_data$longitude)
+myst_lat_mean <- mean(mysticete_stranding_data$latitude)
 
-odontocete_stranding_mean_point <- data.frame(odo_long_mean, odo_lat_mean)
+mysticete_stranding_mean_point <- data.frame(myst_long_mean, myst_lat_mean)
 
-odontocete_mean_sf <- odontocete_stranding_mean_point %>%
-  st_as_sf(coords = c("odo_long_mean", "odo_lat_mean"), crs = 4326)
+mysticete_mean_sf <- mysticete_stranding_mean_point %>%
+  st_as_sf(coords = c("myst_long_mean", "myst_lat_mean"), crs = 4326)
 
-odontocete_mean_utm <- st_transform(odontocete_mean_sf,32619)
+mysticete_mean_utm <- st_transform(mysticete_mean_sf,32619)
 
-odontocete_distance_matrix <- st_distance(odontocete_sf_utm, odontocete_sf_utm, pairwise = T)
+mysticete_distance_matrix <- st_distance(mysticete_sf_utm, mysticete_sf_utm, pairwise = T)
 
-odo_mean_distance <-  rowMeans(odontocete_distance_matrix)
+myst_mean_distance <-  rowMeans(mysticete_distance_matrix)
 
-odontocete_sf_utm  <-  odontocete_sf_utm %>% 
-  bind_cols(odo_mean_distance = odo_mean_distance)
+mysticete_sf_utm  <-  mysticete_sf_utm %>% 
+  bind_cols(myst_mean_distance = myst_mean_distance)
 ```
 
 ```{r Mapping the mean distance}
-mapview(odontocete_sf_utm, 
-        zcol = "odo_mean_distance",
+mapview(mysticete_sf_utm, 
+        zcol = "myst_mean_distance",
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 
@@ -179,75 +179,76 @@ Knowing where the "mean" stranding location is could allow for a study of that a
 
 ```{r Distance Table}
 # points within 40,000m
-odontocete_40 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance < 40000) %>%
+mysticete_40 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance < 40000) %>%
   mutate(distance_group = "< 40,000")
 
 # points between 40,000m - 60,000m
-odontocete_40_60 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 40000 & odo_mean_distance < 60000) %>%
+mysticete_40_60 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 40000 & myst_mean_distance < 60000) %>%
   mutate(distance_group = "40,000 - 60,000")
 
 # points between 60,000m - 80,000m
-odontocete_60_80 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 60000 & odo_mean_distance < 80000) %>%
+mysticete_60_80 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 60000 & myst_mean_distance < 80000) %>%
   mutate(distance_group = "60,000 - 80,000")
 
 # points between 80,000m - 100,000m
-odontocete_80_100 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 80000 & odo_mean_distance < 100000) %>%
+mysticete_80_100 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 80000 & myst_mean_distance < 100000) %>%
   mutate(distance_group = "80,000 - 100,000")
 
 # points between 100,000m - 120,000m
-odontocete_100_120 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 100000 & odo_mean_distance < 120000) %>%
+mysticete_100_120 <-mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 100000 & myst_mean_distance < 120000) %>%
   mutate(distance_group = "100,000 - 120,000")
 
 # points between 120,000m - 140,000m
-odontocete_120_140 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 120000 & odo_mean_distance < 140000) %>%
+mysticete_120_140 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 120000 & myst_mean_distance < 140000) %>%
   mutate(distance_group = "120,000 - 140,000")
 
 # points between 140,000m - 160,000m
-odontocete_140_160 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 140000 & odo_mean_distance < 160000) %>%
+mysticete_140_160 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 140000 & myst_mean_distance < 160000) %>%
   mutate(distance_group = "140,000 - 160,000")
 
 # points greater than 160,000m
-odontocete_160 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 160000) %>%
+mysticete_160 <- mysticete_sf_utm %>%
+  filter(myst_mean_distance >= 160000) %>%
   mutate(distance_group = "> 160,000")
 
 # row bind the distance dataframes
-odontocete_sf_utm_final <- rbind(odontocete_40, odontocete_40_60, odontocete_60_80, odontocete_80_100, odontocete_100_120, odontocete_120_140, odontocete_140_160, odontocete_160)
+mysticete_sf_utm_final <- rbind(mysticete_40, mysticete_40_60, mysticete_60_80, mysticete_80_100, mysticete_100_120, mysticete_120_140, mysticete_140_160, mysticete_160)
 
-odontocete_distances <- odontocete_sf_utm_final %>%
+mysticete_distances <- mysticete_sf_utm_final %>%
   group_by(distance_group) %>%
   summarise(totals_by_distance = n()) %>%
   st_drop_geometry() %>%
   arrange(totals_by_distance)
 
-kable(odontocete_distances)
+kable(mysticete_distances)
 ```
 
 
 #Temporal Analysis
-Null Hypothesis: The odontocetes stranding data is stationary
-Alternative Hypothesis: The odontocetes stranding data is not stationary
+Null Hypothesis: The mysticete stranding data is stationary
+Alternative Hypothesis: The mysticete stranding data is not stationary
 
 ```{r Monthly Time Series}
-odo_f_month <- month(first(odontocete_stranding_numbers$Date))
+myst_f_month <- month(first(mysticete_stranding_numbers$Date))
+myst_f_year <- year(first(mysticete_stranding_numbers$Date))
 
-odontocete_ts_monthly <- ts(odontocete_stranding_numbers$Total, 
-                  start = c(odo_f_year, odo_f_month), 
+mysticete_ts_monthly <- ts(mysticete_stranding_numbers$Total, 
+                  start = c(myst_f_year, myst_f_month), 
                   frequency = 12)
  
-odontocete_ts_monthly_decomp <- stl(odontocete_ts_monthly, s.window = "periodic")
-plot(odontocete_ts_monthly_decomp)
+mysticete_ts_monthly_decomp <- stl(mysticete_ts_monthly, s.window = "periodic")
+plot(mysticete_ts_monthly_decomp)
 
-odontocete_ts_monthly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_monthly)
+mysticete_ts_monthly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_monthly)
 
-summary(odontocete_ts_monthly_trend)
+summary(mysticete_ts_monthly_trend)
 
 ```
 Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
@@ -255,13 +256,13 @@ Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and
 
 
 ```{r Yearly Time Series}
-odo_f_year <- year(first(odontocete_stranding_numbers$Date))
+myst_f_year <- year(first(mysticete_stranding_numbers$Date))
 
-odontocete_ts_yearly <- ts(odontocete_stranding_numbers, start = c(1990,1), frequency = 1)
+mysticete_ts_yearly <- ts(mysticete_stranding_numbers, start = c(1990,1), frequency = 1)
 
-odontocete_ts_yearly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_yearly)
+mysticete_ts_yearly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_yearly)
 
-summary(odontocete_ts_yearly_trend)
+summary(mysticete_ts_yearly_trend)
 ```
-Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary. 
+Because the 2-sided p-value was less 4.84e-05, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary. 
 
