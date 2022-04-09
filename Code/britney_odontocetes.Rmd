@@ -82,7 +82,7 @@ odontocete_stranding_numbers <- odontocete_stranding_data %>%
 
 
 #Odontocete Data Exploration
-```{r Pinniped Data Exploration}
+```{r Odontocete Data Exploration}
 summary(odontocete_stranding_data)
 
 #By year
