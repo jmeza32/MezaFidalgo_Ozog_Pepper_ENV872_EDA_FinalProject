@@ -67,10 +67,12 @@ mytheme <- theme_classic(base_size = 14) +
   theme(axis.text = element_text(color = "black"), 
         legend.position = "right")
 theme_set(mytheme)
+
 ```
 
 
-```{r data loading, echo = FALSE}
+
+```{r data loading1, echo = FALSE}
 #Raw Data
 Strandings <- read.csv("../Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsAsFactors = TRUE)
 
@@ -78,7 +80,7 @@ Strandings <- read.csv("../Data/Raw/OBIS_seamap_strandings_mystic.csv", stringsA
 Strandings_Final <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 Strandings_Final <- Strandings_Final %>%
   select(Family:longitude)
-  
+
 #Final annual stranding file - Data Exploration
 Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
 Annual_Strandings_Totals <- Annual_Strandings_Totals %>%
@@ -121,15 +123,34 @@ The dataset that we chose to work with is the Mystic Aquarium's marine mammal an
 The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. We data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes, mysticetes, pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
 
 
-```{r - Table summary of the dataset structure, message = FALSE, warning = FALSE, echo = FALSE}
+
+<center>***Figure 1**: The Column Names of the Raw Data*</center>
+```{r - Table summary of the dataset structure1, message = FALSE, warning = FALSE, echo = FALSE}
 colnames(Strandings)
 
+```
+
+
+<center>***Figure 2**: The Column Names of the Processed Data*</center>
+```{r - Table summary of the dataset structure2, message = FALSE, warning = FALSE, echo = FALSE}
 colnames(Strandings_Final)
+```
 
+
+<center>***Table 2**: The First Rows and Columns of the Final Processed Data*</center>
+```{r - Table summary of the dataset structure3, message = FALSE, warning = FALSE, echo = FALSE}
 head(Strandings_Final)
+```
 
+
+<center>***Table 3**: The First Rows and Columns of Strandings of Each Family per Year*</center>
+```{r - Table summary of the dataset structure4, message = FALSE, warning = FALSE, echo = FALSE}
 head(Annual_Strandings_Totals)
+```
 
+
+<center>***Table 4**: The First Rows and Columns of Strandings of Each Family per Month*</center>
+```{r - Table summary of the dataset structure5, message = FALSE, warning = FALSE, echo = FALSE}
 head(Monthly_Strandings_Totals)
 ```
 
@@ -140,10 +161,10 @@ head(Monthly_Strandings_Totals)
 
 # Exploratory Analysis 
 
-We initially decided that it would be best to look at the data holistically to get a better feel for the trends in the data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
+We initially decided that it would be best to look at the data holistically to get a better feel for the trends in the data. We first analyzed the total number of strandings per each family, as seen in Figure 3. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 4. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 5. Finally, to have a geospatial understanding of our data, Map 1 was created.
 
-<center>***Figure 1**: Total Strandings per Family*</center>
-```{r Visually Exploring the Data 1, message = FALSE, warning = FALSE, echo = FALSE}
+<center>***Figure 3**: Total Strandings per Family*</center>
+```{r Visually Exploring the Data 1, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 ggplot(Strandings_Final) +
   geom_bar(aes(x = Family, fill = Family)) +
   ylab("Count") +
@@ -151,8 +172,8 @@ ggplot(Strandings_Final) +
 ```
 
 
-<center>***Figure 2**: Total Strandings per Year*</center>
-```{r Visually Exploring the Data 2, message = FALSE, warning = FALSE, echo = FALSE}
+<center>***Figure 4**: Total Strandings per Year*</center>
+```{r Visually Exploring the Data 2, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 ggplot(Strandings_Final) +
   geom_bar(aes(x = Year, fill = Family)) +
   ylab("Count") +
@@ -160,8 +181,8 @@ ggplot(Strandings_Final) +
 ```
 
 
-<center>***Figure 3**: Total Strandings per Month*</center>
-```{r Visually Exploring the Data 3, message = FALSE, warning = FALSE, echo = FALSE}
+<center>***Figure 5**: Total Strandings per Month*</center>
+```{r Visually Exploring the Data 3, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 ggplot(Strandings_Final) +
   geom_bar(aes(x = Month, fill = Family)) +
   ylab("Count") +
@@ -170,13 +191,14 @@ ggplot(Strandings_Final) +
 ```
 
 <center>***Map 1**: Geospatial Exploration of each Family*</center>
-```{r Geospatial Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+<center>
+```{r Geospatial Exploration, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 Strandings_sf <- Strandings_Final %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
 mapview(Strandings_sf, zcol = "Family")
 ```
-
+</center>
 
 \newpage
 
@@ -190,32 +212,244 @@ mapview(Strandings_sf, zcol = "Family")
 NOTE-- Did we ever do an analysis for the entire data set without dividing it by family????
 
 
-Because we decided to divide the data into groups by their families, we conducted separate analysis for each of them.
+Because we decided to divide the data into groups by their families, we conducted separate analysis for each of the families. Our research questions are the following:
+
+* Are there years or months where the number of strandings for each family are significantly different?
+* Are there trends in the family strandings based off this dataset?
 
 
 1. **Pinnipeds**:
 
-*Question 1*: Are there years or months where the number of pinniped strandings are significantly different?
-
-*Question 2*: Are there trends in pinniped strandings based off of this dataset?
-
 
 2. **Whales**:
+-*Odontocetes*
 
-*Question 1*: Are there years or months where the number of toothed whales (odontocetes) strandings are significantly different?
+```{r Odontocete Data, message = FALSE, warning = FALSE, include= FALSE}
+stranding_data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
-*Question 2*: Are there trends in toothed whale (odontocetes) strandings based off of this dataset?
+#Odontocetes Data
+odontocete_stranding_data <- stranding_data %>%
+  filter(Family == "Odontocetes") %>%
+  select(Family:longitude)
 
-*Question 3*: Are there years or months where the number of baleen whales (mysticetes) strandings are significantly different?
+#Setting the date
+odontocete_stranding_data$Date <- as.Date(odontocete_stranding_data$Date, format = "%Y-%m-%d")
 
-*Question 4*: Are there trends in baleen whale (mysticetes) strandings based off of this dataset?
+
+#Annual Strandings
+annual_strandings_totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+
+annual_odontocetes_strandings <- annual_strandings_totals %>%
+  select(Year, Odontocetes_Total)
+
+#Monthly Strandings
+monthly_strandings_totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+
+monthly_odontocetes_strandings <- monthly_strandings_totals %>%
+  select(Month, Odontocetes_Total)
+
+
+
+#Odontocete Stranding Numbers
+odontocete_stranding_numbers <- odontocete_stranding_data %>%
+                    filter(Family == "Odontocetes") %>%
+                    group_by(Date) %>%
+                    summarise(Total = n())
+```
+
+
+
+#Odontocete Data Exploration
+```{r Odontocete Data Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+summary(odontocete_stranding_data)
+
+#By year
+ggplot(odontocete_stranding_data) +
+  geom_bar(aes(x = Year, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Odontocete Strandings per Year by Species") +
+  scale_fill_discrete(name = "Odontocete Species", labels = c("Atlantic White-sided Dolphin", "Blainville's Beaked Whale","Common Bottlenose Dolphin", "Dwarf Sperm Whale", "Harbor Porpoise","Long-finned Pilot Whale", "Pygmy Sperm Whale", "Risso's Dolphin", "Short-beaked Common Dolphin", "Short-finned Pilot Whale", "Sowerby's Beaked Whale", "Striped Dolphin", "Unidentified Toothed Whales"))
+
+#By month
+ggplot(odontocete_stranding_data) +
+  geom_bar(aes(x = Month, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Odontocete Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Odontocete Species", labels = c("Atlantic White-sided Dolphin", "Blainville's Beaked Whale","Common Bottlenose Dolphin", "Dwarf Sperm Whale", "Harbor Porpoise","Long-finned Pilot Whale", "Pygmy Sperm Whale", "Risso's Dolphin", "Short-beaked Common Dolphin", "Short-finned Pilot Whale", "Sowerby's Beaked Whale", "Striped Dolphin", "Unidentified Toothed Whales")) +
+  scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+```
+
+There appears to be an increasing trend in the number of odontocete strandings as the years progress.
+There may be possible seasonal trend based on season, where the spring and early summer see a greater number of strandings than the other seasons.
+
+
+
+```{r Odontocete Geospatial Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+odontocete_sf <- odontocete_stranding_data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(odontocete_sf)
+```
+
+
+
+#Odontocete Analysis
+##Statisical Analysis
+
+Null Hypothesis 1: There is no effect of year on the total number of odontocete strandings
+Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings
+
+Null Hypothesis 2: There is no effect of month on the total number of odontocete strandings
+Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings
+
+```{r Odontocete ANOVA Models, message = FALSE, warning = FALSE, echo = FALSE}
+odontocete_model <- aov(data = annual_odontocetes_strandings, Odontocetes_Total ~ Year)
+odontocete_model
+
+summary.aov(odontocete_model)
+
+odontocete_model2 <- aov(data = monthly_odontocetes_strandings, Odontocetes_Total ~ Month)
+odontocete_model2
+
+summary.aov(odontocete_model2)
+```
+
+We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
+
+
+
+#Geospatial Analysis
+```{r Odontocete Geospatial Analysis, message = FALSE, warning = FALSE, include = FALSE}
+#Transform the data to UTM 19
+odontocete_sf_utm <- st_transform(odontocete_sf,32619)
+#The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
+
+odontocete_sf_utm$geometry
+
+
+odo_long_mean <- mean(odontocete_stranding_data$longitude)
+odo_lat_mean <- mean(odontocete_stranding_data$latitude)
+
+odontocete_stranding_mean_point <- data.frame(odo_long_mean, odo_lat_mean)
+
+odontocete_mean_sf <- odontocete_stranding_mean_point %>%
+  st_as_sf(coords = c("odo_long_mean", "odo_lat_mean"), crs = 4326)
+
+odontocete_mean_utm <- st_transform(odontocete_mean_sf,32619)
+
+odontocete_distance_matrix <- st_distance(odontocete_sf_utm, odontocete_sf_utm, pairwise = T)
+
+odo_mean_distance <-  rowMeans(odontocete_distance_matrix)
+
+odontocete_sf_utm  <-  odontocete_sf_utm %>% 
+  bind_cols(odo_mean_distance = odo_mean_distance)
+```
+
+```{r Odontocete Mapping the mean distance, message = FALSE, warning = FALSE, echo = FALSE}
+mapview(odontocete_sf_utm, 
+        zcol = "odo_mean_distance",
+        layer.name = "Distance (m) from Mean Stranding Point")
+```
+
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
+
+
+
+
+```{r Odontocete Distance Table, message = FALSE, warning = FALSE, echo = FALSE}
+# points within 40,000m
+odontocete_40 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance < 40000) %>%
+  mutate(distance_group = "< 40,000")
+
+# points between 40,000m - 60,000m
+odontocete_40_60 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 40000 & odo_mean_distance < 60000) %>%
+  mutate(distance_group = "40,000 - 60,000")
+
+# points between 60,000m - 80,000m
+odontocete_60_80 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 60000 & odo_mean_distance < 80000) %>%
+  mutate(distance_group = "60,000 - 80,000")
+
+# points between 80,000m - 100,000m
+odontocete_80_100 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 80000 & odo_mean_distance < 100000) %>%
+  mutate(distance_group = "80,000 - 100,000")
+
+# points between 100,000m - 120,000m
+odontocete_100_120 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 100000 & odo_mean_distance < 120000) %>%
+  mutate(distance_group = "100,000 - 120,000")
+
+# points between 120,000m - 140,000m
+odontocete_120_140 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 120000 & odo_mean_distance < 140000) %>%
+  mutate(distance_group = "120,000 - 140,000")
+
+# points between 140,000m - 160,000m
+odontocete_140_160 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 140000 & odo_mean_distance < 160000) %>%
+  mutate(distance_group = "140,000 - 160,000")
+
+# points greater than 160,000m
+odontocete_160 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 160000) %>%
+  mutate(distance_group = "> 160,000")
+
+# row bind the distance dataframes
+odontocete_sf_utm_final <- rbind(odontocete_40, odontocete_40_60, odontocete_60_80, odontocete_80_100, odontocete_100_120, odontocete_120_140, odontocete_140_160, odontocete_160)
+
+odontocete_distances <- odontocete_sf_utm_final %>%
+  group_by(distance_group) %>%
+  summarise(totals_by_distance = n()) %>%
+  st_drop_geometry() %>%
+  arrange(totals_by_distance)
+
+kable(odontocete_distances)
+```
+
+
+#Temporal Analysis
+Null Hypothesis: The odontocetes stranding data is stationary
+Alternative Hypothesis: The odontocetes stranding data is not stationary
+
+```{r Odontocete Monthly Time Series, message = FALSE, warning = FALSE, echo = FALSE}
+odo_f_month <- month(first(odontocete_stranding_numbers$Date))
+odo_f_year <- year(first(odontocete_stranding_numbers$Date))
+
+odontocete_ts_monthly <- ts(odontocete_stranding_numbers$Total, 
+                  start = c(odo_f_year, odo_f_month), 
+                  frequency = 12)
+ 
+odontocete_ts_monthly_decomp <- stl(odontocete_ts_monthly, s.window = "periodic")
+plot(odontocete_ts_monthly_decomp)
+
+odontocete_ts_monthly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_monthly)
+
+summary(odontocete_ts_monthly_trend)
+
+```
+Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
+
+
+
+```{r Odontocete Yearly Time Series, message = FALSE, warning = FALSE, echo = FALSE}
+odo_f_year <- year(first(odontocete_stranding_numbers$Date))
+
+odontocete_ts_yearly <- ts(odontocete_stranding_numbers, start = c(1990,1), frequency = 1)
+
+odontocete_ts_yearly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_yearly)
+
+summary(odontocete_ts_yearly_trend)
+```
+Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary. 
+
 
 
 3. **Turtles**:
 
-*Question 1*: Are there years or months where the number of turtle strandings are significantly different?
-
-*Question 2*: Are there trends in turtle strandings based off of this dataset?
 
 
 \newpage
