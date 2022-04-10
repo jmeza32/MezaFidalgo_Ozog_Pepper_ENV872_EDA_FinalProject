@@ -448,9 +448,212 @@ Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and
 
 
 
-3. **Turtles**:
+## 3. Sea Turtles:
+```{r Turtle Data Setup, message = FALSE, warning = FALSE, include= FALSE}
+# read in the strandings data
+Strandings <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+Turtle_Stranding_Data <- Strandings %>%
+  filter(Family == "Turtles") %>%
+  select(Family:longitude)
+Turtle_Stranding_Data$Date <- as.Date(Turtle_Stranding_Data$Date, format = "%Y-%m-%d")
+
+# strandings by YEAR (for statistical analysis)
+Strandings_Totals_Year <- read.csv("../Data/Processed/strandings_totals.csv", stringsAsFactors = TRUE)
+Turtle_Strandings_Year <- Strandings_Totals_Year %>%
+  select(Year, Turtles_Total)
+
+# strandings by MONTH (for statistical analysis)
+Strandings_Totals_Month <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+Turtle_Strandings_Month <- Strandings_Totals_Month %>%
+  select(Month, Turtles_Total)
+
+# turtle strandings summed by date (for time series)
+Turtle_Stranding_by_date <- Turtle_Stranding_Data %>%
+                    group_by(Date) %>%
+                    summarise(Total = n())
+```
+
+**Turtle Data Exploration**
+```{r Turtle Exploratory Analysis, message = FALSE, warning = FALSE, echo = FALSE}
+summary(Turtle_Stranding_Data)
+
+# plot of the turtle strandings by year
+ggplot(Turtle_Stranding_Data) +
+  geom_bar(aes(x = Year, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Sea Turtle Strandings per Year by Species") +
+  scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green", "Kemp's Ridley", "Leatherback", "Loggerhead", "Unidentified Turtle"))
+
+# plot of turtle strandings by month
+ggplot(Turtle_Stranding_Data) +
+  geom_bar(aes(x = Month, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Sea Turtle Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green", "Kemp's Ridley", "Leatherback", "Loggerhead", "Unidentified Turtle")) +
+  scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+```
 
 
+Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995. The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year.
+
+**Turtle Spatial Analysis**
+```{r Turtle Spatial Analysis, message = FALSE, warning = FALSE, echo = FALSE}
+# create spatial frame of turtle data
+Turtle_sf <- Turtle_Stranding_Data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+#mapview(Turtle_sf)
+
+# used UTM Zone 19 (data spans across UTM zone 18 and 19)
+Turtle_sf_utm <- st_transform(Turtle_sf, 32619)
+#mapview(Turtle_sf_utm)
+
+# find average lat and longs
+avgLong_Turtle <- mean(Turtle_Stranding_Data$longitude)
+avgLat_Turtle <- mean(Turtle_Stranding_Data$latitude)
+avg_Turtle_coords <- data.frame(avgLong_Turtle, avgLat_Turtle)
+
+# center point of the turtle strandings 
+avg_Turtle_sf <- avg_Turtle_coords %>%
+  st_as_sf(coords = c("avgLong_Turtle", "avgLat_Turtle"), crs = 4326)
+avg_Turtle_sf_utm <- st_transform(avg_Turtle_sf, 32619)
+#mapview(avg_Turtle_sf_utm)
+
+# find how far each stranding is from the mean stranding location
+distance_matrix <- st_distance(Turtle_sf_utm, avg_Turtle_sf_utm, pairwise=T)
+#Compute the mean of each row (each EPA site)
+mean_distances <-  rowMeans(distance_matrix)
+#Add as a column to the epa sites
+Turtle_sf_utm  <-  Turtle_sf_utm %>% 
+  bind_cols(mean_distance = mean_distances) 
+
+# make a pretty map 
+mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mean Stranding Point")
+```
+
+**Turtle Spatial Table**
+```{r Turtle Spatial Table, message = FALSE, warning = FALSE, include = FALSE}
+# points within 20,000m
+Turtle_20 <- Turtle_sf_utm %>%
+  filter(mean_distance < 20000) %>%
+  mutate(distance_group = "< 20,000")
+
+# points between 20,000m - 40,000m
+Turtle_20_40 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 20000 & mean_distance < 40000) %>%
+  mutate(distance_group = "20,000 - 40,000")
+
+# points between 40,000m - 60,000m
+Turtle_40_60 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 40000 & mean_distance < 60000) %>%
+  mutate(distance_group = "40,000 - 60,000")
+
+# points between 60,000m - 80,000m
+Turtle_60_80 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 60000 & mean_distance < 80000) %>%
+  mutate(distance_group = "60,000 - 80,000")
+
+# points between 80,000m - 100,000m
+Turtle_80_100 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 80000 & mean_distance < 100000) %>%
+  mutate(distance_group = "80,000 - 100,000")
+
+# points between 100,000m - 120,000m
+Turtle_100_120 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 100000 & mean_distance < 120000) %>%
+  mutate(distance_group = "100,000 - 120,000")
+
+# points between 120,000m - 140,000m
+Turtle_120_140 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 120000 & mean_distance < 140000) %>%
+  mutate(distance_group = "120,000 - 140,000")
+
+# points between 140,000m - 160,000m
+Turtle_140_160 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 140000 & mean_distance < 160000) %>%
+  mutate(distance_group = "140,000 - 160,000")
+
+# points greater than 160,000m
+Turtle_160 <- Turtle_sf_utm %>%
+  filter(mean_distance >= 160000) %>%
+  mutate(distance_group = "> 160,000")
+
+# row bind the distance dataframes
+Turtle_sf_utm_final <- rbind(Turtle_20, Turtle_20_40,Turtle_40_60,
+                             Turtle_60_80,Turtle_80_100,Turtle_100_120,
+                             Turtle_120_140,Turtle_140_160,Turtle_160)
+
+Turtle_distances <- Turtle_sf_utm_final %>%
+  group_by(distance_group) %>%
+  summarise(totals_by_distance = n()) %>%
+  st_drop_geometry() %>%
+  arrange(totals_by_distance)
+
+#kable(Turtle_distances)
+```
+Distance (m) | Number of Strandings
+---------------|--------------------
+less than 20,000 | 92
+20,000 - 40,000 | 113
+40,000 - 60,000 | 32
+60,000 - 80,000 | 2
+80,000 - 100,000 | 4
+100,000 - 120,000 | 2
+120,000 - 140,000 | 6
+140,000 - 160,000 | 4
+greater than 160,000 | 1
+
+Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 1). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
+
+
+**Turtle Statistical Analysis**
+
+Null Hypothesis 1: There is no effect of individual year on sea turtle strandings.   
+Alternative Hypothesis 1: There is an effect of individual year on sea turtle strandings. 
+
+Null Hypothesis 2: There is no effect of month on sea turtle strandings.  
+Alternative Hypothesis 2: There is an effect of month on sea turtle strandings. 
+
+```{r Turtle Statistical Analysis,message = FALSE, warning = FALSE, include = FALSE}
+Turtle_Model_Year <- glm(data = Turtle_Strandings_Year, Turtles_Total ~ factor(Year), family = poisson)
+summary(Turtle_Model_Year)
+
+Turtle_Model_Month <- glm(data = Turtle_Strandings_Month, Turtles_Total ~ factor(Month), family = poisson)
+summary(Turtle_Model_Month)
+```
+Yearly Analysis:
+We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statitistically different years. The null deviance of this model is 7.4606e+01, which indicates ??? The residual deviance of this model is -4.8850e-15, which indicates ??? 
+
+Monthly Analysis:
+We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02, which indicates ??? The residual deviance of this model is 3.0332e-10, which indicates ???
+
+
+**Turtle Time Series**
+
+Null hypothesis:  
+Alternative hypothesis:
+
+```{r Turtle Time Series, message = FALSE, warning = FALSE, include = FALSE}
+# time series by year
+Turtle_ts_yearly <- ts(Turtle_Stranding_by_date, start = c(1990,1), frequency = 1)
+
+# time series by month
+f_month_turtle <- month(first(Turtle_Stranding_by_date$Date))
+f_year_turtle <- year(first(Turtle_Stranding_by_date$Date))
+Turtle_ts_monthly <- ts(Turtle_Stranding_by_date$Total, 
+                  start = c(f_year_turtle, f_month_turtle), 
+                  frequency = 12)
+# monthly decomposition 
+Turtle_ts_monthly_decomp <- stl(Turtle_ts_monthly, s.window = "periodic")
+plot(Turtle_ts_monthly_decomp)
+
+# Trends
+Turtle_ts_yearly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_yearly)
+summary(Turtle_ts_yearly_trend)
+
+Turtle_ts_monthly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_monthly)
+summary(Turtle_ts_monthly_trend)
+```
 
 \newpage
 
