@@ -186,7 +186,7 @@ Turtle_distances <- Turtle_sf_utm_final %>%
   st_drop_geometry() %>%
   arrange(totals_by_distance)
 
-#kable(Turtle_distances)
+kable(Turtle_distances)
 ```
 Distance (m) | Number of Strandings
 ---------------|--------------------
@@ -234,10 +234,10 @@ Alternative hypothesis:
 Turtle_ts_yearly <- ts(Turtle_Stranding_by_date, start = c(1990,1), frequency = 1)
 
 # time series by month
-f_month <- month(first(Turtle_Stranding_by_date$Date))
-f_year <- year(first(Turtle_Stranding_by_date$Date))
+f_month_turtle <- month(first(Turtle_Stranding_by_date$Date))
+f_year_turtle <- year(first(Turtle_Stranding_by_date$Date))
 Turtle_ts_monthly <- ts(Turtle_Stranding_by_date$Total, 
-                  start = c(f_year, f_month), 
+                  start = c(f_year_turtle, f_month_turtle), 
                   frequency = 12)
 # monthly decomposition 
 Turtle_ts_monthly_decomp <- stl(Turtle_ts_monthly, s.window = "periodic")
