@@ -2,7 +2,9 @@
 title: "Sea Turtle Stranding Analysis"
 author: "Jessica Ozog"
 date: "4/2/2022"
-output: pdf_document
+output:
+  html_document:
+    df_print: paged
 ---
 
 ```{r setup, include=FALSE}
@@ -184,8 +186,21 @@ Turtle_distances <- Turtle_sf_utm_final %>%
   st_drop_geometry() %>%
   arrange(totals_by_distance)
 
-kable(Turtle_distances)
+#kable(Turtle_distances)
 ```
+Distance (m) | Number of Strandings
+---------------|--------------------
+less than 20,000 | 92
+20,000 - 40,000 | 113
+40,000 - 60,000 | 32
+60,000 - 80,000 | 2
+80,000 - 100,000 | 4
+100,000 - 120,000 | 2
+120,000 - 140,000 | 6
+140,000 - 160,000 | 4
+greater than 160,000 | 1
+
+
 > Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 1). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
 
 
