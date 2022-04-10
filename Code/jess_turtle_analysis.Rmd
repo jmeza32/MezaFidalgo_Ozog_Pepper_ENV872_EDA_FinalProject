@@ -1,5 +1,5 @@
 ---
-title: "Jess"
+title: "Sea Turtle Stranding Analysis"
 author: "Jessica Ozog"
 date: "4/2/2022"
 output: pdf_document
@@ -43,18 +43,23 @@ mytheme <- theme_bw() +
 theme_set(mytheme)
 
 # read in the strandings data
-Strandings <- read.csv("./Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
+Strandings <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 Turtle_Stranding_Data <- Strandings %>%
   filter(Family == "Turtles") %>%
   select(Family:longitude)
 Turtle_Stranding_Data$Date <- as.Date(Turtle_Stranding_Data$Date, format = "%Y-%m-%d")
 
-# read in the total strandings data
-Strandings_Totals <- read.csv("./Data/Processed/strandings_totals.csv", stringsAsFactors = TRUE)
-Turtle_Stranding_Totals <- Strandings_Totals %>%
+# strandings by YEAR (for statistical analysis)
+Strandings_Totals_Year <- read.csv("../Data/Processed/strandings_totals.csv", stringsAsFactors = TRUE)
+Turtle_Strandings_Year <- Strandings_Totals_Year %>%
   select(Year, Turtles_Total)
 
-# turtle strandings summed by date
+# strandings by MONTH (for statistical analysis)
+Strandings_Totals_Month <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+Turtle_Strandings_Month <- Strandings_Totals_Month %>%
+  select(Month, Turtles_Total)
+
+# turtle strandings summed by date (for time series)
 Turtle_Stranding_by_date <- Turtle_Stranding_Data %>%
                     group_by(Date) %>%
                     summarise(Total = n())
@@ -81,6 +86,9 @@ ggplot(Turtle_Stranding_Data) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
+
+> Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995. The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year. 
+
 
 ## Turtle Stranding: Spaital Analysis
 
@@ -178,15 +186,33 @@ Turtle_distances <- Turtle_sf_utm_final %>%
 
 kable(Turtle_distances)
 ```
+> Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 1). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
+
 
 ## Turtle Stranding: Statistical Analysis
 
+> Null Hypothesis 1: There is no effect of individual year on sea turtle strandings. 
+> Alternative Hypothesis 1: There is an effect of individual year on sea turtle strandings. 
+
+> Null Hypothesis 2: There is no effect of month on sea turtle strandings. 
+> Alternative Hypothesis 2: There is an effect of month on sea turtle strandings. 
+
 ```{r turtles statistical analysis}
-Turtle_Model <- lm(data = Turtle_Stranding_Totals, Turtles_Total ~ Year)
-summary(Turtle_Model)
+Turtle_Model_Year <- glm(data = Turtle_Strandings_Year, Turtles_Total ~ factor(Year), family = poisson)
+summary(Turtle_Model_Year)
+
+Turtle_Model_Month <- glm(data = Turtle_Strandings_Month, Turtles_Total ~ factor(Month), family = poisson)
+summary(Turtle_Model_Month)
 ```
+> We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statitistically different years. The null deviance of this model is 7.4606e+01, which indicates ??? The residual deviance of this model is -4.8850e-15, which indicates ??? 
+
+> We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02, which indicates ??? The residual deviance of this model is 3.0332e-10, which indicates ???
+
 
 ## Turtle Stranding: Time Series
+
+Null hypothesis:
+Alternative hypothesis:
 
 ```{r turtle time series}
 # time series by year
