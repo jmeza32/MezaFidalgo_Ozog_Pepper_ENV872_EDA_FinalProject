@@ -107,6 +107,16 @@ There may be possible seasonal trend based on season, where the spring and early
 
 Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995. The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year. 
 
+```{r, message = FALSE}
+odontocete_stranding_plot <-
+ggplot(annual_odontocetes_strandings, aes(x = Year, y = Odontocetes_Total)) +
+  geom_line(color = "red") +
+  ylab("Pinniped Strandings") +
+  geom_smooth(method = lm) +
+  labs(title = "Odontocete Strandings Per Year")
+
+print(odontocete_stranding_plot)
+```
 
 
 ```{r Geospatial Exploration}
