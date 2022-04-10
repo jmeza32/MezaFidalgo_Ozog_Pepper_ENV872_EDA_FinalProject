@@ -82,7 +82,7 @@ odontocete_stranding_numbers <- odontocete_stranding_data %>%
 
 
 #Odontocete Data Exploration
-```{r Pinniped Data Exploration}
+```{r Odontocete Data Exploration}
 summary(odontocete_stranding_data)
 
 #By year
@@ -105,13 +105,25 @@ ggplot(odontocete_stranding_data) +
 There appears to be an increasing trend in the number of odontocete strandings as the years progress.
 There may be possible seasonal trend based on season, where the spring and early summer see a greater number of strandings than the other seasons.
 
+Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995. The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year. 
+
+```{r, message = FALSE}
+odontocete_stranding_plot <-
+ggplot(annual_odontocetes_strandings, aes(x = Year, y = Odontocetes_Total)) +
+  geom_line(color = "red") +
+  ylab("Pinniped Strandings") +
+  geom_smooth(method = lm) +
+  labs(title = "Odontocete Strandings Per Year")
+
+print(odontocete_stranding_plot)
+```
 
 
 ```{r Geospatial Exploration}
 odontocete_sf <- odontocete_stranding_data %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
-mapview(odontocete_sf)
+mapview(odontocete_sf, layer.name = "Odontocete Strandings")
 ```
 
 
@@ -119,26 +131,28 @@ mapview(odontocete_sf)
 #Odontocete Analysis
 ##Statisical Analysis
 
-Null Hypothesis 1: There is no effect of year on the total number of odontocete strandings
-Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings
+Null Hypothesis 1: There is no effect of individual year on the total number of odontocete strandings.
+Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings.
 
-Null Hypothesis 2: There is no effect of month on the total number of odontocete strandings
-Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings
+Null Hypothesis 2: There is no effect of month on the total number of odontocete strandings.
+Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings.
 
-```{r ANOVA Models}
-odontocete_model <- aov(data = annual_odontocetes_strandings, Odontocetes_Total ~ Year)
-odontocete_model
+```{r GLM Models}
 
-summary.aov(odontocete_model)
+odontocete_model <- glm(data = annual_odontocetes_strandings, Odontocetes_Total ~ factor(Year), family = poisson)
+summary(odontocete_model)
 
-odontocete_model2 <- aov(data = monthly_odontocetes_strandings, Odontocetes_Total ~ Month)
-odontocete_model2
-
-summary.aov(odontocete_model2)
+odontocete_model2 <- glm(data = monthly_odontocetes_strandings, Odontocetes_Total ~ factor(Month), family = poisson)
+summary(odontocete_model2)
 ```
 
 We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
 
+
+
+We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statitistically different years. The null deviance of this model is 7.4606e+01, which indicates ??? The residual deviance of this model is -4.8850e-15, which indicates ??? 
+
+We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02, which indicates ??? The residual deviance of this model is 3.0332e-10, which indicates ???
 
 
 #Geospatial Analysis
@@ -232,6 +246,8 @@ odontocete_distances <- odontocete_sf_utm_final %>%
 kable(odontocete_distances)
 ```
 
+
+Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 1). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
 
 #Temporal Analysis
 Null Hypothesis: The odontocetes stranding data is stationary

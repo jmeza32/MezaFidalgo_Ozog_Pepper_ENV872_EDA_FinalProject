@@ -106,6 +106,19 @@ There appears to be an increasing trend in the number of mysticete strandings as
 There also appears to be a seasonal trend based on season, where the months of June and July have a much greater ammount of strandings than the rest of the year. 
 
 
+```{r, message = FALSE}
+mysticete_stranding_plot <-
+ggplot(annual_mysticetes_strandings, aes(x = Year, y = Mysticetes_Total)) +
+  geom_line(color = "red") +
+  ylab("Pinniped Strandings") +
+  geom_smooth(method = lm) +
+  labs(title = "Mysticete Strandings Per Year")
+
+print(mysticete_stranding_plot)
+```
+
+
+
 
 ```{r Geospatial Exploration}
 mysticete_sf <- mysticete_stranding_data %>%
