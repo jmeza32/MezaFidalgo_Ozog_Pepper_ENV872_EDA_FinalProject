@@ -114,7 +114,7 @@ ggplot(Annual_Pinniped_Strandings, aes(x = Year, y = Pinnipeds_Total)) +
 print(Pinniped_Stranding_Plot)
 ```
 
->Data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level, although a more detailed species level analysis is beyond the scope of this project. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter.  Springtime coincides with the pupping seasons for many seal species and could be a factor in this.
+>Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level, although a more detailed species level analysis is beyond the scope of this project. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter.  Springtime coincides with the pupping seasons for many seal species and could be a factor in this.
 
 
 
@@ -125,8 +125,7 @@ Pinniped_sf <- Pinniped_Stranding_Data %>%
 
 mapview(Pinniped_sf)
 ```
-
-
+Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut.
 
 ### Pinniped Stranding Analysis
 
@@ -139,7 +138,7 @@ mapview(Pinniped_sf)
 >Null Hypothesis 2: There is no effect of month on the total number of pinniped strandings
 >Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
 
-```{r ANOVA Models}
+```{r Poisson Models}
 #Developing an model to analysis the significance of year on pinniped strandings
 Annual_Pinniped_Model <- glm(data = Annual_Pinniped_Strandings, Pinnipeds_Total ~ factor(Year), family = poisson)
 

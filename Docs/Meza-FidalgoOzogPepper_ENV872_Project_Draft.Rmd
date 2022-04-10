@@ -219,6 +219,239 @@ Because we decided to divide the data into groups by their families, we conducte
 
 
 1. **Pinnipeds**:
+```{r Pinniped Data Setup, message = FALSE, warning = FALSE, include= FALSE}
+#Wrangling for pinniped only data
+Pinniped_Stranding_Data <- Strandings_Final %>%
+  filter(Family == "Pinnipeds") %>%
+  select(Family:longitude)
+
+Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "%Y-%m-%d")
+
+Pinniped_Stranding_Totals <- Pinniped_Stranding_Data %>%
+                    filter(Family == "Pinnipeds") %>%
+                    group_by(Date) %>%
+                    summarise(Total = n())
+
+
+#Wrangling pinniped strandings by year
+Annual_Pinniped_Strandings <- Annual_Strandings_Totals %>%
+  select(Year, Pinnipeds_Total)
+
+#Wrangling pinniped strandings by month
+Monthly_Pinniped_Strandings <- Monthly_Strandings_Totals %>%
+  select(Month, Pinnipeds_Total)
+
+```
+
+
+#Pinniped Data Exploration
+```{r Pinniped Data Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+summary(Pinniped_Stranding_Data)
+
+#Plot of annual pinniped strandings
+ggplot(Pinniped_Stranding_Data) +
+  geom_bar(aes(x = Year, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Pinniped Strandings per Year by Species") + 
+  scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped"))
+
+#Plot of overall monthly pinniped strandings
+ggplot(Pinniped_Stranding_Data) +
+  geom_bar(aes(x = Month, fill = common_name)) +
+  ylab("Count") +
+  labs(title = "Total Pinniped Strandings per Month by Species") + 
+  scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped")) +
+  scale_x_discrete(name = "Month",
+                   limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+
+#Plot of annual pinniped strandings with trend line
+Pinniped_Stranding_Plot <-
+ggplot(Annual_Pinniped_Strandings, aes(x = Year, y = Pinnipeds_Total)) +
+  geom_line(color = "red") +
+  ylab("Pinniped Strandings") +
+  geom_smooth(method = lm) +
+  labs(title = "Pinniped Strandings Per Year")
+
+print(Pinniped_Stranding_Plot)
+```
+
+Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level, although a more detailed species level analysis is beyond the scope of this project. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter.  Springtime coincides with the pupping seasons for many seal species and could be a factor in this.
+
+
+```{r Pinniped Geospatial Exploration, message = FALSE, warning = FALSE, echo = FALSE}
+#Spatial frame to visualize the stranding data spatially.
+Pinniped_sf <- Pinniped_Stranding_Data %>%
+  st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
+
+mapview(Pinniped_sf)
+```
+
+Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut.
+
+
+
+#Pinniped Stranding Analysis
+
+#Pinniped Statisical Analysis
+
+Null Hypothesis 1: There is no effect of year on the total number of pinniped strandings
+Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
+
+Null Hypothesis 2: There is no effect of month on the total number of pinniped strandings
+Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
+
+```{r Pinniped Poisson Models, message = FALSE, warning = FALSE, echo = FALSE}
+#Developing an model to analysis the significance of year on pinniped strandings
+Annual_Pinniped_Model <- glm(data = Annual_Pinniped_Strandings, Pinnipeds_Total ~ factor(Year), family = poisson)
+
+summary(Annual_Pinniped_Model)
+
+
+#Developing an model to analysis the significance of month on pinniped strandings
+Monthly_Pinniped_Model <- glm(data = Monthly_Pinniped_Strandings, Pinnipeds_Total ~ factor(Month), family = poisson)
+
+summary(Monthly_Pinniped_Model)
+```
+
+We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings.  18 of the 21 documented years were statistically significant with p-values ranging from 9.07e-09(2001) to 0.03(1999).  Only the first three years of data, 1991-1993 had p-values above 0.05.  The null deviance of yearly model was 1.36e+02 on 21 degrees of freedom, and residual deviance of 1.31e-14
+
+We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15(March) to 0.02(June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
+
+This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinnped strandings.
+
+
+#Pinniped Geospatial Analysis
+```{r}
+#Converting the data points to UTM for further analysis. The study are straddles UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
+
+Pinniped_sf_utm <- st_transform(Pinniped_sf,32619)
+
+Pinniped_sf_utm$geometry
+
+#Determining "mean" stranding point for distance comparisons
+long_mean <- mean(Pinniped_Stranding_Data$longitude)
+lat_mean <- mean(Pinniped_Stranding_Data$latitude)
+
+Pinniped_Stranding_Mean_Point <- data.frame(long_mean, lat_mean)
+
+Pinniped_Mean_sf <- Pinniped_Stranding_Mean_Point %>%
+  st_as_sf(coords = c("long_mean", "lat_mean"), crs = 4326)
+
+Pinniped_Mean_UTM <- st_transform(Pinniped_Mean_sf,32619)
+
+#Creating a distance matrix for further analysis
+Pinniped_Distance_Matrix <- st_distance(Pinniped_sf_utm, Pinniped_sf_utm, pairwise = T)
+
+mean_distance <-  rowMeans(Pinniped_Distance_Matrix)
+
+Pinniped_sf_utm  <-  Pinniped_sf_utm %>% 
+  bind_cols(mean_distance = mean_distance)
+```
+
+
+```{r}
+#Visualizing stranding point distance from "mean"
+mapview(Pinniped_sf_utm, 
+        zcol = "mean_distance",
+        layer.name = "Distance (m) from Mean Stranding Point")
+```
+
+
+```{r Distance Table}
+#Developing a mean distance table
+
+# points within 40,000m
+Pinniped_40 <- Pinniped_sf_utm %>%
+  filter(mean_distance < 40000) %>%
+  mutate(distance_group = "< 40,000")
+
+# points between 40,000m - 60,000m
+Pinniped_40_60 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 40000 & mean_distance < 60000) %>%
+  mutate(distance_group = "40,000 - 60,000")
+
+# points between 60,000m - 80,000m
+Pinniped_60_80 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 60000 & mean_distance < 80000) %>%
+  mutate(distance_group = "60,000 - 80,000")
+
+# points between 80,000m - 100,000m
+Pinniped_80_100 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 80000 & mean_distance < 100000) %>%
+  mutate(distance_group = "80,000 - 100,000")
+
+# points between 100,000m - 120,000m
+Pinniped_100_120 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 100000 & mean_distance < 120000) %>%
+  mutate(distance_group = "100,000 - 120,000")
+
+# points between 120,000m - 140,000m
+Pinniped_120_140 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 120000 & mean_distance < 140000) %>%
+  mutate(distance_group = "120,000 - 140,000")
+
+# points between 140,000m - 160,000m
+Pinniped_140_160 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 140000 & mean_distance < 160000) %>%
+  mutate(distance_group = "140,000 - 160,000")
+
+# points greater than 160,000m
+Pinniped_160 <- Pinniped_sf_utm %>%
+  filter(mean_distance >= 160000) %>%
+  mutate(distance_group = "> 160,000")
+
+# row bind the distance dataframes
+Pinniped_sf_utm_final <- rbind(Pinniped_40, Pinniped_40_60, Pinniped_60_80, Pinniped_80_100, Pinniped_100_120, Pinniped_120_140, Pinniped_140_160, Pinniped_160)
+
+Pinniped_distances <- Pinniped_sf_utm_final %>%
+  group_by(distance_group) %>%
+  summarise(totals_by_distance = n()) %>%
+  st_drop_geometry() %>%
+  arrange(totals_by_distance)
+
+kable(Pinniped_distances)
+```
+
+By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean.  By determining that 425 out of 679, or 62.5 percent of, pinniped strandings occur within 40km of the mean stranding location, what makes this area a hotspot can be studied and hopefully also determined.  This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible.  Since only 54, or 8 percent of, pinniped strandings occur further than 60km from the stranding mean, resources for study and rescue can be allocated away from those areas.
+
+
+#Pinniped Temporal Analysis
+
+Null Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is stationary
+Alternative Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
+
+```{r Monthly Time Series}
+#Developing a monthly time series to determine if there is a monthly/seasonal trend.
+f_month <- month(first(Pinniped_Stranding_Totals$Date))
+f_year <- year(first(Pinniped_Stranding_Totals$Date))
+
+
+Pinniped_ts_monthly <- ts(Pinniped_Stranding_Totals$Total, 
+                  start = c(f_year, f_month), 
+                  frequency = 12)
+ 
+Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
+plot(Pinniped_ts_monthly_decomp)
+
+Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
+
+summary(Pinniped_ts_monthly_trend)
+```
+
+We fail to reject the H0 that monthly pinniped strandings are stationary, with a p-value of 0.48, but there could be some seasonality based on the decomposition
+
+
+```{r Yearly Time Series}
+#Developing a yearly time series to determine if there is a trend
+Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+
+Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
+
+summary(Pinniped_ts_yearly_trend)
+```
+
+We reject the H0 that yearly pinniped strandings are stationary with a p-value or 2.22e-16.  This analysis fits with the trend line plotting in the exploration of the pinniped data.
+
 
 
 2. **Whales**:
@@ -256,7 +489,6 @@ odontocete_stranding_numbers <- odontocete_stranding_data %>%
                     group_by(Date) %>%
                     summarise(Total = n())
 ```
-
 
 
 #Odontocete Data Exploration
