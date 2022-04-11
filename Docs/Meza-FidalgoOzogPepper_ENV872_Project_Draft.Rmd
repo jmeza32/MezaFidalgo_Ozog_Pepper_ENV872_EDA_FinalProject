@@ -217,6 +217,8 @@ Because we decided to divide the data into groups by their families, we conducte
 * Are there years or months where the number of strandings for each family are significantly different?
 * Are there trends in the family strandings based off this dataset?
 
+[continue adding more depth to give background to the analysis here]
+
 
 1. **Pinnipeds**:
 ```{r Pinniped Data Setup, message = FALSE, warning = FALSE, include= FALSE}
@@ -679,8 +681,16 @@ summary(odontocete_ts_yearly_trend)
 Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary. 
 
 
+-*Mysticetes*
 
-## 3. Sea Turtles:
+
+
+
+
+
+
+
+3. **Sea Turtles**:
 ```{r Turtle Data Setup, message = FALSE, warning = FALSE, include= FALSE}
 # read in the strandings data
 Strandings <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
