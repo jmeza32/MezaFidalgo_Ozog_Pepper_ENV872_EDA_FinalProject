@@ -139,13 +139,12 @@ Null Hypothesis 2: There is no effect of month on the total number of mysticete 
 Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings
 
 ```{r ANOVA Models}
-mysticete_model <- aov(data = annual_mysticetes_strandings, Mysticetes_Total ~ Year)
-mysticete_model
-summary.aov(mysticete_model)
+mysticete_model <- glm(data = annual_mysticetes_strandings, Mysticetes_Total ~ factor(Year), family = poisson)
+summary(mysticete_model)
 
-mysticete_model2 <- aov(data = monthly_mysticetes_strandings, Mysticetes_Total ~ Month)
-mysticete_model2
-summary.aov(mysticete_model2)
+mysticete_model2 <- glm(data = monthly_mysticetes_strandings, Mysticetes_Total ~ factor(Month), family = poisson)
+summary(mysticete_model2)
+
 ```
 
 We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
