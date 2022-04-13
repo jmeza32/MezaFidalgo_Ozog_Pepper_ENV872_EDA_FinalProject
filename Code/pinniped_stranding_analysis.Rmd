@@ -59,7 +59,7 @@ Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "
 
 Pinniped_Stranding_Totals <- Pinniped_Stranding_Data %>%
                     filter(Family == "Pinnipeds") %>%
-                    group_by(Date) %>%
+                    group_by(Month, Year) %>%
                     summarise(Total = n())
 
 
@@ -246,8 +246,20 @@ Pinniped_distances <- Pinniped_sf_utm_final %>%
   st_drop_geometry() %>%
   arrange(totals_by_distance)
 
-kable(Pinniped_distances)
+#kable(Pinniped_distances)
+#Table Reorganized manually based on kable results
 ```
+Distance (m) | Number of Strandings
+---------------|--------------------
+20,000 - 40,000 | 425
+40,000 - 60,000 | 200
+60,000 - 80,000 | 15
+80,000 - 100,000 | 11
+100,000 - 120,000 | 7
+120,000 - 140,000 | 11
+140,000 - 160,000 | 7
+greater than 160,000 | 3
+
 
 > By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean.  By determining that 425 out of 679, or 62.5 percent of, pinniped strandings occur within 40km of the mean stranding location, what makes this area a hotspot can be studied and hopefully also determined.  This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible.  Since only 54, or 8 percent of, pinniped strandings occur further than 60km from the stranding mean, resources for study and rescue can be allocated away from those areas.
 
@@ -259,12 +271,11 @@ kable(Pinniped_distances)
 
 ```{r Monthly Time Series}
 #Developing a monthly time series to determine if there is a monthly/seasonal trend.
-f_month <- month(first(Pinniped_Stranding_Totals$Date))
-f_year <- year(first(Pinniped_Stranding_Totals$Date))
+f_month <- month(first(Pinniped_Stranding_Totals$Month))
 
 
 Pinniped_ts_monthly <- ts(Pinniped_Stranding_Totals$Total, 
-                  start = c(f_year, f_month), 
+                  start = c(1990, f_month), 
                   frequency = 12)
  
 Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
@@ -275,18 +286,22 @@ Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 summary(Pinniped_ts_monthly_trend)
 ```
 
-> We fail to reject the H0 that monthly pinniped strandings are stationary, with a p-value of 0.48, but there could be some seasonality based on the decomposition
+> We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.42e-7. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis
+
+
+
+
 
 ```{r Yearly Time Series}
 #Developing a yearly time series to determine if there is a trend
-Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990), frequency = 1)
 
-Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
+Pinniped_ts_yearly_trend <- MannKendall(Pinniped_ts_yearly)
 
 summary(Pinniped_ts_yearly_trend)
 ```
 
-> We reject the H0 that yearly pinniped strandings are stationary with a p-value or 2.22e-16.  This analysis fits with the trend line plotting in the exploration of the pinniped data.
+> We fail reject the H0 that yearly pinniped strandings are stationary with a p-value of 0.72.
 
 
 
