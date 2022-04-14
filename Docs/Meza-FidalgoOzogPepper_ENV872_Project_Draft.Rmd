@@ -918,6 +918,9 @@ Pinniped Summary:
 While there were hints of a possible increasing trend in yearly pinniped strandings, a time series analysis found this to not be the case.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  There was seasonality in pinniped strandings, along with all but one of the months being statistically significant, which could be attributed to pupping seasons.  62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
 
 
+Turtle Findings Summary:
+
+80% of sea turtles strandings all occurred within 40km of the mean stranding location. This can indicate that this area could be a hot spot for sea turtle strandings, whether it be due to high abundance of sea turtles in the area or due to oceanic currents. 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which are the May - September. This monthly breakdown corresponds with the timing of the sea turtle nesting season and when there is likely to be a higher abundance of them in the area. However, time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. 
 
 \newpage
 
