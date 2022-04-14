@@ -231,7 +231,7 @@ Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "
 
 Pinniped_Stranding_Totals <- Pinniped_Stranding_Data %>%
                     filter(Family == "Pinnipeds") %>%
-                    group_by(Date) %>%
+                    group_by(Month, Year) %>%
                     summarise(Total = n())
 
 
@@ -424,12 +424,11 @@ Alternative Hypothesis: The yearly and/or monthly/seasonal pinniped stranding da
 
 ```{r Monthly Time Series}
 #Developing a monthly time series to determine if there is a monthly/seasonal trend.
-f_month <- month(first(Pinniped_Stranding_Totals$Date))
-f_year <- year(first(Pinniped_Stranding_Totals$Date))
+f_month <- month(first(Pinniped_Stranding_Totals$Month))
 
 
 Pinniped_ts_monthly <- ts(Pinniped_Stranding_Totals$Total, 
-                  start = c(f_year, f_month), 
+                  start = c(1990, f_month), 
                   frequency = 12)
  
 Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
@@ -440,20 +439,19 @@ Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 summary(Pinniped_ts_monthly_trend)
 ```
 
-We fail to reject the H0 that monthly pinniped strandings are stationary, with a p-value of 0.48, but there could be some seasonality based on the decomposition
+We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.42e-7. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis.
 
 
 ```{r Yearly Time Series}
 #Developing a yearly time series to determine if there is a trend
-Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990,1), frequency = 1)
+Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990), frequency = 1)
 
-Pinniped_ts_yearly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_yearly)
+Pinniped_ts_yearly_trend <- MannKendall(Pinniped_ts_yearly)
 
 summary(Pinniped_ts_yearly_trend)
 ```
 
-We reject the H0 that yearly pinniped strandings are stationary with a p-value or 2.22e-16.  This analysis fits with the trend line plotting in the exploration of the pinniped data.
-
+We fail reject the H0 that yearly pinniped strandings are stationary with a p-value of 0.72.
 
 
 2. **Whales**:
