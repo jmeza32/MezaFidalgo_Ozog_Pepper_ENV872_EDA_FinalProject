@@ -61,10 +61,19 @@ Strandings_Totals_Month <- read.csv("../Data/Processed/monthly_strandings_totals
 Turtle_Strandings_Month <- Strandings_Totals_Month %>%
   select(Month, Turtles_Total)
 
-# turtle strandings summed by date (for time series)
+# turtle strandings data for time series
 Turtle_Stranding_by_date <- Turtle_Stranding_Data %>%
-                    group_by(Month, Year) %>%
-                    summarise(Total = n())
+                    group_by(Month,Year) %>%
+                    summarise(Total = n(), .groups='drop') %>%
+                    mutate(Date = my(paste0(Month,"-",Year))) %>%
+                    select(Date, Total)
+
+Turtle_Date_Range <- as.data.frame(seq.Date(from = as.Date("1990-01-01"), to = as.Date("2011-12-01"), by = "months"))
+names(Turtle_Date_Range)[1] <- "Date"
+
+Turtle_strandings_date_final <- left_join(Turtle_Date_Range,Turtle_Stranding_by_date, by = "Date")
+
+Turtle_strandings_date_final[is.na(Turtle_strandings_date_final)] = 0
 ```
 
 ## Turtle Stranding: Exploratory Analysis
@@ -238,31 +247,32 @@ summary(Turtle_Model_Month)
 >Alternative Hypothesis: The yearly and/or monthly/seasonal turtle stranding data is not stationary
 
 ```{r turtle yearly time series}
-Turtle_ts_yearly <- ts(Turtle_Stranding_by_date, start = c(1990,1), frequency = 1)
+Turtle_ts_yearly <- ts(Turtle_strandings_date_final, start = 1990, frequency = 1)
 
 Turtle_ts_yearly_trend <- MannKendall(Turtle_ts_yearly)
 
 summary(Turtle_ts_yearly_trend)
 ```
-> We reject the null hypothesis that yearly turtle strandings are stationary with a p-value = 0.048.
+> We reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
 
 ``` {r turtle monthly time series}
-f_month_turtle <- month(first(Turtle_Stranding_by_date$Month))
+f_month_turtle <- month(first(Turtle_strandings_date_final$Date))
+f_year_turtle <- year(first(Turtle_strandings_date_final$Date)) 
 
-Turtle_ts_monthly <- ts(Turtle_Stranding_by_date$Total, 
-                  start = c(1990, f_month_turtle), 
+Turtle_ts_monthly <- ts(Turtle_strandings_date_final$Total, 
+                  start = c(f_year_turtle, f_month_turtle), 
                   frequency = 12)
 
-# monthly decomposition 
 Turtle_ts_monthly_decomp <- stl(Turtle_ts_monthly, s.window = "periodic")
 plot(Turtle_ts_monthly_decomp)
 
 Turtle_ts_monthly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_monthly)
+
 summary(Turtle_ts_monthly_trend)
 ```
-> We fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.107.
+> We fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
 
 
 Turtle Findings Summary:
 
-80% of sea turtles strandings all occurred within 40km of the mean stranding location. This can indicate that this area could be a hot spot for sea turtle strandings, whether it be due to high abundance of sea turtles in the area or due to oceanic currents. 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which are the May - September. This monthly breakdown corresponds with the timing of the sea turtle nesting season and when there is likley to be a higher abundance of them in the area. However, time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. 
+80% of sea turtles strandings all occurred within 40km of the mean stranding location. This can indicate that this area could be a hot spot for sea turtle strandings, whether it be due to high abundance of sea turtles in the area or due to oceanic currents. 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which are the May - September. This monthly breakdown corresponds with the timing of the sea turtle nesting season and when there is likely to be a higher abundance of them in the area. However, time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. 
