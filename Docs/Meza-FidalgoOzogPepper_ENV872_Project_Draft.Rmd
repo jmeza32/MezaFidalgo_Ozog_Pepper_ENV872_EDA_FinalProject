@@ -223,23 +223,41 @@ Because we decided to divide the data into groups by their families, we conducte
 1. **Pinnipeds**:
 ```{r Pinniped Data Setup, message = FALSE, warning = FALSE, include= FALSE}
 #Wrangling for pinniped only data
-Pinniped_Stranding_Data <- Strandings_Final %>%
+Pinniped_Stranding_Data <- Stranding_Data %>%
   filter(Family == "Pinnipeds") %>%
   select(Family:longitude)
 
 Pinniped_Stranding_Data$Date <- as.Date(Pinniped_Stranding_Data$Date, format = "%Y-%m-%d")
 
+
+#Wrangling for time series analysis
 Pinniped_Stranding_Totals <- Pinniped_Stranding_Data %>%
                     filter(Family == "Pinnipeds") %>%
                     group_by(Month, Year) %>%
-                    summarise(Total = n())
+                    summarise(Total = n(), .groups='drop') %>%
+                    mutate(Date = my(paste0(Month,"-",Year))) %>%
+                    select(Date, Total)
+
+Date_Range <- as.data.frame(seq.Date(from = as.Date("1990-01-01"), to = as.Date("2011-12-01"), by = "months"))
+names(Date_Range)[1] <- "Date"
+
+Pinniped_Stranding_Totals_Final <- left_join(Date_Range, Pinniped_Stranding_Totals, by = "Date" )
+
+Pinniped_Stranding_Totals_Final[is.na(Pinniped_Stranding_Totals_Final)] = 0
 
 
-#Wrangling pinniped strandings by year
+
+#Reading in and wrangling strandings by year for statistical analysis
+Annual_Strandings_Totals <- read.csv("../Data/Processed/annual_strandings_totals.csv", stringsAsFactors = TRUE)
+
 Annual_Pinniped_Strandings <- Annual_Strandings_Totals %>%
   select(Year, Pinnipeds_Total)
 
-#Wrangling pinniped strandings by month
+
+
+#Reading in and wrangling strandings by month for statistical analysis
+Monthly_Strandings_Totals <- read.csv("../Data/Processed/monthly_strandings_totals.csv", stringsAsFactors = TRUE)
+
 Monthly_Pinniped_Strandings <- Monthly_Strandings_Totals %>%
   select(Month, Pinnipeds_Total)
 
@@ -439,7 +457,7 @@ Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 summary(Pinniped_ts_monthly_trend)
 ```
 
-We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.42e-7. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis.
+We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.41e-07. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis.
 
 
 ```{r Yearly Time Series}
@@ -451,7 +469,7 @@ Pinniped_ts_yearly_trend <- MannKendall(Pinniped_ts_yearly)
 summary(Pinniped_ts_yearly_trend)
 ```
 
-We fail reject the H0 that yearly pinniped strandings are stationary with a p-value of 0.72.
+We reject the H0 that yearly pinniped strandings are stationary with a p-value of 2.22e-16. 
 
 
 2. **Whales**:
@@ -925,9 +943,10 @@ summary(Turtle_ts_monthly_trend)
 
 Pinniped Summary:
 
-Both graphing and a time series analysis indicate that there is trend in the yearly totals of pinniped strandings and this trend is increasing.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  The monthly time series indicated that there was no monthly trend, however the decomposition plot did indicate seasonality, which could be attributed to pupping seasons. 11 of the 12 months were statistically significant for strandings.  Realizing there is an overall trend is the first step in studying what is causing this trend and to determine if there are ways to stop the trend, or if not, how best to manage it.
+Both graphing and a time series analysis indicate that there is trend in the yearly totals of pinniped strandings and this trend is increasing.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  The monthly time series indicated that there was seasonality, which could be attributed to pupping seasons. 11 of the 12 months were statistically significant for strandings.  Realizing there are trends is the first step in studying what is causing these trends and to determine if there are ways to stop or manage them.
 
-62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
+62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures. Further study could also be conducted at the species level to determine what if any differences occur.
+
 
 
 Turtle Findings Summary:
