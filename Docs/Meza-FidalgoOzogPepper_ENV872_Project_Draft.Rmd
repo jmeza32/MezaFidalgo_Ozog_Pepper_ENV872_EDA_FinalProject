@@ -915,7 +915,9 @@ summary(Turtle_ts_monthly_trend)
 
 Pinniped Summary:
 
-While there were hints of a possible increasing trend in yearly pinniped strandings, a time series analysis found this to not be the case.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  There was seasonality in pinniped strandings, along with all but one of the months being statistically significant, which could be attributed to pupping seasons.  62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
+Both graphing and a time series analysis indicate that there is trend in the yearly totals of pinniped strandings and this trend is increasing.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  The monthly time series indicated that there was no monthly trend, however the decomposition plot did indicate seasonality, which could be attributed to pupping seasons. 11 of the 12 months were statistically significant for strandings.  Realizing there is an overall trend is the first step in studying what is causing this trend and to determine if there are ways to stop the trend, or if not, how best to manage it.
+
+62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
 
 
 Turtle Findings Summary:
