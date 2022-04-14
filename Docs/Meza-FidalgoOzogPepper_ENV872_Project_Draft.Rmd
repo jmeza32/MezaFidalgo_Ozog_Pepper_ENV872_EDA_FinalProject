@@ -709,7 +709,7 @@ Turtle_Strandings_Month <- Strandings_Totals_Month %>%
 
 # turtle strandings summed by date (for time series)
 Turtle_Stranding_by_date <- Turtle_Stranding_Data %>%
-                    group_by(Date) %>%
+                    group_by(Month, Year) %>%
                     summarise(Total = n())
 ```
 
@@ -732,6 +732,13 @@ ggplot(Turtle_Stranding_Data) +
   scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green", "Kemp's Ridley", "Leatherback", "Loggerhead", "Unidentified Turtle")) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
+
+#Plot of annual turtle strandings with trend line
+ggplot(Strandings_Totals_Year, aes(x = Year, y = Turtles_Total)) +
+  geom_line(color = "red") +
+  ylab("Turtle Strandings") +
+  geom_smooth(method = lm) +
+  labs(title = "Turtle Strandings Per Year")
 ```
 
 
@@ -870,30 +877,34 @@ We reject the null hypothesis that month has no effect on sea turtle strandings.
 
 **Turtle Time Series**
 
-Null hypothesis:  
-Alternative hypothesis:
+Null Hypothesis: The yearly and/or monthly/seasonal turtle stranding data is stationary.
+Alternative Hypothesis: The yearly and/or monthly/seasonal turtle stranding data is not stationary
 
-```{r Turtle Time Series, message = FALSE, warning = FALSE, include = FALSE}
-# time series by year
+```{r turtle yearly time series, message = FALSE, warning = FALSE, include = FALSE}
 Turtle_ts_yearly <- ts(Turtle_Stranding_by_date, start = c(1990,1), frequency = 1)
 
-# time series by month
-f_month_turtle <- month(first(Turtle_Stranding_by_date$Date))
-f_year_turtle <- year(first(Turtle_Stranding_by_date$Date))
+Turtle_ts_yearly_trend <- MannKendall(Turtle_ts_yearly)
+
+summary(Turtle_ts_yearly_trend)
+```
+> We reject the null hypothesis that yearly turtle strandings are stationary with a p-value = 0.048.
+
+``` {r turtle monthly time series, message = FALSE, warning = FALSE, include = FALSE}
+f_month_turtle <- month(first(Turtle_Stranding_by_date$Month))
+
 Turtle_ts_monthly <- ts(Turtle_Stranding_by_date$Total, 
-                  start = c(f_year_turtle, f_month_turtle), 
+                  start = c(1990, f_month_turtle), 
                   frequency = 12)
+
 # monthly decomposition 
 Turtle_ts_monthly_decomp <- stl(Turtle_ts_monthly, s.window = "periodic")
 plot(Turtle_ts_monthly_decomp)
 
-# Trends
-Turtle_ts_yearly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_yearly)
-summary(Turtle_ts_yearly_trend)
-
 Turtle_ts_monthly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_monthly)
 summary(Turtle_ts_monthly_trend)
 ```
+> We fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.107.
+
 
 \newpage
 
