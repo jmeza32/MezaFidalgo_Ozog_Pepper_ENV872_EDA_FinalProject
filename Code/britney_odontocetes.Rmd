@@ -1,5 +1,5 @@
 ---
-title: "Marine Stranding Analysis -- Britney's File #1 :)"
+title: "Marine Stranding Analysis -- Britney's File #1 :) -- Odontocetes"
 author: "Britney Pepper"
 date: "4/2/2022"
 output: html_document
@@ -71,12 +71,12 @@ monthly_odontocetes_strandings <- monthly_strandings_totals %>%
   select(Month, Odontocetes_Total)
 
 
-
-#Odontocete Stranding Numbers
+#Odonotcete stranding numbers
 odontocete_stranding_numbers <- odontocete_stranding_data %>%
                     filter(Family == "Odontocetes") %>%
-                    group_by(Date) %>%
+                    group_by(Month, Year) %>%
                     summarise(Total = n())
+
 ```
 
 
@@ -147,6 +147,10 @@ summary(odontocete_model2)
 ```
 
 We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
+
+
+just state null and residual deviances.
+
 
 
 
@@ -251,19 +255,31 @@ odontocete_distances <- odontocete_sf_utm_final %>%
 kable(odontocete_distances)
 ```
 
+Distance (m) | Number of Odontocete Strandings
+---------------|--------------------
+less than 40,000 | 125
+40,000 - 60,000 | 20
+60,000 - 80,000 | 1
+80,000 - 100,000 | 0
+100,000 - 120,000 | 3
+120,000 - 140,000 | 2
+140,000 - 160,000 | 1
+160,000 - 180,000 | 2
+grater than 180,000 | 1
+
 
 Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 1). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
 
+
 #Temporal Analysis
-Null Hypothesis: The odontocetes stranding data is stationary
-Alternative Hypothesis: The odontocetes stranding data is not stationary
+Null Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is stationary
+Alternative Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
 
 ```{r Monthly Time Series}
-odo_f_month <- month(first(odontocete_stranding_numbers$Date))
-odo_f_year <- year(first(odontocete_stranding_numbers$Date))
+odo_f_month <- month(first(odontocete_stranding_numbers$Month))
 
 odontocete_ts_monthly <- ts(odontocete_stranding_numbers$Total, 
-                  start = c(odo_f_year, odo_f_month), 
+                  start = c(1990, odo_f_month), 
                   frequency = 12)
  
 odontocete_ts_monthly_decomp <- stl(odontocete_ts_monthly, s.window = "periodic")
@@ -276,18 +292,19 @@ summary(odontocete_ts_monthly_trend)
 ```
 Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
 
+> We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.42e-7. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis.
+
+
 
 
 ```{r Yearly Time Series}
-odo_f_year <- year(first(odontocete_stranding_numbers$Date))
+odontocete_ts_yearly <- ts(odontocete_stranding_numbers, start = c(1990), frequency = 1)
 
-odontocete_ts_yearly <- ts(odontocete_stranding_numbers, start = c(1990,1), frequency = 1)
-
-odontocete_ts_yearly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_yearly)
+odontocete_ts_yearly_trend <- MannKendall(odontocete_ts_yearly)
 
 summary(odontocete_ts_yearly_trend)
 ```
 Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary. 
 
 
-
+> We fail reject the H0 that yearly pinniped strandings are stationary with a p-value of 0.72.

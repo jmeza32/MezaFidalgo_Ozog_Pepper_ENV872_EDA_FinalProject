@@ -1,5 +1,5 @@
 ---
-title: "Marine Stranding Analysis -- Britney's File #2 :)"
+title: "Marine Stranding Analysis -- Britney's File #2 :) -- Mysticetes"
 author: "Britney Pepper"
 date: "4/2/2022"
 output: html_document
