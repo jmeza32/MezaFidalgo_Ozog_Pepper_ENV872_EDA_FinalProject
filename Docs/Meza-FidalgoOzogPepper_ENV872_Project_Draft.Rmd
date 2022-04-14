@@ -442,11 +442,13 @@ Alternative Hypothesis: The yearly and/or monthly/seasonal pinniped stranding da
 
 ```{r Monthly Time Series}
 #Developing a monthly time series to determine if there is a monthly/seasonal trend.
-f_month <- month(first(Pinniped_Stranding_Totals$Month))
+f_year <- year(first(Pinniped_Stranding_Totals_Final$Date)) 
+f_month <- month(first(Pinniped_Stranding_Totals_Final$Date)) 
 
 
-Pinniped_ts_monthly <- ts(Pinniped_Stranding_Totals$Total, 
-                  start = c(1990, f_month), 
+
+Pinniped_ts_monthly <- ts(Pinniped_Stranding_Totals_Final$Total, 
+                  start = c(f_year, f_month), 
                   frequency = 12)
  
 Pinniped_ts_monthly_decomp <- stl(Pinniped_ts_monthly, s.window = "periodic")
@@ -457,19 +459,20 @@ Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 summary(Pinniped_ts_monthly_trend)
 ```
 
-We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.41e-07. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis.
+We  reject the H0 that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis.
 
 
 ```{r Yearly Time Series}
 #Developing a yearly time series to determine if there is a trend
-Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals, start = c(1990), frequency = 1)
+Pinniped_ts_yearly <- ts(Pinniped_Stranding_Totals_Final, start = c(1990), frequency = 1)
 
 Pinniped_ts_yearly_trend <- MannKendall(Pinniped_ts_yearly)
 
 summary(Pinniped_ts_yearly_trend)
 ```
 
-We reject the H0 that yearly pinniped strandings are stationary with a p-value of 2.22e-16. 
+We reject the H0 that yearly pinniped strandings are stationary with a p-value of 1.77e-14. 
+
 
 
 2. **Whales**:
@@ -943,9 +946,10 @@ summary(Turtle_ts_monthly_trend)
 
 Pinniped Summary:
 
-Both graphing and a time series analysis indicate that there is trend in the yearly totals of pinniped strandings and this trend is increasing.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  The monthly time series indicated that there was seasonality, which could be attributed to pupping seasons. 11 of the 12 months were statistically significant for strandings.  Realizing there are trends is the first step in studying what is causing these trends and to determine if there are ways to stop or manage them.
+Both graphing and a time series analysis indicate that there is trend in the yearly totals of pinniped strandings and this trend is increasing.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  The monthly time series indicated that there was a slight upward monthly trend along with seasonality, which could be attributed to pupping seasons. 11 of the 12 months were statistically significant for strandings.  Realizing there are trends is the first step in studying what is causing these trends and to determine if there are ways to stop or manage them.
 
-62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures. Further study could also be conducted at the species level to determine what if any differences occur.
+62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
+
 
 
 
