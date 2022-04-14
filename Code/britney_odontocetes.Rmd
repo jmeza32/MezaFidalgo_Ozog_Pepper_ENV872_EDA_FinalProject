@@ -229,13 +229,18 @@ odontocete_140_160 <- odontocete_sf_utm %>%
   filter(odo_mean_distance >= 140000 & odo_mean_distance < 160000) %>%
   mutate(distance_group = "140,000 - 160,000")
 
-# points greater than 160,000m
-odontocete_160 <- odontocete_sf_utm %>%
-  filter(odo_mean_distance >= 160000) %>%
-  mutate(distance_group = "> 160,000")
+# points between than 160,000m - 180,000m
+odontocete_160_180 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 160000 & odo_mean_distance < 180000) %>%
+  mutate(distance_group = "160,000 - 180,000")
+
+# points greater than 180,000m
+odontocete_180 <- odontocete_sf_utm %>%
+  filter(odo_mean_distance >= 180000) %>%
+  mutate(distance_group = "> 180,000")
 
 # row bind the distance dataframes
-odontocete_sf_utm_final <- rbind(odontocete_40, odontocete_40_60, odontocete_60_80, odontocete_80_100, odontocete_100_120, odontocete_120_140, odontocete_140_160, odontocete_160)
+odontocete_sf_utm_final <- rbind(odontocete_40, odontocete_40_60, odontocete_60_80, odontocete_80_100, odontocete_100_120, odontocete_120_140, odontocete_140_160, odontocete_160_180, odontocete_180)
 
 odontocete_distances <- odontocete_sf_utm_final %>%
   group_by(distance_group) %>%
