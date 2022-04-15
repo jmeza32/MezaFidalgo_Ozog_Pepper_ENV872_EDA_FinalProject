@@ -84,7 +84,7 @@ names(Date_Range)[1] <- "Date"
 
 odontocete_stranding_numbers_final <- left_join(Date_Range, odontocete_stranding_numbers, by = "Date" )
 
-odontocete_stranding_numbers_final[is.na(dontocete_stranding_numbers_final)] = 0
+odontocete_stranding_numbers_final[is.na(odontocete_stranding_numbers_final)] = 0
 
 ```
 
@@ -111,10 +111,9 @@ ggplot(odontocete_stranding_data) +
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
-There appears to be an increasing trend in the number of odontocete strandings as the years progress.
-There may be possible seasonal trend based on season, where the spring and early summer see a greater number of strandings than the other seasons.
+There appears to be an increasing trend in the total number of odontocete strandings as the years progress. The odontocete strandings have the lowest amount in 1993 and the highest in 2011, where the count gradually increases over the years. The different species that are stranded throughout the years do not appear to have a noticeable trend. When looking at the strandings per month, the months with the most strandings are during March, May, and July. There may be possible seasonal trends, where the spring and early summer see a greater number of strandings than the other months due to calving season.
 
-Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995. The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year. 
+
 
 ```{r, message = FALSE}
 odontocete_stranding_plot <-
@@ -126,6 +125,8 @@ ggplot(annual_odontocetes_strandings, aes(x = Year, y = Odontocetes_Total)) +
 
 print(odontocete_stranding_plot)
 ```
+When looking at the graph above, you can see the trend in the number of strandings of odontocetes over the years, and how they are increasing. All of these strandings can be seen in the map below.
+
 
 
 ```{r Geospatial Exploration}
@@ -155,10 +156,11 @@ odontocete_model2 <- glm(data = monthly_odontocetes_strandings, Odontocetes_Tota
 summary(odontocete_model2)
 ```
 
-We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
+We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings. Of all the years in the odontocete strandings, only 2 years are statistically significant; 1990 and 2011 were both statistically significant with p-values of 1.14e-05 and 0.0198 respectively. The null deviance was had a value of 4.0129e+01 and the residual deviance had a value of. -2.1867e-21.
 
+We reject the null hypothesis that there is no effect of month on the total number of odontocete strandings. There were four months in which the odonotocete strandings were statistically significant: January, March, May, and June.
 
-just state null and residual deviances.
+This indicates that there is a difference in the number of odontocete strandings across the years and months of the study. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
 
 
 
