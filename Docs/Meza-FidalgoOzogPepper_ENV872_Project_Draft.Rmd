@@ -429,8 +429,20 @@ Pinniped_distances <- Pinniped_sf_utm_final %>%
   st_drop_geometry() %>%
   arrange(totals_by_distance)
 
-kable(Pinniped_distances)
+#kable(Pinniped_distances)
+#Table Reorganized manually based on kable results
 ```
+Distance (m) | Number of Strandings
+---------------|--------------------
+20,000 - 40,000 | 425
+40,000 - 60,000 | 200
+60,000 - 80,000 | 15
+80,000 - 100,000 | 11
+100,000 - 120,000 | 7
+120,000 - 140,000 | 11
+140,000 - 160,000 | 7
+greater than 160,000 | 3
+
 
 By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean.  By determining that 425 out of 679, or 62.5 percent of, pinniped strandings occur within 40km of the mean stranding location, what makes this area a hotspot can be studied and hopefully also determined.  This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible.  Since only 54, or 8 percent of, pinniped strandings occur further than 60km from the stranding mean, resources for study and rescue can be allocated away from those areas.
 
