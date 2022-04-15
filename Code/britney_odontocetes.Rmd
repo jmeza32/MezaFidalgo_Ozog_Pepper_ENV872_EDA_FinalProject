@@ -158,16 +158,10 @@ summary(odontocete_model2)
 
 We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings. Of all the years in the odontocete strandings, only 2 years are statistically significant; 1990 and 2011 were both statistically significant with p-values of 1.14e-05 and 0.0198 respectively. The null deviance was had a value of 4.0129e+01 and the residual deviance had a value of. -2.1867e-21.
 
-We reject the null hypothesis that there is no effect of month on the total number of odontocete strandings. There were four months in which the odonotocete strandings were statistically significant: January, March, May, and June.
+We reject the null hypothesis that there is no effect of month on the total number of odontocete strandings. There were four months in which the odonotocete strandings were statistically significant: January, March, May, and June. The most statistucally significant months were January and May with p-values of 4.35e-11 and 0.00858 respectively. March had a p-value of  0.02389 and June had a p-value of 0.03344. The null deviance was 3.7282e+01 and the residual deviance was -3.5527e-15.
 
 This indicates that there is a difference in the number of odontocete strandings across the years and months of the study. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
 
-
-
-
-We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statitistically different years. The null deviance of this model is 7.4606e+01, which indicates ??? The residual deviance of this model is -4.8850e-15, which indicates ??? 
-
-We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02, which indicates ??? The residual deviance of this model is 3.0332e-10, which indicates ???
 
 
 #Geospatial Analysis
@@ -278,8 +272,8 @@ less than 40,000 | 125
 160,000 - 180,000 | 2
 grater than 180,000 | 1
 
+Of the 155 odontocete strandings used in our analysis, 125 of them were within 40,000m of mean latitude and longitude stranding location. This was followed by 20 strandings that were within 40,000m to 60,000m from the mean stranding location. The remaining 10 strandings were scattered farther than 60,000m, and there was one stranding that was greater than 180,000m from the mean stranding location. Most of the strandings were centered near Newport, in the Rhode Island Sound. There were also many strandings that were located up in Narragansett Bay. The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the odontocetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to odontocetes stranding from Charlestown to Newport, in the Rhode Island Sound. 
 
-Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 1). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
 
 
 #Temporal Analysis
@@ -302,10 +296,7 @@ odontocete_ts_monthly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_monthl
 summary(odontocete_ts_monthly_trend)
 
 ```
-Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
-
-> We reject the H0 that monthly pinniped strandings are stationary, with a p-value of 1.42e-7. The decomposition indicates seasonality, which fits with the patterns that were seen in the exploratory analysis.
-
+We reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years. 
 
 
 
@@ -316,7 +307,15 @@ odontocete_ts_yearly_trend <- MannKendall(odontocete_ts_yearly)
 
 summary(odontocete_ts_yearly_trend)
 ```
-Because the 2-sided p-value was less 7.53e-12, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary. 
+We reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
 
 
-> We fail reject the H0 that yearly pinniped strandings are stationary with a p-value of 0.72.
+
+#Summary
+Our analysis indicated there were was change in the total number of strandings over the years of the study. The year 1990 and 2011 were statistically significant, which meant that those years were different than the rest of the study. There was also to be an increase in the number of strandings during the months of January, March, May, and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The increasing stranding over the years may be in indicator that there is an issue that needs to be address through further research. The increased strandings during the earlier months may be contributed to calving season. Again, further reserach would be needed to determine the cause.
+
+We found that 80.6% of our strandings were within 40,000m of the mean stranding point and 93.5% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to odonotocetes. This is another area that needs have further research in attempt to understand why the area is a common stranding point for odontocetes and what can be done to prevent these strandings.
+
+
+
+

@@ -80,26 +80,18 @@ mysticete_stranding_numbers <- mysticete_stranding_data %>%
                     mutate(Date = my(paste0(Month,"-",Year))) %>%
                     select(Date, Total)
 
-
-odontocete_stranding_numbers <- odontocete_stranding_data %>%
-                    filter(Family == "Odontocetes") %>%
-                    group_by(Month, Year) %>%
-                    summarise(Total = n(), .groups='drop') %>%
-                    mutate(Date = my(paste0(Month,"-",Year))) %>%
-                    select(Date, Total)
-
 Date_Range <- as.data.frame(seq.Date(from = as.Date("1990-01-01"), to = as.Date("2011-12-01"), by = "months"))
 names(Date_Range)[1] <- "Date"
 
-mysticete_stranding_numbers_final <- left_join(Date_Range, odontocete_stranding_numbers, by = "Date" )
+mysticete_stranding_numbers_final <- left_join(Date_Range, mysticete_stranding_numbers, by = "Date" )
 
-mysticete_stranding_numbers_final[is.na(dontocete_stranding_numbers_final)] = 0
+mysticete_stranding_numbers_final[is.na(mysticete_stranding_numbers_final)] = 0
 ```
 
 
 
 #Mysticete Data Exploration
-```{r Pinniped Data Exploration}
+```{r Mysticete Data Exploration}
 summary(mysticete_stranding_data)
 
 #By year
@@ -119,8 +111,8 @@ ggplot(mysticete_stranding_data) +
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
 
-There appears to be an increasing trend in the number of mysticete strandings as the years progress.
-There also appears to be a seasonal trend based on season, where the months of June and July have a much greater ammount of strandings than the rest of the year. 
+There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. There also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater ammount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to calving season.
+
 
 
 ```{r, message = FALSE}
@@ -134,10 +126,10 @@ ggplot(annual_mysticetes_strandings, aes(x = Year, y = Mysticetes_Total)) +
 print(mysticete_stranding_plot)
 ```
 
+When looking at the graph above, you can see the trend in the number of strandings of mysticetes over the years is increasing, but not by much. It appears that the number of strandings is consistent until 2000, where the numbers increase before dropping down again in 2009. All of these strandings can be seen in the map below.
 
 
-
-```{r Geospatial Exploration}
+```{r Mysticete Geospatial Exploration}
 mysticete_sf <- mysticete_stranding_data %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
@@ -164,8 +156,12 @@ summary(mysticete_model2)
 
 ```
 
-We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings due to a p-value of 2.16e-06. We also fail to reject the null hypothesis that there is no effect of month on the total number of odontocete strandings due to a p-value of 0.424. This indicates that there is a difference in the number of odontocete strandings across the years of the study, but not across the months. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
+We reject the null hypothesis that there is no effect of year on the total number of mysticete strandings due to none of the p-values in each year being below 0.05. This means that overall, there is no change in the number of strandings over the years of the study. The null deviance had a p-value of 2.1360e+01, and the residual deviance had a p-value of 4.1223e-10.
 
+We  fail to reject the null hypothesis that there is no effect of month on the total number of mysticete strandings. There were two months in which the mysticete strandings were statistically significant: May and June. The most statistically significant month was May with a p-value of 0.00874 while June had a p-value of 0.01345. The null deviance had a p-value of 5.7723e+01 the residual deviance had a p-value of 3.0330e-10.
+
+
+This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to calving season, but further research would be needed to determine the cause.
 
 
 #Geospatial Analysis
@@ -201,7 +197,9 @@ mapview(mysticete_sf_utm,
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
+
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why mysticete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Stonington to Newport, in the Rhode Island Sound with one stranding that was farther away.
+
 
 
 
@@ -272,6 +270,10 @@ less than 40,000 | 44
 
 
 
+Of the 50 mysticete strandings used in our analysis, 44 of them were within 40,000m of mean latitude and longitude stranding location. This was followed by 5 strandings that were within 40,000m to 60,000m from the mean stranding location. The remaining stranding was located between 140,000m to 160,000m away from the mean stranding location. Most of the strandings were centered near Newport, in the Rhode Island Sound. There were also some strandings that were located up in Narragansett Bay. The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the mysticetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to mysticetes stranding from Charlestown to Newport, in the Rhode Island Sound.
+
+
+
 #Temporal Analysis
 Null Hypothesis: The yearly and/or monthly/seasonal mysticete stranding data is stationary
 Alternative Hypothesis: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
@@ -292,7 +294,8 @@ mysticete_ts_monthly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_monthly)
 summary(mysticete_ts_monthly_trend)
 
 ```
-Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that mysticetes monthly stranding data is stationary.
+
+We reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years. 
 
 
 
@@ -303,5 +306,13 @@ mysticete_ts_yearly_trend <- MannKendall(mysticete_ts_yearly)
 
 summary(mysticete_ts_yearly_trend)
 ```
-Because the 2-sided p-value was less 4.84e-05, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary. 
+
+We reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
+
+
+
+#Summary
+Our analysis indicated there were was no change in the total number of strandings over the years of the study. None of the years were statistically significant, which meant that overall, there was no major difference between the number of strandings over the study period. There was an increase in the number of strandings during the months of May and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The consistent number of strandings over the years indicate that there may not be any changes in the environment over the study period. The increased strandings during the months of May and June may be contributed to calving season. Again, further research would be needed to determine the cause.
+
+We found that 88% of our strandings were within 40,000m of the mean stranding point and 98% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to mysticetes. This is another area that needs have further research in attempt to understand why the area is a common stranding point for mysticetes and what can be done to prevent these strandings.
 
