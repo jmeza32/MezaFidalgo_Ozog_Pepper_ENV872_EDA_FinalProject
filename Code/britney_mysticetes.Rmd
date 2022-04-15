@@ -75,8 +75,25 @@ monthly_mysticetes_strandings <- monthly_strandings_totals %>%
 #Mysticete Stranding Numbers
 mysticete_stranding_numbers <- mysticete_stranding_data %>%
                     filter(Family == "Mysticetes") %>%
-                    group_by(Date) %>%
-                    summarise(Total = n())
+                    group_by(Month, Year) %>%
+                    summarise(Total = n(), .groups='drop') %>%
+                    mutate(Date = my(paste0(Month,"-",Year))) %>%
+                    select(Date, Total)
+
+
+odontocete_stranding_numbers <- odontocete_stranding_data %>%
+                    filter(Family == "Odontocetes") %>%
+                    group_by(Month, Year) %>%
+                    summarise(Total = n(), .groups='drop') %>%
+                    mutate(Date = my(paste0(Month,"-",Year))) %>%
+                    select(Date, Total)
+
+Date_Range <- as.data.frame(seq.Date(from = as.Date("1990-01-01"), to = as.Date("2011-12-01"), by = "months"))
+names(Date_Range)[1] <- "Date"
+
+mysticete_stranding_numbers_final <- left_join(Date_Range, odontocete_stranding_numbers, by = "Date" )
+
+mysticete_stranding_numbers_final[is.na(dontocete_stranding_numbers_final)] = 0
 ```
 
 
@@ -242,16 +259,28 @@ mysticete_distances <- mysticete_sf_utm_final %>%
 kable(mysticete_distances)
 ```
 
+Distance (m) | Number of Strandings
+---------------|--------------------
+less than 40,000 | 44
+40,000 - 60,000 | 5
+60,000 - 80,000 | 0
+80,000 - 100,000 | 0
+100,000 - 120,000 | 0
+120,000 - 140,000 | 0
+140,000 - 160,000 | 1
+
+
+
 
 #Temporal Analysis
-Null Hypothesis: The mysticete stranding data is stationary
-Alternative Hypothesis: The mysticete stranding data is not stationary
+Null Hypothesis: The yearly and/or monthly/seasonal mysticete stranding data is stationary
+Alternative Hypothesis: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
 
 ```{r Monthly Time Series}
-myst_f_month <- month(first(mysticete_stranding_numbers$Date))
-myst_f_year <- year(first(mysticete_stranding_numbers$Date))
+myst_f_month <- month(first(mysticete_stranding_numbers_final$Date))
+myst_f_year <- year(first(mysticete_stranding_numbers_final$Date))
 
-mysticete_ts_monthly <- ts(mysticete_stranding_numbers$Total, 
+mysticete_ts_monthly <- ts(mysticete_stranding_numbers_final$Total, 
                   start = c(myst_f_year, myst_f_month), 
                   frequency = 12)
  
@@ -263,16 +292,14 @@ mysticete_ts_monthly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_monthly)
 summary(mysticete_ts_monthly_trend)
 
 ```
-Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that odontocetes monthly stranding data is stationary.
+Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and say that mysticetes monthly stranding data is stationary.
 
 
 
 ```{r Yearly Time Series}
-myst_f_year <- year(first(mysticete_stranding_numbers$Date))
+mysticete_ts_yearly <- ts(mysticete_stranding_numbers_final, start = c(1990,1), frequency = 1)
 
-mysticete_ts_yearly <- ts(mysticete_stranding_numbers, start = c(1990,1), frequency = 1)
-
-mysticete_ts_yearly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_yearly)
+mysticete_ts_yearly_trend <- MannKendall(mysticete_ts_yearly)
 
 summary(mysticete_ts_yearly_trend)
 ```

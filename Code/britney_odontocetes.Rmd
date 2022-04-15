@@ -75,7 +75,16 @@ monthly_odontocetes_strandings <- monthly_strandings_totals %>%
 odontocete_stranding_numbers <- odontocete_stranding_data %>%
                     filter(Family == "Odontocetes") %>%
                     group_by(Month, Year) %>%
-                    summarise(Total = n())
+                    summarise(Total = n(), .groups='drop') %>%
+                    mutate(Date = my(paste0(Month,"-",Year))) %>%
+                    select(Date, Total)
+
+Date_Range <- as.data.frame(seq.Date(from = as.Date("1990-01-01"), to = as.Date("2011-12-01"), by = "months"))
+names(Date_Range)[1] <- "Date"
+
+odontocete_stranding_numbers_final <- left_join(Date_Range, odontocete_stranding_numbers, by = "Date" )
+
+odontocete_stranding_numbers_final[is.na(dontocete_stranding_numbers_final)] = 0
 
 ```
 
@@ -276,10 +285,11 @@ Null Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is
 Alternative Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
 
 ```{r Monthly Time Series}
-odo_f_month <- month(first(odontocete_stranding_numbers$Month))
+odo_f_month <- month(first(odontocete_stranding_numbers_final$Date))
+odo_f_year <- year(first(odontocete_stranding_numbers_final$Date))
 
-odontocete_ts_monthly <- ts(odontocete_stranding_numbers$Total, 
-                  start = c(1990, odo_f_month), 
+odontocete_ts_monthly <- ts(odontocete_stranding_numbers_final$Total, 
+                  start = c(odo_f_year, odo_f_month), 
                   frequency = 12)
  
 odontocete_ts_monthly_decomp <- stl(odontocete_ts_monthly, s.window = "periodic")
@@ -298,7 +308,7 @@ Because the 2-sided p-value was 0.434, we fail to reject the null hypothesis and
 
 
 ```{r Yearly Time Series}
-odontocete_ts_yearly <- ts(odontocete_stranding_numbers, start = c(1990), frequency = 1)
+odontocete_ts_yearly <- ts(odontocete_stranding_numbers_final, start = c(1990), frequency = 1)
 
 odontocete_ts_yearly_trend <- MannKendall(odontocete_ts_yearly)
 
