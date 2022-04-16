@@ -509,43 +509,6 @@ A seasonal Mann Kendall test was run for the monthly time series. Based on the r
 
 ### 2. Odontocetes:
 
-```{r Setup, warning = FALSE, message = FALSE, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-#Working Directory
-getwd()
-
-#Load packages
-library(tidyverse)
-library(tidyr)
-library(lubridate)
-library(dplyr)
-library(cowplot)
-library(ggplot2)
-library(ggridges)
-library(agricolae)
-library(lubridate)
-library(corrplot)
-library(htmltools)
-library(sf)
-library(leaflet)
-library(mapview)
-library(RColorBrewer)
-library(leafsync)
-library(trend)
-library(zoo)
-library(Kendall)
-library(tseries)
-library(knitr)
-
-#Set theme
-mytheme <- theme_bw() +
-  theme(axis.text = element_text(color = "black"), 
-        legend.position = "right")
-theme_set(mytheme)
-```
-
-
 ```{r Load Odonotcete Data, warning = FALSE, message = FALSE, include = FALSE}
 stranding_data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
@@ -846,43 +809,6 @@ A seasonal Mann Kendall test was run for our monthly time series. Based on the r
 
 
 ### 3. Mysticetes
-
-```{r Mysticete Setup, warning = FALSE, message = FALSE, include = FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-
-#Working Directory
-getwd()
-
-#Load packages
-library(tidyverse)
-library(tidyr)
-library(lubridate)
-library(dplyr)
-library(cowplot)
-library(ggplot2)
-library(ggridges)
-library(agricolae)
-library(lubridate)
-library(corrplot)
-library(htmltools)
-library(sf)
-library(leaflet)
-library(mapview)
-library(RColorBrewer)
-library(leafsync)
-library(trend)
-library(zoo)
-library(Kendall)
-library(tseries)
-library(knitr)
-
-#Set theme
-mytheme <- theme_bw() +
-  theme(axis.text = element_text(color = "black"), 
-        legend.position = "right")
-theme_set(mytheme)
-```
-
 
 ```{r Load Mysticete Data, warning = FALSE, message = FALSE, include = FALSE}
 stranding_data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
