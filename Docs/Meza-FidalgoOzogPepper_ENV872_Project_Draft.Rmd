@@ -546,7 +546,6 @@ theme_set(mytheme)
 ```
 
 
-
 ```{r Load Odonotcete Data, warning = FALSE, message = FALSE, include = FALSE}
 stranding_data <- read.csv("../Data/Processed/strandings_final.csv", stringsAsFactors = TRUE)
 
