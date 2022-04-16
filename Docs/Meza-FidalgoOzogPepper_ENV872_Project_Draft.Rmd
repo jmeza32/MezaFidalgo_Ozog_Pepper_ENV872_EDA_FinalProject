@@ -97,7 +97,7 @@ Monthly_Strandings_Totals <- Monthly_Strandings_Totals %>%
 
 # Rationale and Research Questions
 
-Marine mammal and sea turtle strandings can be unusual events or indicators of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some example of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine mammal and sea turtle strandings, we get insight on the health of our oceans.
+Marine mammal and sea turtle strandings can be unusual events or indicators of problems in our ocean ecosystems. Seeing patterns in the strandings of marine mammals and sea turtles can be indicative of more complex issues that may not be transparent. Some examples of these issues could be viral outbreaks in lower trophic level populations or toxic algal blooms that kill off all sea life in the area. Because humans demand and consume seafood, understanding the problems that arise are essential to preventing the consumption of contaminated seafood along with the management of fisheries. By studying marine mammal and sea turtle strandings, we get insight on the health of our oceans.
 
 Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
 
@@ -119,9 +119,9 @@ Data Range        | March 18, 1976 to December, 29, 2011
 
 <br>
 
-The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
+The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped (seals and sea lions), and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
 
-The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. We data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes, mysticetes, pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
+The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. The data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes, mysticetes, pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
 
 
 ```{r - Table summary of the dataset structure1, message = FALSE, warning = FALSE, include = FALSE}
@@ -149,7 +149,7 @@ head(Monthly_Strandings_Totals)
 
 # Exploratory Analysis 
 
-We initially decided that it would be best to look at the data holistically to get a better feel for the trends in the data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
+We initially decided that it would be best to look at the data holistically to get a better feel for the trends in the data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided and summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
 <br>
 
 <center>***Figure 1**: Total Strandings per Family*</center>
@@ -199,7 +199,7 @@ Because we decided to divide the data into groups by their families, we conducte
 1. Are there years or months where the number of strandings for each family are significantly different?
 2. Are there trends in each of the family strandings based off this dataset?
 
-We utilized GLMs, MannKendall, and Seasonal MannKendall in our analysis.
+We utilized GLMs, MannKendall, and Seasonal MannKendall in our analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM.
 <br>
 
 
@@ -312,13 +312,13 @@ mapview(Pinniped_sf)
 <br>
 
 ##### Pinniped Stranding Statistical Analysis
-The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
+The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Regression (GLM):
 
-**Null Hypothesis 1**: There is no effect of year on the total number of pinniped strandings.
-Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings.
+**Null Hypothesis 1**: There is no effect of year on the total number of pinniped strandings.  
+**Alternative Hypothesis 1**: There is an effect of year on the total number of pinniped strandings.
 
-**Null Hypothesis 2**: There is no effect of month on the total number of pinniped strandings.
-Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings.
+**Null Hypothesis 2**: There is no effect of month on the total number of pinniped strandings.  
+**Alternative Hypothesis 2**: There is an effect of month on the total number of pinniped strandings.
 
 ```{r Pinniped Poisson Models, message = FALSE, warning = FALSE, include = FALSE}
 #Developing an model to analysis the significance of year on pinniped strandings
@@ -652,11 +652,11 @@ mapview(odontocete_sf, layer.name = "Odontocete Strandings")
 ##### Odontocete Stranding Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-**Null Hypothesis 1**: There is no effect of individual year on the total number of odontocete strandings.
-Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings.
+**Null Hypothesis 1**: There is no effect of individual year on the total number of odontocete strandings.  
+**Alternative Hypothesis 1**: There is an effect of year on the total number of odontocete strandings.
 
-**Null Hypothesis 2**: There is no effect of month on the total number of odontocete strandings.
-Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings.
+**Null Hypothesis 2**: There is no effect of month on the total number of odontocete strandings.  
+**Alternative Hypothesis 2**: There is an effect of month on the total number of odontocete strandings.
 
 ```{r Odontocete GLM Models, warning = FALSE, message = FALSE, include = FALSE}
 
@@ -993,11 +993,11 @@ mapview(mysticete_sf)
 ##### Mysticete Stranding Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-**Null Hypothesis 1**: There is no effect of year on the total number of mysticete strandings.
-Alternative Hypothesis 1: There is an effect of year on the total number of mysticete strandings.
+**Null Hypothesis 1**: There is no effect of year on the total number of mysticete strandings.  
+**Alternative Hypothesis 1**: There is an effect of year on the total number of mysticete strandings.
 
-**Null Hypothesis 2**: There is no effect of month on the total number of mysticete strandings.
-Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings.
+**Null Hypothesis 2**: There is no effect of month on the total number of mysticete strandings.  
+**Alternative Hypothesis 2**: There is an effect of month on the total number of mysticete strandings.
 
 ```{r Mysticeter GLM Models, warning = FALSE, message = FALSE, include = FALSE}
 mysticete_model <- glm(data = annual_mysticetes_strandings, Mysticetes_Total ~ factor(Year), family = poisson)
@@ -1274,10 +1274,10 @@ mapview(turtle_sf, layer.name="Sea Turtle Strandings")
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM): 
 
 **Null Hypothesis 1**: There is no effect of individual year on sea turtle strandings.   
-Alternative Hypothesis 1: There is an effect of individual year on sea turtle strandings. 
+**Alternative Hypothesis 1**: There is an effect of individual year on sea turtle strandings. 
 
 **Null Hypothesis 2**: There is no effect of month on sea turtle strandings.  
-Alternative Hypothesis 2: There is an effect of month on sea turtle strandings. 
+**Alternative Hypothesis 2**: There is an effect of month on sea turtle strandings. 
 
 ```{r Turtle Statistical Analysis, message = FALSE, warning = FALSE, include = FALSE}
 Turtle_Model_Year <- glm(data = Turtle_Strandings_Year, Turtles_Total ~ factor(Year), family = poisson)
@@ -1291,7 +1291,7 @@ summary(Turtle_Model_Month)
 <br>We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statistically different years. The null deviance of this model is 7.4606e+01 and the residual deviance is -4.8850e-15. 
 
 *Monthly Analysis*:
-<br>We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02 and the residual deviance is 3.0332e-10.
+<br>We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. These months include May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935). This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02 and the residual deviance is 3.0332e-10.
 
 <br>
 
@@ -1397,7 +1397,7 @@ Turtle_distances <- Turtle_sf_utm_final %>%
 kable(Turtle_distances)
 ```
 
-Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 5). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing pressure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas. 
+Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 5). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. Some sea turtle strandings were reported inland, which could be due to tides/currents bringing the animal upstream into rivers (Map 9).This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing pressure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas. 
 
 
 <br>
