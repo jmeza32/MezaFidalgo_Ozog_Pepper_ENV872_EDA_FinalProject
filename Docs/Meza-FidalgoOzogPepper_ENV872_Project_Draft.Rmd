@@ -883,7 +883,7 @@ ggplot(mysticete_stranding_data) +
 ```
 <br>
 
-There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to calving season.
+There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to migration. The area may be a common feeding ground during their seasonal migrations along the east coast.
 
 <br>
 
@@ -940,7 +940,7 @@ summary(mysticete_model2)
 <br>We  fail to reject the null hypothesis that there is no effect of month on the total number of mysticete strandings. There were two months in which the mysticete strandings were statistically significant: May and June. The most statistically significant month was May with a p-value of 0.00874 while June had a p-value of 0.01345. The null deviance had a p-value of 5.7723e+01 the residual deviance had a p-value of 3.0330e-10.
 
 
-This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to calving season, but further research would be needed to determine the cause.
+This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to seasonal migration to feeding grounds, but further research would be needed to determine the cause.
 
 <br>
 
@@ -1403,7 +1403,7 @@ We found that 80.6% of our strandings were within 40,000m of the mean stranding 
 
 
 ### 3. Mysticetes:
-Our analysis indicated there were was no change in the total number of strandings over the years of the study. None of the years were statistically significant, which meant that overall, there was no major difference between the number of strandings over the study period. There was an increase in the number of strandings during the months of May and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The consistent number of strandings over the years indicate that there may not be any changes in the environment over the study period. The increased strandings during the months of May and June may be contributed to calving season. Again, further research would be needed to determine the cause.
+Our analysis indicated there were was no change in the total number of strandings over the years of the study. None of the years were statistically significant, which meant that overall, there was no major difference between the number of strandings over the study period. There was an increase in the number of strandings during the months of May and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The consistent number of strandings over the years indicate that there may not be any changes in the environment over the study period. The increased strandings during the months of May and June may be contributed to seasonal migrations. Again, further research would be needed to determine the cause.
 
 We found that 88% of our strandings were within 40,000m of the mean stranding point and 98% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to mysticetes. This is another area that needs have further research in attempt to understand why the area is a common stranding point for mysticetes and what can be done to prevent these strandings.
 
