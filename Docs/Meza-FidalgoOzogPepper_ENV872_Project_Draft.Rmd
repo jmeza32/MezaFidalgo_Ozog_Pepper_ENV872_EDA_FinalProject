@@ -308,10 +308,10 @@ mapview(Pinniped_sf)
 
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-Null Hypothesis 1: There is no effect of year on the total number of pinniped strandings
+*Null Hypothesis 1*: There is no effect of year on the total number of pinniped strandings
 Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
 
-Null Hypothesis 2: There is no effect of month on the total number of pinniped strandings
+*Null Hypothesis 2*: There is no effect of month on the total number of pinniped strandings
 Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
 
 ```{r Pinniped Poisson Models, message = FALSE, warning = FALSE, include = FALSE}
@@ -453,8 +453,9 @@ greater than 160,000 | 3
 ##### Pinniped Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-Null Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is stationary
-Alternative Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
+*Null Hypothesis*: The yearly and/or monthly/seasonal pinniped stranding data is stationary
+
+*Alternative Hypothesis*: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
 
 ```{r Pinniped Yearly Time Series, message = FALSE, warning = FALSE, include = FALSE}
 #Developing a yearly time series to determine if there is a trend
@@ -640,10 +641,10 @@ mapview(odontocete_sf, layer.name = "Odontocete Strandings")
 
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-Null Hypothesis 1: There is no effect of individual year on the total number of odontocete strandings.
+*Null Hypothesis 1*: There is no effect of individual year on the total number of odontocete strandings.
 Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings.
 
-Null Hypothesis 2: There is no effect of month on the total number of odontocete strandings.
+*Null Hypothesis 2*: There is no effect of month on the total number of odontocete strandings.
 Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings.
 
 ```{r Odontocete GLM Models, warning = FALSE, message = FALSE, include = FALSE}
@@ -787,8 +788,9 @@ Of the 155 odontocete strandings used in our analysis, 125 of them were within 4
 ##### Odontocete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-Null Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is stationary
-Alternative Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
+*Null Hypothesis*: The yearly and/or monthly/seasonal odontocete stranding data is stationary
+
+*Alternative Hypothesis*: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
 
 
 ```{r Odontocete Yearly Time Series, warning = FALSE, message = FALSE, include = FALSE}
@@ -971,10 +973,10 @@ mapview(mysticete_sf)
 ##### Mysticete Stranding Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-Null Hypothesis 1: There is no effect of year on the total number of mysticete strandings
+*Null Hypothesis 1*: There is no effect of year on the total number of mysticete strandings
 Alternative Hypothesis 1: There is an effect of year on the total number of mysticete strandings
 
-Null Hypothesis 2: There is no effect of month on the total number of mysticete strandings
+*Null Hypothesis 2*: There is no effect of month on the total number of mysticete strandings
 Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings
 
 ```{r Mysticeter GLM Models, warning = FALSE, message = FALSE, include = FALSE}
@@ -1112,8 +1114,9 @@ Of the 50 mysticete strandings used in our analysis, 44 of them were within 40,0
 ##### Mysticete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-Null Hypothesis: The yearly and/or monthly/seasonal mysticete stranding data is stationary
-Alternative Hypothesis: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
+*Null Hypothesis*: The yearly and/or monthly/seasonal mysticete stranding data is stationary
+
+*Alternative Hypothesis*: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
 
 
 ```{r Yearly Mysticete Time Series, warning = FALSE, message = FALSE, include = FALSE}
@@ -1231,6 +1234,7 @@ ggplot(Strandings_Totals_Year, aes(x = Year, y = Turtles_Total)) +
 
 Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995 (Figure 16). The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year (Figure 17).
 
+
 <center>***Map 8**: Geospatial Exploration of Sea Turtle Strandings*</center>
 <center>
 ```{r Turtle Geospatial Exploration,  message = FALSE, warning = FALSE, echo = FALSE}
@@ -1246,10 +1250,10 @@ mapview(turtle_sf, layer.name="Sea Turtle Strandings")
 ##### Sea Turtle Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM): 
 
-Null Hypothesis 1: There is no effect of individual year on sea turtle strandings.   
+*Null Hypothesis 1*: There is no effect of individual year on sea turtle strandings.   
 Alternative Hypothesis 1: There is an effect of individual year on sea turtle strandings. 
 
-Null Hypothesis 2: There is no effect of month on sea turtle strandings.  
+*Null Hypothesis 2*: There is no effect of month on sea turtle strandings.  
 Alternative Hypothesis 2: There is an effect of month on sea turtle strandings. 
 
 ```{r Turtle Statistical Analysis, message = FALSE, warning = FALSE, include = FALSE}
@@ -1390,8 +1394,9 @@ greater than 160,000 | 1
 ##### Sea Turtle Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-Null Hypothesis: The yearly and/or monthly/seasonal turtle stranding data is stationary.
-Alternative Hypothesis: The yearly and/or monthly/seasonal turtle stranding data is not stationary
+*Null Hypothesis*: The yearly and/or monthly/seasonal turtle stranding data is stationary.
+
+*Alternative Hypothesis*: The yearly and/or monthly/seasonal turtle stranding data is not stationary
 
 ```{r turtle yearly time series, message = FALSE, warning = FALSE, include = FALSE}
 Turtle_ts_yearly <- ts(Turtle_strandings_date_final, start = 1990, frequency = 1)
