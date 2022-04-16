@@ -26,6 +26,7 @@ knitr::include_graphics('../Data/Images/CSC_0075.png')
 
 -------------
 
+
 \newpage
 \tableofcontents 
 \newpage
@@ -313,11 +314,11 @@ mapview(Pinniped_sf)
 ##### Pinniped Stranding Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-**Null Hypothesis 1**: There is no effect of year on the total number of pinniped strandings
-Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
+**Null Hypothesis 1**: There is no effect of year on the total number of pinniped strandings.
+Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings.
 
-**Null Hypothesis 2**: There is no effect of month on the total number of pinniped strandings
-Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
+**Null Hypothesis 2**: There is no effect of month on the total number of pinniped strandings.
+Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings.
 
 ```{r Pinniped Poisson Models, message = FALSE, warning = FALSE, include = FALSE}
 #Developing an model to analysis the significance of year on pinniped strandings
@@ -459,9 +460,9 @@ greater than 160,000 | 3
 ##### Pinniped Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is stationary
+**Null Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is stationary.
 
-**Alternative Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is not stationary.
 <br>
 
 ```{r Pinniped Yearly Time Series, message = FALSE, warning = FALSE, include = FALSE}
@@ -801,9 +802,9 @@ Of the 155 odontocete strandings used in our analysis, 125 of them were within 4
 ##### Odontocete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is stationary
+**Null Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is stationary.
 
-**Alternative Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is not stationary.
 <br>
 
 ```{r Odontocete Yearly Time Series, warning = FALSE, message = FALSE, include = FALSE}
@@ -993,11 +994,11 @@ mapview(mysticete_sf)
 ##### Mysticete Stranding Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-**Null Hypothesis 1**: There is no effect of year on the total number of mysticete strandings
-Alternative Hypothesis 1: There is an effect of year on the total number of mysticete strandings
+**Null Hypothesis 1**: There is no effect of year on the total number of mysticete strandings.
+Alternative Hypothesis 1: There is an effect of year on the total number of mysticete strandings.
 
-**Null Hypothesis 2**: There is no effect of month on the total number of mysticete strandings
-Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings
+**Null Hypothesis 2**: There is no effect of month on the total number of mysticete strandings.
+Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings.
 
 ```{r Mysticeter GLM Models, warning = FALSE, message = FALSE, include = FALSE}
 mysticete_model <- glm(data = annual_mysticetes_strandings, Mysticetes_Total ~ factor(Year), family = poisson)
@@ -1134,9 +1135,9 @@ Of the 50 mysticete strandings used in our analysis, 44 of them were within 40,0
 ##### Mysticete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is stationary
+**Null Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is stationary.
 
-**Alternative Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is not stationary.
 <br>
 
 ```{r Yearly Mysticete Time Series, warning = FALSE, message = FALSE, include = FALSE}
@@ -1421,7 +1422,7 @@ The following are the null and alternative hypothesis for the yearly and monthly
 
 **Null Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is stationary.
 
-**Alternative Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is not stationary
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is not stationary.
 
 <br>
 ```{r turtle yearly time series, message = FALSE, warning = FALSE, include = FALSE}
@@ -1487,6 +1488,7 @@ We found that 88% of our strandings were within 40,000m of the mean stranding po
 80% of sea turtles strandings all occurred within 40km of the mean stranding location. This can indicate that this area could be a hot spot for sea turtle strandings, whether it be due to high abundance of sea turtles in the area or due to oceanic currents. 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which are the May - September. This monthly breakdown corresponds with the timing of the sea turtle nesting season and when there is likely to be a higher abundance of them in the area. However, time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. While our data exploration showed that most of the strandings occurred in the summer months, this could be due to certain months of certain years having disproportionately higher amounts of strandings and could be the reason seasonality was not significant in our sea turtle data.
 
 \newpage
+<br>
 
 -------------
 
