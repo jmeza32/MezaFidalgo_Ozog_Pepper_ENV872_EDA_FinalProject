@@ -427,6 +427,11 @@ Pinniped_distances <- Pinniped_sf_utm_final %>%
 #kable(Pinniped_distances)
 #Table Reorganized manually based on kable results
 ```
+
+
+
+<center>***Table 2**: Number of Pinniped Strandings per Distance (m) from the Mean *</center>
+
 Distance (m) | Number of Strandings
 ---------------|--------------------
 20,000 - 40,000 | 425
@@ -449,7 +454,7 @@ Null Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is s
 Alternative Hypothesis: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
 
 <center>***Figure 7**: Pinniped Monthly Decomposition*</center>
-```{r Pinniped Monthly Time Series, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
+```{r Pinniped Monthly Time Series 1, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 #Developing a monthly time series to determine if there is a monthly/seasonal trend.
 f_year <- year(first(Pinniped_Stranding_Totals_Final$Date)) 
 f_month <- month(first(Pinniped_Stranding_Totals_Final$Date)) 
@@ -465,7 +470,7 @@ plot(Pinniped_ts_monthly_decomp)
 ```
 
 
-```{r Pinniped Monthly Time Series, message = FALSE, warning = FALSE, include = FALSE}
+```{r Pinniped Monthly Time Series 2, message = FALSE, warning = FALSE, include = FALSE}
 Pinniped_ts_monthly_trend <- Kendall::SeasonalMannKendall(Pinniped_ts_monthly)
 
 summary(Pinniped_ts_monthly_trend)
@@ -621,7 +626,7 @@ When looking at Figure 10 above, you can see the trend in the number of strandin
 
 <center>***Map 4**: Geospatial Exploration of Odontocete Strandings*</center>
 <center>
-```{r Odonotcete Geospatial Exploration}
+```{r Odonotcete Geospatial Exploration, warning = FALSE, message = FALSE, echo = FALSE}
 odontocete_sf <- odontocete_stranding_data %>%
   st_as_sf(coords = c("longitude", "latitude"), crs = 4326)
 
@@ -630,8 +635,9 @@ mapview(odontocete_sf, layer.name = "Odontocete Strandings")
 </center>
 
 
-#Odontocete Analysis
-##Statisical Analysis
+#Odontocete Statistical Analysis
+
+The following are the null and alternative hypothesis for the annual and monthly statistical analysis:
 
 Null Hypothesis 1: There is no effect of individual year on the total number of odontocete strandings.
 Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings.
@@ -639,7 +645,7 @@ Alternative Hypothesis 1: There is an effect of year on the total number of odon
 Null Hypothesis 2: There is no effect of month on the total number of odontocete strandings.
 Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings.
 
-```{r GLM Models}
+```{r Odontocete GLM Models, warning = FALSE, message = FALSE, include = FALSE}
 
 odontocete_model <- glm(data = annual_odontocetes_strandings, Odontocetes_Total ~ factor(Year), family = poisson)
 summary(odontocete_model)
@@ -657,7 +663,7 @@ This indicates that there is a difference in the number of odontocete strandings
 
 
 #Geospatial Analysis
-```{r Geospatial Analysis}
+```{r Odontocete Geospatial Analysis, warning = FALSE, message = FALSE, include = FALSE}
 #Transform the data to UTM 19
 odontocete_sf_utm <- st_transform(odontocete_sf,32619)
 #The data points straddle UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
@@ -683,18 +689,23 @@ odontocete_sf_utm  <-  odontocete_sf_utm %>%
   bind_cols(odo_mean_distance = odo_mean_distance)
 ```
 
-```{r Mapping the mean distance}
+
+<center>***Map 5**: Odontocete Distance (m) from Mean Stranding Point*</center>
+<center>
+```{r Odontocete mapping the mean distance, warning = FALSE, message = FALSE, echo = FALSE}
 mapview(odontocete_sf_utm, 
         zcol = "odo_mean_distance",
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
+</center>
+
 
 Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
 
 
 
 
-```{r Distance Table}
+```{r Odontocete Distance Table, warning = FALSE, message = FALSE, include = FALSE}
 # points within 40,000m
 odontocete_40 <- odontocete_sf_utm %>%
   filter(odo_mean_distance < 40000) %>%
@@ -752,6 +763,7 @@ odontocete_distances <- odontocete_sf_utm_final %>%
 kable(odontocete_distances)
 ```
 
+<center>***Table 3**: Number of Odontocete Strandings per Distance (m) from the Mean *</center>
 Distance (m) | Number of Odontocete Strandings
 ---------------|--------------------
 less than 40,000 | 125
@@ -769,10 +781,13 @@ Of the 155 odontocete strandings used in our analysis, 125 of them were within 4
 
 
 #Temporal Analysis
+The following are the null and alternative hypothesis for the monthly and yearly time series:
+
 Null Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is stationary
 Alternative Hypothesis: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
 
-```{r Monthly Time Series}
+<center>***Figure 11**: Odontocete Monthly Decomposition*</center>
+```{r Odontocete Monthly Time Series 1, warning = FALSE, message = FALSE, echo = FALSE, fig.align="center"}
 odo_f_month <- month(first(odontocete_stranding_numbers_final$Date))
 odo_f_year <- year(first(odontocete_stranding_numbers_final$Date))
 
@@ -782,24 +797,27 @@ odontocete_ts_monthly <- ts(odontocete_stranding_numbers_final$Total,
  
 odontocete_ts_monthly_decomp <- stl(odontocete_ts_monthly, s.window = "periodic")
 plot(odontocete_ts_monthly_decomp)
+```
 
+
+```{r Odontocete Monthly Time Series 2, warning = FALSE, message = FALSE, include = FALSE}
 odontocete_ts_monthly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_monthly)
 
 summary(odontocete_ts_monthly_trend)
 
 ```
-We reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years. 
 
-
-
-```{r Yearly Time Series}
+```{r Odontocete Yearly Time Series, warning = FALSE, message = FALSE, include = FALSE}
 odontocete_ts_yearly <- ts(odontocete_stranding_numbers_final, start = c(1990), frequency = 1)
 
 odontocete_ts_yearly_trend <- MannKendall(odontocete_ts_yearly)
 
 summary(odontocete_ts_yearly_trend)
 ```
-We reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
+
+A seasonal Mann Kendall test was run for our monthly time series. Based on the results, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure ). 
+
+A Mann Kendall test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
 
 
 
