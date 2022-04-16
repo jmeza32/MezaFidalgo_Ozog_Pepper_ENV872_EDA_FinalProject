@@ -338,7 +338,7 @@ summary(Monthly_Pinniped_Model)
 *Monthly Analysis*:
 <br>We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15(March) to 0.02(June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
 
-This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinnped strandings.
+This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinniped strandings.
 <br>
 <br>
 
@@ -957,7 +957,7 @@ ggplot(mysticete_stranding_data) +
 ```
 <br>
 
-There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater ammount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to calving season.
+There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to calving season.
 
 <br>
 
@@ -1397,7 +1397,7 @@ Turtle_distances <- Turtle_sf_utm_final %>%
 kable(Turtle_distances)
 ```
 
-Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 5). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas. 
+Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 5). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing pressure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas. 
 
 
 <br>
