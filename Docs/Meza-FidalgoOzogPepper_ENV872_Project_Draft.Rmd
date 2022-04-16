@@ -287,7 +287,7 @@ ggplot(Pinniped_Stranding_Data) +
 Pinniped_Stranding_Plot <-
 ggplot(Annual_Pinniped_Strandings, aes(x = Year, y = Pinnipeds_Total)) +
   geom_line(color = "red") +
-  ylab("Pinniped Strandings") +
+  ylab("Count") +
   geom_smooth(method = lm) +
   labs(title = "Pinniped Strandings Per Year")
 
@@ -628,7 +628,7 @@ There appears to be an increasing trend in the total number of odontocete strand
 odontocete_stranding_plot <-
 ggplot(annual_odontocetes_strandings, aes(x = Year, y = Odontocetes_Total)) +
   geom_line(color = "red") +
-  ylab("Pinniped Strandings") +
+  ylab("Count") +
   geom_smooth(method = lm) +
   labs(title = "Odontocete Strandings Per Year")
 
@@ -966,7 +966,7 @@ There appears to be an increasing trend in the number of mysticete strandings in
 mysticete_stranding_plot <-
 ggplot(annual_mysticetes_strandings, aes(x = Year, y = Mysticetes_Total)) +
   geom_line(color = "red") +
-  ylab("Pinniped Strandings") +
+  ylab("Count") +
   geom_smooth(method = lm) +
   labs(title = "Mysticete Strandings Per Year")
 
@@ -1249,7 +1249,7 @@ ggplot(Turtle_Stranding_Data) +
 #Plot of annual turtle strandings with trend line
 ggplot(Strandings_Totals_Year, aes(x = Year, y = Turtles_Total)) +
   geom_line(color = "red") +
-  ylab("Turtle Strandings") +
+  ylab("Count") +
   geom_smooth(method = lm) +
   labs(title = "Turtle Strandings Per Year")
 ```
