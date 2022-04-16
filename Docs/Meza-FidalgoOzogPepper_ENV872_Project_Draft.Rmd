@@ -115,8 +115,7 @@ Variables Used    | Family, Common Name, Species Name, Date, Year, Month, Latitu
 Data Range        | March 18, 1976 to December, 29, 2011
 
 
-
-
+<br>
 
 The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped, and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
 
