@@ -143,10 +143,7 @@ head(Annual_Strandings_Totals)
 ```{r - Table summary of the dataset structure5, message = FALSE, warning = FALSE, include = FALSE}
 head(Monthly_Strandings_Totals)
 ```
-
-
-
-
+<br>
 \newpage
 
 # Exploratory Analysis 
@@ -160,7 +157,7 @@ ggplot(Strandings_Final) +
   ylab("Count") +
   labs(title = "Total Strandings per Family")
 ```
-
+<br>
 
 <center>***Figure 2**: Total Strandings per Year*</center>
 ```{r Visually Exploring the Data 2, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
@@ -169,7 +166,7 @@ ggplot(Strandings_Final) +
   ylab("Count") +
   labs(title = "Total Strandings per Year")
 ```
-
+<br>
 
 <center>***Figure 3**: Total Strandings per Month*</center>
 ```{r Visually Exploring the Data 3, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
@@ -179,6 +176,7 @@ ggplot(Strandings_Final) +
   labs(title = "Total Strandings per Month") +scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
+<br>
 
 <center>***Map 1**: Geospatial Exploration of each Family*</center>
 <center>
@@ -189,6 +187,7 @@ Strandings_sf <- Strandings_Final %>%
 mapview(Strandings_sf, zcol = "Family")
 ```
 </center>
+<br>
 
 \newpage
 
@@ -252,7 +251,7 @@ summary(Pinniped_Stranding_Data)
 
 
 ##### Pinniped Data Exploration
-
+<br>
 <center>***Figure 4**: Total Pinniped Strandings per Year by Species*</center>
 ```{r Pinniped Data Exploration 1, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 #Plot of annual pinniped strandings
@@ -262,6 +261,7 @@ ggplot(Pinniped_Stranding_Data) +
   labs(title = "Total Pinniped Strandings per Year by Species") + 
   scale_fill_discrete(name = "Pinniped Species", labels = c("Atlantic Gray Seal", "Harbor Seal", "Harp Seal", "Hooded Seal", "Unidentified Pinniped"))
 ```
+<br>
 
 <center>***Figure 5**: Total Pinniped Strandings per Month by Species*</center>
 ```{r Pinniped Data Exploration 2, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
@@ -275,6 +275,7 @@ ggplot(Pinniped_Stranding_Data) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
+<br>
 
 <center>***Figure 6**: Pinniped Strandings per Year*</center>
 ```{r Pinniped Data Exploration 3, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
@@ -288,8 +289,11 @@ ggplot(Annual_Pinniped_Strandings, aes(x = Year, y = Pinnipeds_Total)) +
 
 print(Pinniped_Stranding_Plot)
 ```
+<br>
 
 Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level, although a more detailed species level analysis is beyond the scope of this project. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
+
+<br>
 
 <center>***Map 2**: Geospatial Exploration of Pinniped Strandings*</center>
 <center>
@@ -301,17 +305,16 @@ Pinniped_sf <- Pinniped_Stranding_Data %>%
 mapview(Pinniped_sf)
 ```
 </center>
-
-
+<br>
 
 ##### Pinniped Stranding Statistical Analysis
-
+<br>
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-*Null Hypothesis 1*: There is no effect of year on the total number of pinniped strandings
+**Null Hypothesis 1**: There is no effect of year on the total number of pinniped strandings
 Alternative Hypothesis 1: There is an effect of year on the total number of pinniped strandings
 
-*Null Hypothesis 2*: There is no effect of month on the total number of pinniped strandings
+**Null Hypothesis 2**: There is no effect of month on the total number of pinniped strandings
 Alternative Hypothesis 2: There is an effect of month on the total number of pinniped strandings
 
 ```{r Pinniped Poisson Models, message = FALSE, warning = FALSE, include = FALSE}
@@ -325,16 +328,19 @@ Monthly_Pinniped_Model <- glm(data = Monthly_Pinniped_Strandings, Pinnipeds_Tota
 
 summary(Monthly_Pinniped_Model)
 ```
-Yearly Analysis:
-We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings.  18 of the 21 documented years were statistically significant with p-values ranging from 9.07e-09(2001) to 0.03(1999).  Only the first three years of data, 1991-1993 had p-values above 0.05.  The null deviance of yearly model was 1.36e+02 on 21 degrees of freedom, and residual deviance of 1.31e-14
 
-Monthly Analysis:
-We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15(March) to 0.02(June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
+*Yearly Analysis*:
+<br>We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings.  18 of the 21 documented years were statistically significant with p-values ranging from 9.07e-09(2001) to 0.03(1999).  Only the first three years of data, 1991-1993 had p-values above 0.05.  The null deviance of yearly model was 1.36e+02 on 21 degrees of freedom, and residual deviance of 1.31e-14
+
+*Monthly Analysis*:
+<br>We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15(March) to 0.02(June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
 
 This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinnped strandings.
 
 
 ##### Pinniped Geospatial Analysis
+<br>
+
 ```{r Pinniped Geospatial Analysis, message = FALSE, warning = FALSE, include = FALSE}
 #Converting the data points to UTM for further analysis. The study are straddles UTM zones 18 and 19, zone 19 was chosen because that is where the greatest concentration of points seems to be located.
 
@@ -372,9 +378,10 @@ mapview(Pinniped_sf_utm,
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 </center>
-
+<br>
 
 By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean. By determining that 425 out of 679, or 62.5 percent of, pinniped strandings occur within 40km of the mean stranding location, what makes this area a hotspot can be studied and hopefully also determined. This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible. Since only 54, or 8 percent of, pinniped strandings occur further than 60km from the stranding mean, resources for study and rescue can be allocated away from those areas. A table containing the distance of the all of the data points from the  "mean" stranding location can be found in Table 2 below.
+<br>
 
 ```{r Pinniped Distance Table, message = FALSE, warning = FALSE, include = FALSE}
 #Developing a mean distance table
@@ -447,15 +454,16 @@ Distance (m) | Number of Strandings
 140,000 - 160,000 | 7
 greater than 160,000 | 3
 
-
+<br>
 
 
 ##### Pinniped Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-*Null Hypothesis*: The yearly and/or monthly/seasonal pinniped stranding data is stationary
+**Null Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is stationary
 
-*Alternative Hypothesis*: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is not stationary
+<br>
 
 ```{r Pinniped Yearly Time Series, message = FALSE, warning = FALSE, include = FALSE}
 #Developing a yearly time series to determine if there is a trend
@@ -495,7 +503,7 @@ A Mann Kendall test was run for the yearly time series. Based on the results, we
 
 A seasonal Mann Kendall test was run for the monthly time series. Based on the results, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
 
-
+<br>
 
 
 ### 2. Odontocetes:
@@ -586,6 +594,7 @@ summary(odontocete_stranding_data)
 
 
 ##### Odontocete Data Exploration
+<br>
 
 <center>***Figure 8**: Total Odontocete Strandings per Year by Species*</center>
 ```{r Odontocete Data Exploration 1, warning = FALSE, message = FALSE, echo = FALSE, fig.align = "center"}
@@ -596,7 +605,7 @@ ggplot(odontocete_stranding_data) +
   labs(title = "Total Odontocete Strandings per Year by Species") +
   scale_fill_discrete(name = "Odontocete Species", labels = c("Atlantic White-sided Dolphin", "Blainville's Beaked Whale","Common Bottlenose Dolphin", "Dwarf Sperm Whale", "Harbor Porpoise","Long-finned Pilot Whale", "Pygmy Sperm Whale", "Risso's Dolphin", "Short-beaked Common Dolphin", "Short-finned Pilot Whale", "Sowerby's Beaked Whale", "Striped Dolphin", "Unidentified Toothed Whales"))
 ```
-
+<br>
 
 <center>***Figure 9**: Total Odontocete Strandings per Month by Species*</center>
 ```{r Odontocete Data Exploration 2, warning = FALSE, message = FALSE, echo = FALSE, fig.align = "center"}
@@ -609,9 +618,10 @@ ggplot(odontocete_stranding_data) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
+<br>
 
 There appears to be an increasing trend in the total number of odontocete strandings as the years progress (Figure 8). The odontocete strandings have the lowest amount in 1993 and the highest in 2011, where the count gradually increases over the years. The different species that are stranded throughout the years do not appear to have a noticeable trend. When looking at the strandings per month in Figure 9, the months with the most strandings are during March, May, and July. There may be possible seasonal trends, where the spring and early summer see a greater number of strandings than the other months due to calving season. When looking at Figure 10 below, you can see the trend in the number of strandings of odontocetes over the years, and how they are increasing. All of these strandings can be seen in the Map 4 below.
-
+<br>
 
 <center>***Figure 10**: Odontocete Strandings per Year*</center>
 ```{r Odontocete Data Exploration 3, warning = FALSE, message = FALSE, echo = FALSE, fig.align = "center"}
@@ -624,7 +634,7 @@ ggplot(annual_odontocetes_strandings, aes(x = Year, y = Odontocetes_Total)) +
 
 print(odontocete_stranding_plot)
 ```
-
+<br>
 
 <center>***Map 4**: Geospatial Exploration of Odontocete Strandings*</center>
 <center>
@@ -635,16 +645,18 @@ odontocete_sf <- odontocete_stranding_data %>%
 mapview(odontocete_sf, layer.name = "Odontocete Strandings")
 ```
 </center>
+<br>
+
 
 
 ##### Odontocete Stranding Statistical Analysis
 
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-*Null Hypothesis 1*: There is no effect of individual year on the total number of odontocete strandings.
+**Null Hypothesis 1**: There is no effect of individual year on the total number of odontocete strandings.
 Alternative Hypothesis 1: There is an effect of year on the total number of odontocete strandings.
 
-*Null Hypothesis 2*: There is no effect of month on the total number of odontocete strandings.
+**Null Hypothesis 2**: There is no effect of month on the total number of odontocete strandings.
 Alternative Hypothesis 2: There is an effect of month on the total number of odontocete strandings.
 
 ```{r Odontocete GLM Models, warning = FALSE, message = FALSE, include = FALSE}
@@ -655,14 +667,14 @@ summary(odontocete_model)
 odontocete_model2 <- glm(data = monthly_odontocetes_strandings, Odontocetes_Total ~ factor(Month), family = poisson)
 summary(odontocete_model2)
 ```
-Yearly Analysis:
-We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings. Of all the years in the odontocete strandings, only 2 years are statistically significant; 1990 and 2011 were both statistically significant with p-values of 1.14e-05 and 0.0198 respectively. The null deviance was had a value of 4.0129e+01 and the residual deviance had a value of. -2.1867e-21.
+*Yearly Analysis*:
+<br>We reject the null hypothesis that there is no effect of year on the total number of odontocete strandings. Of all the years in the odontocete strandings, only 2 years are statistically significant; 1990 and 2011 were both statistically significant with p-values of 1.14e-05 and 0.0198 respectively. The null deviance was had a value of 4.0129e+01 and the residual deviance had a value of. -2.1867e-21.
 
-Monthly Analysis:
-We reject the null hypothesis that there is no effect of month on the total number of odontocete strandings. There were four months in which the odonotocete strandings were statistically significant: January, March, May, and June. The most statistucally significant months were January and May with p-values of 4.35e-11 and 0.00858 respectively. March had a p-value of  0.02389 and June had a p-value of 0.03344. The null deviance was 3.7282e+01 and the residual deviance was -3.5527e-15.
+*Monthly Analysis*:
+<br>We reject the null hypothesis that there is no effect of month on the total number of odontocete strandings. There were four months in which the odonotocete strandings were statistically significant: January, March, May, and June. The most statistucally significant months were January and May with p-values of 4.35e-11 and 0.00858 respectively. March had a p-value of  0.02389 and June had a p-value of 0.03344. The null deviance was 3.7282e+01 and the residual deviance was -3.5527e-15.
 
 This indicates that there is a difference in the number of odontocete strandings across the years and months of the study. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
-
+<br>
 
 
 ##### Odontocete Geospatial Analysis
@@ -691,7 +703,7 @@ odo_mean_distance <-  rowMeans(odontocete_distance_matrix)
 odontocete_sf_utm  <-  odontocete_sf_utm %>% 
   bind_cols(odo_mean_distance = odo_mean_distance)
 ```
-
+<br>
 
 <center>***Map 5**: Odontocete Distance (m) from Mean Stranding Point*</center>
 <center>
@@ -701,11 +713,10 @@ mapview(odontocete_sf_utm,
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 </center>
-
+<br>
 
 Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
-
-
+<br>
 
 
 ```{r Odontocete Distance Table, warning = FALSE, message = FALSE, include = FALSE}
@@ -779,19 +790,19 @@ less than 40,000 | 125
 160,000 - 180,000 | 2
 grater than 180,000 | 1
 
-
+<br>
 
 Of the 155 odontocete strandings used in our analysis, 125 of them were within 40,000m of mean latitude and longitude stranding location. This was followed by 20 strandings that were within 40,000m to 60,000m from the mean stranding location. The remaining 10 strandings were scattered farther than 60,000m, and there was one stranding that was greater than 180,000m from the mean stranding location. These values can be seen in Table 3 above. Most of the strandings were centered near Newport, in the Rhode Island Sound. There were also many strandings that were located up in Narragansett Bay. The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the odontocetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to odontocetes stranding from Charlestown to Newport, in the Rhode Island Sound. 
-
+<br>
 
 
 ##### Odontocete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-*Null Hypothesis*: The yearly and/or monthly/seasonal odontocete stranding data is stationary
+**Null Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is stationary
 
-*Alternative Hypothesis*: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
-
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is not stationary
+<br>
 
 ```{r Odontocete Yearly Time Series, warning = FALSE, message = FALSE, include = FALSE}
 odontocete_ts_yearly <- ts(odontocete_stranding_numbers_final, start = c(1990), frequency = 1)
@@ -821,12 +832,12 @@ odontocete_ts_monthly_trend <- Kendall::SeasonalMannKendall(odontocete_ts_monthl
 summary(odontocete_ts_monthly_trend)
 
 ```
+<br>
 
 A Mann Kendall test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
 
 A seasonal Mann Kendall test was run for our monthly time series. Based on the results, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
-
-
+<br>
 
 
 
@@ -917,6 +928,7 @@ summary(mysticete_stranding_data)
 
 
 ##### Mysticete Data Exploration
+<br>
 
 <center> ***Figure 12**: Total Mysticete Strandings per Year by Species*</center>
 ```{r Mysticete Data Exploration1, warning = FALSE, message = FALSE, echo = FALSE, fig.align="center"}
@@ -927,6 +939,7 @@ ggplot(mysticete_stranding_data) +
   labs(title = "Total Mysticete Strandings per Year by Species") +
   scale_fill_discrete(name = "Mysticete Species", labels = c("Baleen Whale","Blue Whale", "Unknown Cetaceans",  "Fin Whale", "Humpback Whale", "Minke Whale", "North Atlantic Right Whale"))
 ```
+<br>
 
 <center> ***Figure 13**: Total Mysticete Strandings per Month by Species*</center>
 ```{r Mysticete Data Exploration2, warning = FALSE, message = FALSE, echo = FALSE, fig.align="center"}
@@ -939,10 +952,10 @@ ggplot(mysticete_stranding_data) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
-
+<br>
 
 There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater ammount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to calving season.
-
+<br>
 
 <center>***Figure 14**: Mysticete Strandings per Year*</center>
 ```{r Mysticete Data Exploration3, warning = FALSE, message = FALSE, echo = FALSE, fig.align="center"}
@@ -955,9 +968,10 @@ ggplot(annual_mysticetes_strandings, aes(x = Year, y = Mysticetes_Total)) +
 
 print(mysticete_stranding_plot)
 ```
-
+<br>
 
 When looking at Figure 14 above, you can see the trend in the number of strandings of mysticetes over the years is increasing, but not by much. It appears that the number of strandings is consistent until 2000, where the numbers increase before dropping down again in 2009. All of these strandings can be seen in Map 6 below.
+<br>
 
 <center>***Map 6**: Geospatial Exploration of Mysticete Strandings*</center>
 <center>
@@ -968,15 +982,16 @@ mysticete_sf <- mysticete_stranding_data %>%
 mapview(mysticete_sf)
 ```
 </center>
+<br>
 
 
 ##### Mysticete Stranding Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM):
 
-*Null Hypothesis 1*: There is no effect of year on the total number of mysticete strandings
+**Null Hypothesis 1**: There is no effect of year on the total number of mysticete strandings
 Alternative Hypothesis 1: There is an effect of year on the total number of mysticete strandings
 
-*Null Hypothesis 2*: There is no effect of month on the total number of mysticete strandings
+**Null Hypothesis 2**: There is no effect of month on the total number of mysticete strandings
 Alternative Hypothesis 2: There is an effect of month on the total number of mysticete strandings
 
 ```{r Mysticeter GLM Models, warning = FALSE, message = FALSE, include = FALSE}
@@ -987,15 +1002,15 @@ mysticete_model2 <- glm(data = monthly_mysticetes_strandings, Mysticetes_Total ~
 summary(mysticete_model2)
 
 ```
-Yearly Analysis:
-We reject the null hypothesis that there is no effect of year on the total number of mysticete strandings due to none of the p-values in each year being below 0.05. This means that overall, there is no change in the number of strandings over the years of the study. The null deviance had a p-value of 2.1360e+01, and the residual deviance had a p-value of 4.1223e-10.
+*Yearly Analysis*:
+<br>We reject the null hypothesis that there is no effect of year on the total number of mysticete strandings due to none of the p-values in each year being below 0.05. This means that overall, there is no change in the number of strandings over the years of the study. The null deviance had a p-value of 2.1360e+01, and the residual deviance had a p-value of 4.1223e-10.
 
-Monthly Analysis:
-We  fail to reject the null hypothesis that there is no effect of month on the total number of mysticete strandings. There were two months in which the mysticete strandings were statistically significant: May and June. The most statistically significant month was May with a p-value of 0.00874 while June had a p-value of 0.01345. The null deviance had a p-value of 5.7723e+01 the residual deviance had a p-value of 3.0330e-10.
+*Monthly Analysis*:
+<br>We  fail to reject the null hypothesis that there is no effect of month on the total number of mysticete strandings. There were two months in which the mysticete strandings were statistically significant: May and June. The most statistically significant month was May with a p-value of 0.00874 while June had a p-value of 0.01345. The null deviance had a p-value of 5.7723e+01 the residual deviance had a p-value of 3.0330e-10.
 
 
 This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to calving season, but further research would be needed to determine the cause.
-
+<br>
 
 ##### Mysticete Geospatial Analysis
 ```{r Mysticete Geospatial Analysis, warning = FALSE, message = FALSE, include = FALSE}
@@ -1023,7 +1038,7 @@ myst_mean_distance <-  rowMeans(mysticete_distance_matrix)
 mysticete_sf_utm  <-  mysticete_sf_utm %>% 
   bind_cols(myst_mean_distance = myst_mean_distance)
 ```
-
+<br>
 
 <center>***Map 7**: Mysticete Distance (m) from Mean Stranding Point*</center>
 <center>
@@ -1033,12 +1048,10 @@ mapview(mysticete_sf_utm,
         layer.name = "Distance (m) from Mean Stranding Point")
 ```
 </center>
+<br>
 
 Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why mysticete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Stonington to Newport, in the Rhode Island Sound with one stranding that was farther away.
-
-
-
-
+<br>
 
 ```{r Mysticete Distance Table, warning = FALSE, message = FALSE, include = FALSE}
 # points within 40,000m
@@ -1103,21 +1116,19 @@ less than 40,000 | 44
 100,000 - 120,000 | 0
 120,000 - 140,000 | 0
 140,000 - 160,000 | 1
-
-
+<br>
 
 
 Of the 50 mysticete strandings used in our analysis, 44 of them were within 40,000m of mean latitude and longitude stranding location. This was followed by 5 strandings that were within 40,000m to 60,000m from the mean stranding location. The remaining stranding was located between 140,000m to 160,000m away from the mean stranding location. These values can be seen in Table 4 above. Most of the strandings were centered near Newport, in the Rhode Island Sound. There were also some strandings that were located up in Narragansett Bay. The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the mysticetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to mysticetes stranding from Charlestown to Newport, in the Rhode Island Sound.
-
-
+<br>
 
 ##### Mysticete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-*Null Hypothesis*: The yearly and/or monthly/seasonal mysticete stranding data is stationary
+**Null Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is stationary
 
-*Alternative Hypothesis*: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
-
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is not stationary
+<br>
 
 ```{r Yearly Mysticete Time Series, warning = FALSE, message = FALSE, include = FALSE}
 mysticete_ts_yearly <- ts(mysticete_stranding_numbers_final, start = c(1990,1), frequency = 1)
@@ -1126,6 +1137,7 @@ mysticete_ts_yearly_trend <- MannKendall(mysticete_ts_yearly)
 
 summary(mysticete_ts_yearly_trend)
 ```
+<br>
 
 <center>***Figure 15**: Mysticete Monthly Decomposition*</center>
 ```{r Monthly Mysticete Time Series1, warning = FALSE, message = FALSE, echo = FALSE, fig.align="center"}
@@ -1139,7 +1151,7 @@ mysticete_ts_monthly <- ts(mysticete_stranding_numbers_final$Total,
 mysticete_ts_monthly_decomp <- stl(mysticete_ts_monthly, s.window = "periodic")
 plot(mysticete_ts_monthly_decomp)
 ```
-
+<br>
 
 ```{r Monthly Mysticete Time Series2, warning = FALSE, message = FALSE, include = FALSE}
 mysticete_ts_monthly_trend <- Kendall::SeasonalMannKendall(mysticete_ts_monthly)
@@ -1151,8 +1163,7 @@ summary(mysticete_ts_monthly_trend)
 A Mann Kendall Test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
 
 A seasonal Mann Kendall Test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
-
-
+<br>
 
 
 
@@ -1195,6 +1206,7 @@ summary(Turtle_Stranding_Data)
 ```
 
 ##### Sea Turtle Data Exploration
+<br>
 
 <center>***Figure 16**: Total Sea Turtle Strandings per Year by Species*</center>
 ```{r Turtle Exploratory Analysis1, message = FALSE, warning = FALSE, echo = FALSE, fig.align="center"}
@@ -1206,6 +1218,7 @@ ggplot(Turtle_Stranding_Data) +
   labs(title = "Total Sea Turtle Strandings per Year by Species") +
   scale_fill_discrete(name = "Sea Turtle Species", labels = c("Green", "Kemp's Ridley", "Leatherback", "Loggerhead", "Unidentified Turtle"))
 ```
+<br>
 
 <center>***Figure 17**: Total Sea Turtle Strandings per Month by Species*</center>
 ```{r Turtle Exploratory Analysis2, message = FALSE, warning = FALSE, echo = FALSE, fig.align="center"}
@@ -1218,7 +1231,7 @@ ggplot(Turtle_Stranding_Data) +
   scale_x_discrete(name = "Month",
                    limits = c("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"))
 ```
-
+<br>
 
 <center>***Figure 18**: Sea Turtle Strandings per Year*</center>
 ```{r Turtle Exploratory Analysis3, message = FALSE, warning = FALSE, echo = FALSE, fig.align="center"}
@@ -1229,11 +1242,10 @@ ggplot(Strandings_Totals_Year, aes(x = Year, y = Turtles_Total)) +
   geom_smooth(method = lm) +
   labs(title = "Turtle Strandings Per Year")
 ```
-
-
+<br>
 
 Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995 (Figure 16). The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year (Figure 17).
-
+<br>
 
 <center>***Map 8**: Geospatial Exploration of Sea Turtle Strandings*</center>
 <center>
@@ -1244,16 +1256,15 @@ turtle_sf <- Turtle_Stranding_Data %>%
 mapview(turtle_sf, layer.name="Sea Turtle Strandings")
 ```
 </center>
-
-
+<br>
 
 ##### Sea Turtle Statistical Analysis
 The following are the null and alternative hypothesis for the annual and monthly statistical analysis using Poisson Models (GLM): 
 
-*Null Hypothesis 1*: There is no effect of individual year on sea turtle strandings.   
+**Null Hypothesis 1**: There is no effect of individual year on sea turtle strandings.   
 Alternative Hypothesis 1: There is an effect of individual year on sea turtle strandings. 
 
-*Null Hypothesis 2*: There is no effect of month on sea turtle strandings.  
+**Null Hypothesis 2**: There is no effect of month on sea turtle strandings.  
 Alternative Hypothesis 2: There is an effect of month on sea turtle strandings. 
 
 ```{r Turtle Statistical Analysis, message = FALSE, warning = FALSE, include = FALSE}
@@ -1264,12 +1275,12 @@ Turtle_Model_Month <- glm(data = Turtle_Strandings_Month, Turtles_Total ~ factor
 summary(Turtle_Model_Month)
 ```
 
-Yearly Analysis:
-We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statistically different years. The null deviance of this model is 7.4606e+01 and the residual deviance is -4.8850e-15. 
+*Yearly Analysis*:
+<br>We reject the null hypothesis that individual year has no effect on sea turtle strandings. The sea turtle strandings in 9 of the 21 years are not significantly different (p-values: 0.147 - 0.706). 1995 was the most significantly different (p-value: 0.000236). 1991 (p-value: 0.0056), 1993 (p-value: 0.0078), 2008 (p-value: 0.0022), 2010 (p-value: 0.0016), and 2011 (p-value: 0.003) were the next most statistically different years. The null deviance of this model is 7.4606e+01 and the residual deviance is -4.8850e-15. 
 
-Monthly Analysis:
-We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02 and the residual deviance is 3.0332e-10.
-
+*Monthly Analysis*:
+<br>We reject the null hypothesis that month has no effect on sea turtle strandings. Of the 12 months, 5 of months were significantly different. May (p-value: 0.000269), June (p-value: 3.98e-06), July (p-value: 1.91e-05), August (p-value: 0.004106), and September (p-value: 0.049935) were significantly different. This indicates that sea turtle strandings are concentrated to the summer months in our study area. The null deviance of this model is 4.9235e+02 and the residual deviance is 3.0332e-10.
+<br>
 
 ##### Sea Turtle Geospatial Analysis
 
@@ -1302,6 +1313,7 @@ mean_distances <-  rowMeans(distance_matrix)
 Turtle_sf_utm  <-  Turtle_sf_utm %>% 
   bind_cols(mean_distance = mean_distances) 
 ```
+<br>
 
 <center>***Map 9**: Sea Turtle Distance (m) from Mean Strandign Point*</center>
 <center>
@@ -1310,7 +1322,7 @@ Turtle_sf_utm  <-  Turtle_sf_utm %>%
 mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mean Stranding Point")
 ```
 </center>
-
+<br>
 
 ```{r Turtle Spatial Table, message = FALSE, warning = FALSE, include = FALSE}
 # points within 20,000m
@@ -1373,7 +1385,7 @@ kable(Turtle_distances)
 ```
 
 Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 5). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing presrure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contibuting to sea turtle strandings in these areas. 
-
+<br>
 
 <center>***Table 5**: Number of Sea Turtle Strandings per Distance (m) from the Mean*</center>
 Distance (m) | Number of Strandings
@@ -1387,16 +1399,15 @@ less than 20,000 | 92
 120,000 - 140,000 | 6
 140,000 - 160,000 | 4
 greater than 160,000 | 1
-
-
-
+<br>
 
 ##### Sea Turtle Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-*Null Hypothesis*: The yearly and/or monthly/seasonal turtle stranding data is stationary.
+**Null Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is stationary.
 
-*Alternative Hypothesis*: The yearly and/or monthly/seasonal turtle stranding data is not stationary
+**Alternative Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is not stationary
+<br>
 
 ```{r turtle yearly time series, message = FALSE, warning = FALSE, include = FALSE}
 Turtle_ts_yearly <- ts(Turtle_strandings_date_final, start = 1990, frequency = 1)
@@ -1405,6 +1416,7 @@ Turtle_ts_yearly_trend <- MannKendall(Turtle_ts_yearly)
 
 summary(Turtle_ts_yearly_trend)
 ```
+<br>
 
 <center>***Figure 19**: Sea Turtle Decomposition*</center>
 ``` {r turtle monthly time series1, message = FALSE, warning = FALSE, echo = FALSE, fig.align="center"}
@@ -1424,7 +1436,7 @@ Turtle_ts_monthly_trend <- Kendall::SeasonalMannKendall(Turtle_ts_monthly)
 
 summary(Turtle_ts_monthly_trend)
 ```
-
+<br>
 
 A Mann Kendall Test was run for our yearly time series. Based on the results, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
 
