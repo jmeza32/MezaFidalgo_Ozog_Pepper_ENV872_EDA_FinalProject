@@ -104,6 +104,7 @@ Our objective is to analyze animal strandings over the years to see if there any
 \newpage
 
 # Dataset Information
+<br>
 
 <center>***Table 1**: Dataset Information*</center>
 
