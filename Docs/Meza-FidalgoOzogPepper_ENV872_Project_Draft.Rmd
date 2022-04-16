@@ -196,8 +196,8 @@ mapview(Strandings_sf, zcol = "Family")
 # Analysis
 Because we decided to divide the data into groups by their families, we conducted separate analysis for each of the families. Our research questions are the following:
 
-1. Are there years or months where the number of strandings for each family are significantly different?
-2. Are there trends in each of the family strandings based off this dataset?
+**1. Are there years or months where the number of strandings for each family are significantly different?**
+<br>**2. Are there trends in each of the family strandings based off this dataset?**
 
 We utilized GLMs, MannKendall, and Seasonal MannKendall in our analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM.
 <br>
@@ -1397,7 +1397,7 @@ Both graphing and a time series analysis indicate that there is trend in the yea
 
 
 ### 2. Odontocetes:
-Our analysis indicated there were was change in the total number of strandings over the years of the study. The year 1990 and 2011 were statistically significant, which meant that those years were different than the rest of the study. There was also to be an increase in the number of strandings during the months of January, March, May, and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The increasing stranding over the years may be in indicator that there is an issue that needs to be address through further research. The increased strandings during the earlier months may be contributed to calving season. Again, further research would be needed to determine the cause.
+Our analysis indicated there were was change in the total number of strandings over the years of the study. The year 1990 and 2011 were statistically significant, which meant that those years were different than the rest of the study. There was also to be an increase in the number of strandings during the months of January, March, May, and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The increasing stranding over the years may be in indicator that there is an issue that needs to be address through further research. The increased strandings during the earlier months may be contributed to calving season or seasonal migrations. Again, further research would be needed to determine the cause.
 
 We found that 80.6% of our strandings were within 40,000m of the mean stranding point and 93.5% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to odonotocetes. This is another area that needs have further research in attempt to understand why the area is a common stranding point for odontocetes and what can be done to prevent these strandings.
 
