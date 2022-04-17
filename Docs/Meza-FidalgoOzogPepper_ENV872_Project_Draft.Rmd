@@ -286,7 +286,7 @@ ggplot(Pinniped_Stranding_Data) +
 ```
 <br>
 
-Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
+Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level (Figure 4). Harp and harbor seals make up most of the strandings each year. Most monthly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. This increase in late winter through springtime strandings can be seen in Figure 5. Figure 6 shows an some fluctuation, but an overall increase in pinniped strandings over time. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
 
 <br>
 
@@ -887,7 +887,7 @@ ggplot(mysticete_stranding_data) +
 ```
 <br>
 
-There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004, followed by 2009. There was variation in which species were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends due to higher concentrations of animals in the area in the early summer due to migration. When looking at Figure 14 below, there is a slightly increasing trend in the number of strandings of mysticetes over the years. It appears that the number of strandings is consistent until 2000, where the numbers increase before dropping down again in 2009. All of these strandings can be seen in Map 6 below.
+There appears to be an increasing trend in the number of mysticete strandings in the later years of the study (Figure 12). The year with the highest number of strandings was 2004, followed by 2009. There was variation in which species were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends due to higher concentrations of animals in the area in the early summer due to migration. When looking at Figure 14 below, there is a slightly increasing trend in the number of strandings of mysticetes over the years. It appears that the number of strandings is consistent until 2000, where the numbers increase before dropping down again in 2009. All of these strandings can be seen in Map 6 below.
 
 <br>
 
@@ -1378,7 +1378,7 @@ summary(Turtle_ts_monthly_trend)
 
 Based on the results from the Mann Kendall test, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
 
-Based on the results from the Seasonal Mann Kendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
+Based on the results from the Seasonal Mann Kendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 19). 
 
 
 \newpage
