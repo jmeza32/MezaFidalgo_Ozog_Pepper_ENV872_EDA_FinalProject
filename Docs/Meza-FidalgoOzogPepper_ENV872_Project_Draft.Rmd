@@ -16,6 +16,7 @@ geometry: margin=2.54cm
 fontsize: 12pt
 mainfont: Times New Roman
 ---
+<br>
 
 -------------
 
@@ -101,6 +102,7 @@ Marine mammal and sea turtle strandings can be unusual events or indicators of p
 
 Our objective is to analyze animal strandings over the years to see if there any trends in the quantity of strandings for each family (cetaceans, odontocetes, mysticetes, and pinnipeds). We have decided to look at the total number of strandings per year for all families, the changes in strandings over the years for each family and the seasonality differences across all years for each family. 
 
+<br>
 
 \newpage
 
@@ -115,6 +117,7 @@ Data Source       | OBIS-SEAMAP  - Mystic Aquarium
 Retrieved From    | https://seamap.env.duke.edu/dataset/945
 Variables Used    | Family, Common Name, Species Name, Date, Year, Month, Latitude, Longitude, Total Strandings, Strandings by Species
 Data Range        | March 18, 1976 to December, 29, 2011
+
 
 
 <br>
@@ -150,6 +153,7 @@ head(Monthly_Strandings_Totals)
 # Exploratory Analysis 
 
 We initially decided that it would be best to look at the data holistically to get a better feel for the trends in the data. We first analyzed the total number of strandings per each family, as seen in Figure 1. To better see the data, we divided and summed the strandings of each family for each year from 1990 to 2011, as seen in Figure 2. To see if there could be seasonal trends for the entire data set, the data was grouped by month for each family from the years 1990 to 2011, as seen in Figure 3. Finally, to have a geospatial understanding of our data, Map 1 was created.
+
 <br>
 
 <center>***Figure 1**: Total Strandings per Family*</center>
@@ -200,7 +204,7 @@ Because we decided to divide the data into groups by their families, we conducte
 **2. How are strandings related spatially? Are there areas with higher concentrations of strandings than others?**  
 **3. Are there trends in each of the family strandings based off this data set?**  
 
-To answer our first question, we used a GLM for our statistical analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM. To answer our second question, we found the mean latitude and longitude for each family. We then calculated how far each stranding point was from the mean location to determine if strandings were concentrated to certain areas. To answer our third question, we conducted a yearly time series with the MannKendall and a monthly time series with the Seasonal MannKendall. 
+To answer our first question, we used a GLM for our statistical analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM. To answer our second question, we found the mean latitude and longitude for each family. We then calculated how far each stranding point was from the mean location to determine if strandings were concentrated to certain areas. To answer our third question, we conducted a yearly time series with the Mann Kendall and a monthly time series with the Seasonal Mann Kendall. 
 <br>
 
 
@@ -283,6 +287,7 @@ ggplot(Pinniped_Stranding_Data) +
 <br>
 
 Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
+
 <br>
 
 <center>***Figure 6**: Pinniped Strandings per Year*</center>
@@ -477,6 +482,7 @@ Pinniped_ts_yearly_trend <- MannKendall(Pinniped_ts_yearly)
 
 summary(Pinniped_ts_yearly_trend)
 ```
+<br>
 
 <center>***Figure 7**: Pinniped Monthly Decomposition*</center>
 ```{r Pinniped Monthly Time Series 1, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
@@ -504,7 +510,7 @@ summary(Pinniped_ts_monthly_trend)
 
 Based on the results from the Mann Kendall test, we reject the null hypothesis that yearly pinniped strandings are stationary with a p-value of 1.77e-14. 
 
-Based on the results from the seasonal Mann Kendall test, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
+Based on the results from the Seasonal Mann Kendall test, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
 
 <br>
 
@@ -774,6 +780,7 @@ odontocete_ts_yearly_trend <- MannKendall(odontocete_ts_yearly)
 
 summary(odontocete_ts_yearly_trend)
 ```
+<br>
 
 <center>***Figure 11**: Odontocete Monthly Decomposition*</center>
 ```{r Odontocete Monthly Time Series 1, warning = FALSE, message = FALSE, echo = FALSE, fig.align="center"}
@@ -799,7 +806,7 @@ summary(odontocete_ts_monthly_trend)
 
 Based on the results of the Mann Kendall test, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
 
-Based on the results from the seasonal Mann Kendall test, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
+Based on the results from the Seasonal Mann Kendall test, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
 
 <br>
 
@@ -1085,7 +1092,7 @@ summary(mysticete_ts_monthly_trend)
 
 Based on the results from the Mann Kendall test, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
 
-Based on the results from the seasonal Mann Kendall test, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
+Based on the results from the Seasonal Mann Kendall test, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
 
 
 <br>
@@ -1254,7 +1261,7 @@ mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mea
 </center>
 <br>
 
-Of the 256 sea turtle strandings used in our analysis, 92 (36%) were within 20km of the mean stranding location and 113 (44%) were within 20 - 40km of the mean stranding location. These values can be seen in Table 5 below. These points were in the areas around Charlestown, Newport, and New Shoreham. Some sea turtle strandings were reported inland, which could be due to tides/currents bringing the animal upstream into rivers (Map 9).
+Of the 256 sea turtle strandings used in our analysis, 92 (36%) were within 20km of the mean stranding location and 113 (44%) were within 20 to 40km of the mean stranding location. These values can be seen in Table 5 below. These points were in the areas around Charlestown, Newport, and New Shoreham. Some sea turtle strandings were reported inland, which could be due to tides/currents bringing the animal upstream into rivers (Map 9).
 
 <br>
 
@@ -1371,7 +1378,7 @@ summary(Turtle_ts_monthly_trend)
 
 Based on the results from the Mann Kendall test, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
 
-Based on the results from the seasonal Mann Kendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
+Based on the results from the Seasonal Mann Kendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
 
 
 \newpage
@@ -1398,15 +1405,15 @@ Based on the results from the seasonal Mann Kendall test, we fail to reject the 
 
 
 ### 4. Sea Turtles Summary:
-(1) 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which were the May - September. 
+(1) 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which were the May through September. 
 (2) 80% of sea turtles strandings all occurred within 40km of the mean stranding location. 
 (3) Time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. While our data exploration showed that most of the strandings occurred in the summer months, this could be due to certain months of certain years having disproportionately higher amounts of strandings and could be the reason seasonality was not significant in our sea turtle data.
 
 # Conclusions
 
-Our results show that marine mammal and sea turtle strandings have varied throughout 1990 – 2011 along the coastlines of Connecticut, Rhode Island, and Fishers Island, NY. The years and months that were statistically significant varied by family. The majority of months that were significant can be related back to a period necessary for specific life history stages, such as the pinniped pupping season, odontocete calving season, mysticete migration and feeding season, and sea turtle nesting season. Higher abundances of animals are present in the area around these times of year which could lead to higher amounts of detected strandings. 
+Our results show that marine mammal and sea turtle strandings have varied throughout 1990 to 2011 along the coastlines of Connecticut, Rhode Island, and Fishers Island, NY. The years and months that were statistically significant varied by family. The majority of months that were significant can be related back to a period necessary for specific life history stages, such as the pinniped pupping season, odontocete calving season, mysticete migration and feeding season, and sea turtle nesting season. Higher abundances of animals are present in the area around these times of year which could lead to higher amounts of detected strandings. 
 
-Similarly, our results show that the majority of strandings for each family is concentrated to areas within 40-60km of the mean stranding location, with most strandings of all families concentrated in the waters surrounding Charleston, RI to Newport RI. The high aggregation of strandings in these areas could be a result of various factors, such as…
+Similarly, our results show that the majority of strandings for each family is concentrated to areas within 40 to 60km of the mean stranding location, with most strandings of all families concentrated in the waters surrounding Charleston, RI to Newport RI. The high aggregation of strandings in these areas could be a result of various factors, such as…
 
   * Ideal environmental conditions for each species bringing higher amounts of animals into the area and closer to shore (such as ideal feeding conditions)  
   * The flow of oceanic currents and tides bringing dead animals into these areas
