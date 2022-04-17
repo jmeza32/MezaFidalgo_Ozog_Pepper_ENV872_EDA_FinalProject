@@ -1447,8 +1447,21 @@ knitr::include_graphics('../Data/Images/CSC_1077.png')
 
 **Data**: <https://seamap.env.duke.edu/dataset/945> 
 
-1. Halpin, P.N., A.J. Read, E. Fujioka, B.D. Best, B. Donnelly, L.J. Hazen, C. Kot, K. Urian, E. LaBrecque, A. Dimatteo, J. Cleary, C. Good, L.B. Crowder, and K.D. Hyrenbach. 2009. OBIS-SEAMAP: The world data center for marine mammal, sea bird, and sea turtle distributions. Oceanography. 22(2):104-115.
+1. Avise, J. C., Bowen, B. W. (1994). Investigating sea turtle migration using DNA markers. Current Opinion in Genetics & Development. 4(6):882-886. https://doi.org/10.1016/0959-437X(94)90074-4.
 
-2. Smith, A. 2014. Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011. Data downloaded from OBIS-SEAMAP (http://seamap.env.duke.edu/dataset/945) on 2022-04-02.
+2. Brusius, B. K., de Souza, R. B., & Barbieri, E. (2020). Stranding of Marine Animals: Effects of Environmental Variables. Life Below Water, 1-10.
+
+3. Casale, P., Ceriani, S.A. (2019). Satellite surveys: a novel approach for assessing sea turtle nesting activity and distribution. Marine Biology 166.. doi:10.1007/s00227-019-3494-4
+
+4. Chan, D., Tsui, H., Kot B. (2017). Database documentation of marine mammal stranding and mortality: current status review and future prospects. Dis Aquat Org 126:247-256. https://doi.org/10.3354/dao03179
+
+5. Halpin, P.N., Reed, A.J., Fujioka, E., Best, B.D., Donnelly, B., Hazen, L.J., Kot, C., Urian, K., LaBrecque, E., Dimatteo, A., Cleary, J., Good, C., Crowder, L.B., Hyrenbach, K.D. (2009). OBIS-SEAMAP: The world data center for marine mammal, sea bird, and sea turtle distributions. Oceanography. 22(2):104-115.
+
+6. Shane, S.H., Wells, R.S., Wursig, B. (1986). ECOLOGY, BEHAVIOR AND SOCIAL ORGANIZATION OF THE BOTTLENOSE DOLPHIN: A REVIEW. Marine Mammal Science 2, 34–63.. doi:10.1111/j.1748-7692.1986.tb00026.x
+
+7. Smith, A. 2014. Mystic Aquarium's marine mammal and sea turtle stranding data 1976-2011. Data downloaded from OBIS-SEAMAP (http://seamap.env.duke.edu/dataset/945) on 2022-04-02.
+
+8. Tyack, P. (2019). Marine Mammal Social Organization and Communication. Encyclopedia of Ocean Sciences (Third Edition). 582-588.
+
 
 **Photos**: Special thanks to Joshua Meza-Fidalgo for providing whale photos for our report.
