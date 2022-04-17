@@ -1404,7 +1404,7 @@ Based on the results from the seasonal Mann Kendall test, we fail to reject the 
 
 # Conclusions
 
-Our results show that marine mammal and sea turtle strandings have varied throughout 1990 – 2011 along the coastlines of Connecticut, Rhode Island, and Fishers Island, NY. The years and months that were statistically significant varied by family. The majority of months that were significant can be related back to a period necessary for specific life history stages, such as the pinniped pupping season, odontocete calving season, mysticetes migration and feeding season, and sea turtle nesting season. Higher abundances of animals are present in the area around these times of year which could lead to higher amounts of detected strandings. 
+Our results show that marine mammal and sea turtle strandings have varied throughout 1990 – 2011 along the coastlines of Connecticut, Rhode Island, and Fishers Island, NY. The years and months that were statistically significant varied by family. The majority of months that were significant can be related back to a period necessary for specific life history stages, such as the pinniped pupping season, odontocete calving season, mysticete migration and feeding season, and sea turtle nesting season. Higher abundances of animals are present in the area around these times of year which could lead to higher amounts of detected strandings. 
 
 Similarly, our results show that the majority of strandings for each family is concentrated to areas within 40-60km of the mean stranding location, with most strandings of all families concentrated in the waters surrounding Charleston, RI to Newport RI. The high aggregation of strandings in these areas could be a result of various factors, such as…
 
