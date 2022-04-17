@@ -122,9 +122,9 @@ Data Range        | March 18, 1976 to December, 29, 2011
 
 <br>
 
-The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped (seals and sea lions), and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
+The dataset that we chose to work with is the Mystic Aquarium's marine mammal and sea turtle stranding data that started in 1976 until 2011. However, there was only one stranding record in 1976, so that point was excluded from our analysis. The rest of the data started in 1990 and was concluded in 2011. It contains the number of whale (odontocetes and mysticetes), pinniped (seals), and sea turtle strandings that occurred along the coasts of Connecticut, Rhode Island and Fishers Island, New York, USA. There were a total of 1140 strandings; within these strandings, 155 were odontocetes, 50 were mysticetes, 679 were pinnipeds, and 256 were sea turtles.
 
-The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. The data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes, mysticetes, pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
+The dataset has a latitude that ranges from 41.00 to 41.86 while the longitude ranges from -73.65 to -71.10. The data was provided using the datum WGS 1984 (4326) and we performed a data transformation into UTM 19 (32619) for geospatial analysis. The data was wrangled to contain only the variables that we were interested in using. We then selected parts of the data based off of the Common Name of the species to create datasets that were easier for us to use in our analysis. This helped us divide the data into four groups: odontocetes (toothed whales), mysticetes (baleen whales), pinnipeds, and sea turtles. We initially looked at total yearly strandings for trends in the data for each family. After we analyzed the data on a monthly basis to help give insight to seasonal stranding trends for each family.
 
 
 ```{r - Table summary of the dataset structure1, message = FALSE, warning = FALSE, include = FALSE}
@@ -204,7 +204,7 @@ Because we decided to divide the data into groups by their families, we conducte
 **2. How are strandings related spatially? Are there areas with higher concentrations of strandings than others?**  
 **3. Are there trends in each of the family strandings based off this data set?**  
 
-To answer our first question, we used a GLM for our statistical analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM. To answer our second question, we found the mean latitude and longitude for each family. We then calculated how far each stranding point was from the mean location to determine if strandings were concentrated to certain areas. To answer our third question, we conducted a yearly time series with the Mann Kendall and a monthly time series with the Seasonal Mann Kendall. 
+To answer our first question, we used a GLM for our statistical analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM. To answer our second question, we found the mean latitude and longitude for each family. We then calculated how far each stranding point was from the mean location to determine if strandings were concentrated to certain areas. To answer our third question, we conducted a yearly time series with the Mann Kendall test and a monthly time series with the Seasonal Mann Kendall test. 
 <br>
 
 
@@ -341,10 +341,10 @@ summary(Monthly_Pinniped_Model)
 ```
 
 *Yearly Analysis*:
-<br>We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings.  18 of the 21 documented years were statistically significant with p-values ranging from 9.07e-09(2001) to 0.03(1999).  Only the first three years of data, 1991-1993 had p-values above 0.05.  The null deviance of yearly model was 1.36e+02 on 21 degrees of freedom, and residual deviance of 1.31e-14
+<br>We reject the null hypothesis that there is no effect of year on the total number of pinniped strandings.  18 of the 21 documented years were statistically significant with p-values ranging from 9.07e-09 (2001) to 0.03 (1999).  Only the first three years of data, 1991-1993 had p-values above 0.05.  The null deviance of yearly model was 1.36e+02 on 21 degrees of freedom, and residual deviance of 1.31e-14
 
 *Monthly Analysis*:
-<br>We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15(March) to 0.02(June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
+<br>We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15 (March) to 0.02 (June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
 
 
 <br>
