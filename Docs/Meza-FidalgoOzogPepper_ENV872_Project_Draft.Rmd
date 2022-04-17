@@ -282,6 +282,9 @@ ggplot(Pinniped_Stranding_Data) +
 ```
 <br>
 
+Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
+<br>
+
 <center>***Figure 6**: Pinniped Strandings per Year*</center>
 ```{r Pinniped Data Exploration 3, message = FALSE, warning = FALSE, echo = FALSE, fig.align = "center"}
 #Plot of annual pinniped strandings with trend line
@@ -296,8 +299,7 @@ print(Pinniped_Stranding_Plot)
 ```
 <br>
 
-Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
-<br>
+
 <br>
 
 <center>***Map 2**: Geospatial Exploration of Pinniped Strandings*</center>
@@ -462,7 +464,7 @@ greater than 160 | 3
 ##### Pinniped Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is stationary.
+**Null Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is stationary.  
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is not stationary.
 <br>
 
@@ -500,9 +502,9 @@ summary(Pinniped_ts_monthly_trend)
 ```
 
 
-Based on the results from the MannKendall test, we would reject the null hypothesis that yearly pinniped strandings are stationary with a p-value of 1.77e-14. 
+Based on the results from the Mann Kendall test, we reject the null hypothesis that yearly pinniped strandings are stationary with a p-value of 1.77e-14. 
 
-Based on the results from the seasonal MannKendall test, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
+Based on the results from the seasonal Mann Kendall test, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
 
 <br>
 
@@ -761,7 +763,7 @@ greater than 180 | 1
 ##### Odontocete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is stationary.
+**Null Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is stationary.  
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is not stationary.
 <br>
 
@@ -795,9 +797,9 @@ summary(odontocete_ts_monthly_trend)
 ```
 <br>
 
-Based on the results of the MannKendall test, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
+Based on the results of the Mann Kendall test, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
 
-Based on the results from the seasonal MannKendall test, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
+Based on the results from the seasonal Mann Kendall test, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
 
 <br>
 
@@ -1047,7 +1049,7 @@ less than 40 | 44
 ##### Mysticete Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is stationary.
+**Null Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is stationary.  
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is not stationary.
 <br>
 
@@ -1081,9 +1083,9 @@ summary(mysticete_ts_monthly_trend)
 
 ```
 
-Based on the results from the MannKendall test, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
+Based on the results from the Mann Kendall test, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
 
-Based on the results from the seasonal MannKendall test, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
+Based on the results from the seasonal Mann Kendall test, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
 
 
 <br>
@@ -1335,7 +1337,7 @@ greater than 160 | 1
 ##### Sea Turtle Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
-**Null Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is stationary.
+**Null Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is stationary.  
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is not stationary.
 
 <br>
@@ -1367,82 +1369,59 @@ summary(Turtle_ts_monthly_trend)
 ```
 <br>
 
-Based on the results from the MannKendall test, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
+Based on the results from the Mann Kendall test, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
 
-Based on the results from the seasonal MannKendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
+Based on the results from the seasonal Mann Kendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
 
 
 \newpage
 <br>
 
-# Summary and Conclusions
+# Summary 
 
-### 1. Pinnipeds:
-(1) 85.7% of the years were statistically significant for pinniped strandings. 11 of the 12 months were statistically significant for pinniped strandings.
-
+### 1. Pinnipeds Summary:
+(1) 85.7% of the years and 11 of the 12 months were statistically significant for pinniped strandings.
 (2) 62.5% of pinniped strandings occurred within 40km of the mean stranding point.
+(3) Time series analysis indicated that there was an increasing trend in the yearly totals of pinniped strandings. The monthly time series indicated that there was a slight upward monthly trend along with seasonality, which could be attributed to pupping seasons.
 
-(3) Time series analysis indicated that there was a trend in the yearly totals of pinnipend strandings and this trend is increasing. The monthly time series indicated that there was a slight upward monthly trend along with seasonality, which could be attributed to pupping seasons.
 
+### 2. Odontocetes Summary:
+(1) The years 1990 and 2011 were statistically significant for odontocete strandings. There was also a significant difference in the number of strandings during the months of January, March, May, and June. The increased number of strandings during the earlier months may be contributed to calving season or seasonal migrations.
+(2) We found that 80.6% of our strandings were within 40km of the mean stranding point and 93.5% fell within 60km of the mean stranding point. 
+(3) The time series indicated that odontocete strandings were not stationary over the years or the months. 
+
+
+### 3. Mysticetes Summary:
+(1) None of the years of our study were statistically significant for mysticetes, which meant that overall, there was no major difference between the number of strandings over the study period. There was a significant difference in the number of strandings during the months of May and June.
+(2) We found that 88% of our strandings were within 40km of the mean stranding point and 98% fell within 60km. 
+(3) The time series indicated that mysticete strandings were not stationary over the years or the months. The increase in the number of strandings over the years indicate that there may be changes in the environment over the study period. The increased strandings during the months of May and June may be contributed to seasonal migrations. 
+
+
+### 4. Sea Turtles Summary:
+(1) 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which were the May - September. 
+(2) 80% of sea turtles strandings all occurred within 40km of the mean stranding location. 
+(3) Time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. While our data exploration showed that most of the strandings occurred in the summer months, this could be due to certain months of certain years having disproportionately higher amounts of strandings and could be the reason seasonality was not significant in our sea turtle data.
+
+# Conclusions
+
+Our results show that marine mammal and sea turtle strandings have varied throughout 1990 – 2011 along the coastlines of Connecticut, Rhode Island, and Fishers Island, NY. The years and months that were statistically significant varied by family. The majority of months that were significant can be related back to a period necessary for specific life history stages, such as the pinniped pupping season, odontocete calving season, mysticetes migration and feeding season, and sea turtle nesting season. Higher abundances of animals are present in the area around these times of year which could lead to higher amounts of detected strandings. 
+
+Similarly, our results show that the majority of strandings for each family is concentrated to areas within 40-60km of the mean stranding location, with most strandings of all families concentrated in the waters surrounding Charleston, RI to Newport RI. The high aggregation of strandings in these areas could be a result of various factors, such as…
+
+  * Ideal environmental conditions for each species bringing higher amounts of animals into the area and closer to shore (such as ideal feeding conditions)  
+  * The flow of oceanic currents and tides bringing dead animals into these areas
+  * Higher fishing pressure in the area that could cause fishing gear entanglement risk or ingestion 
+  * More manpower employed in these areas that could make monitoring and stranding detection along the coast easier
+  * High boat traffic and increased possibility of vessel strike (also increased anthropogenic noise being transmitted into the ocean)
+  * Animal feeding, nesting/calving, or migration seasons 
+
+However, without background information on the cause of death of each individual stranding, it is not possible to narrow down which, if any, of the above factors are contributing to strandings and in what capacities. 
+
+Yearly and seasonal trends varied across the families. Each family’s yearly trend increased throughout the study period, with some having a more drastic increase than others. Only pinnipeds, odontocetes, and mysticetes had a significant seasonal component, which could relate back to their respective breeding or feeding/migration seasons. 
+
+Understanding trends in marine mammal and sea turtle strandings is a crucial aspect of the health of our ocean ecosystems. The general increasing trend of strandings throughout the years is alarming and could be attributed to various natural and anthropogenic factors. Insight into how strandings change monthly and annually, as well as spatially, is necessary for stranding prevention and response, resource and personnel allocation, and conservation management. Future studies should incorporate environmental factors into their analysis to develop methodologies to help predict, prevent, or mitigate potential strandings. Additionally, future work could incorporate species-level analysis, as well as cause of death to help pinpoint the most vulnerable species and the most common threats. 
  
 
-Realizing there are trends is the first step in studying what is causing these trends and to determine if there are ways to stop or manage them.
-
-By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
-
-
-
-
-### 2. Odontocetes:
-(1) There were was change in the total number of strandings over the years of the study. The year 1990 and 2011 were statistically significant, which meant that those years were different than the rest of the study. There was also to be an increase in the number of strandings during the months of January, March, May, and June. The increased strandings during the earlier months may be contributed to calving season or seasonal migrations.
-(2)
-(3)
-
-This was further shown in our time series where the strandings were not stationary over the years or the months. The increasing stranding over the years may be in indicator that there is an issue that needs to be address through further research.  Again, further research would be needed to determine the cause.
-
-We found that 80.6% of our strandings were within 40,000m of the mean stranding point and 93.5% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to odonotocetes. 
-
-This is another area that needs have further research in attempt to understand why the area is a common stranding point for odontocetes and what can be done to prevent these strandings.
-
-
-### 3. Mysticetes:
-Our analysis indicated there were was no change in the total number of strandings over the years of the study. None of the years were statistically significant, which meant that overall, there was no major difference between the number of strandings over the study period. There was an increase in the number of strandings during the months of May and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The consistent number of strandings over the years indicate that there may not be any changes in the environment over the study period. The increased strandings during the months of May and June may be contributed to seasonal migrations. Again, further research would be needed to determine the cause.
-
-We found that 88% of our strandings were within 40,000m of the mean stranding point and 98% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to mysticetes. This is another area that needs have further research in attempt to understand why the area is a common stranding point for mysticetes and what can be done to prevent these strandings.
-
-
-
-### 4. Sea Turtles:
-80% of sea turtles strandings all occurred within 40km of the mean stranding location. This can indicate that this area could be a hot spot for sea turtle strandings, whether it be due to high abundance of sea turtles in the area or due to oceanic currents. 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which are the May - September. This monthly breakdown corresponds with the timing of the sea turtle nesting season and when there is likely to be a higher abundance of them in the area. However, time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. While our data exploration showed that most of the strandings occurred in the summer months, this could be due to certain months of certain years having disproportionately higher amounts of strandings and could be the reason seasonality was not significant in our sea turtle data.
-
-
-Copied and pasted from above:
-
- although a more detailed species level analysis is beyond the scope of this project
-
-This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinniped strandings.
-
-By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean.
-
-what makes this area a hotspot can be studied and hopefully also determined. 
-
-This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible. 
-
-This indicates that there is a difference in the number of odontocete strandings across the years and months of the study. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
-
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings.
-
-The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the odontocetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to odontocetes stranding from Charlestown to Newport, in the Rhode Island Sound.
-
-The area may be a common feeding ground during their seasonal migrations along the east coast.
-
-This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to seasonal migration to feeding grounds, but further research would be needed to determine the cause.
-
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why mysticete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings.
-
-The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the mysticetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to mysticetes stranding from Charlestown to Newport, in the Rhode Island Sound.
-
-This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing pressure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas.
 
 \newpage
 <br>
