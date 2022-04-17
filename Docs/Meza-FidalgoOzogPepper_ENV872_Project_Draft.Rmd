@@ -196,10 +196,11 @@ mapview(Strandings_sf, zcol = "Family")
 # Analysis
 Because we decided to divide the data into groups by their families, we conducted separate analysis for each of the families. Our research questions are the following:
 
-**1. Are there years or months where the number of strandings for each family are significantly different?**
-<br>**2. Are there trends in each of the family strandings based off this dataset?**
+**1. Are there years or months where the number of strandings for each family are significantly different?**  
+**2. How are strandings related spatially? Are there areas with higher concentrations of strandings than others?**  
+**3. Are there trends in each of the family strandings based off this data set?**  
 
-We utilized GLMs, MannKendall, and Seasonal MannKendall in our analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM.
+To answer our first question, we used a GLM for our statistical analysis. Due to our data being count data rather than continuous, we used a poisson regression GLM. To answer our second question, we found the mean latitude and longitude for each family. We then calculated how far each stranding point was from the mean location to determine if strandings were concentrated to certain areas. To answer our third question, we conducted a yearly time series with the MannKendall and a monthly time series with the Seasonal MannKendall. 
 <br>
 
 
@@ -295,7 +296,7 @@ print(Pinniped_Stranding_Plot)
 ```
 <br>
 
-Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level, although a more detailed species level analysis is beyond the scope of this project. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
+Pinniped data exploration indicates a possible overall increasing trend in pinniped strandings and a possible monthly/seasonal trend.  There is some fluctuation in number of total yearly strandings both for the family as a whole and at the species level. Harp and harbor seals make up most of the strandings each year. Most yearly strandings occur in the late winter and spring time, particularly in March, with very few in the late summer through the early winter. Springtime coincides with the pupping seasons for many seal species and could be a factor in this. Pinniped strandings are most numerous throughout the coastline of Rhode Island and the eastern coastline of Connecticut, as seen in Map 2 below.
 <br>
 <br>
 
@@ -338,7 +339,7 @@ summary(Monthly_Pinniped_Model)
 *Monthly Analysis*:
 <br>We reject the null hypothesis that there is no effect of month on the total number of pinniped strandings.  11 of the 12 months had p-values of less than 0.05, with July being the exception.  The p-values of the statistically significant month ranged from 1.77e-15(March) to 0.02(June).  The null deviance for the monthly model was 5.95e+02 on 11 degrees of freedom and a residual deviance of -3.55e-15. 
 
-This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinniped strandings.
+
 <br>
 <br>
 
@@ -382,7 +383,8 @@ mapview(Pinniped_sf_utm,
 </center>
 <br>
 
-By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean. By determining that 425 out of 679, or 62.5 percent of, pinniped strandings occur within 40km of the mean stranding location, what makes this area a hotspot can be studied and hopefully also determined. This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible. Since only 54, or 8 percent of, pinniped strandings occur further than 60km from the stranding mean, resources for study and rescue can be allocated away from those areas. A table containing the distance of the all of the data points from the  "mean" stranding location can be found in Table 2 below.
+Our geospatial analysis showed that 425 out of 679 (62.5%) pinniped strandings occurred within 40km of the mean stranding location and 200 (29.5%) occurred within 60km. The remaining 54 (8%) pinniped strandings occurred farther than 60km from the mean stranding location. These values can be seen in Table 2 below. The majority of pinniped strandings occurred from Charlestown to Newport in the Rhode Island Sound (Map 3).
+
 
 ```{r Pinniped Distance Table, message = FALSE, warning = FALSE, include = FALSE}
 #Developing a mean distance table
@@ -441,18 +443,18 @@ Pinniped_distances <- Pinniped_sf_utm_final %>%
 ```
 <br>
 
-<center>***Table 2**: Number of Pinniped Strandings per Distance (m) from the Mean *</center>
+<center>***Table 2**: Number of Pinniped Strandings per Distance (km) from the Mean *</center>
 
-Distance (m) | Number of Strandings
+Distance (km) | Number of Strandings
 ---------------|--------------------
-20,000 - 40,000 | 425
-40,000 - 60,000 | 200
-60,000 - 80,000 | 15
-80,000 - 100,000 | 11
-100,000 - 120,000 | 7
-120,000 - 140,000 | 11
-140,000 - 160,000 | 7
-greater than 160,000 | 3
+20 - 40 | 425
+40 - 60 | 200
+60 - 80 | 15
+80 - 100 | 11
+100 - 120 | 7
+120 - 140 | 11
+140 - 160 | 7
+greater than 160 | 3
 
 <br>
 
@@ -461,7 +463,6 @@ greater than 160,000 | 3
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
 **Null Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is stationary.
-
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal pinniped stranding data is not stationary.
 <br>
 
@@ -499,9 +500,9 @@ summary(Pinniped_ts_monthly_trend)
 ```
 
 
-A Mann Kendall test was run for the yearly time series. Based on the results, we would reject the null hypothesis that yearly pinniped strandings are stationary with a p-value of 1.77e-14. 
+Based on the results from the MannKendall test, we would reject the null hypothesis that yearly pinniped strandings are stationary with a p-value of 1.77e-14. 
 
-A seasonal Mann Kendall test was run for the monthly time series. Based on the results, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
+Based on the results from the seasonal MannKendall test, we  reject the null hypothesis that monthly pinniped strandings are stationary, with a p-value of 7.80e-6. The decomposition indicates a general upward trend as well as seasonality, which fits with the patterns that were seen in the exploratory analysis (Figure 7).
 
 <br>
 
@@ -582,7 +583,7 @@ ggplot(odontocete_stranding_data) +
 ```
 <br>
 
-There appears to be an increasing trend in the total number of odontocete strandings as the years progress (Figure 8). The odontocete strandings have the lowest amount in 1993 and the highest in 2011, where the count gradually increases over the years. The different species that are stranded throughout the years do not appear to have a noticeable trend. When looking at the strandings per month in Figure 9, the months with the most strandings are during March, May, and July. There may be possible seasonal trends, where the spring and early summer see a greater number of strandings than the other months due to calving season. When looking at Figure 10 below, you can see the trend in the number of strandings of odontocetes over the years, and how they are increasing. All of these strandings can be seen in the Map 4 below.
+There appears to be an increasing trend in the total number of odontocete strandings as the years progress (Figure 8). The amount of odontocete strandings was lowest in 1993 and highest in 2011, where the count gradually increases over the years. The different species that stranded throughout the years do not appear to have a noticeable trend. When looking at the strandings per month in Figure 9, the months with the most strandings are March, May, and July. There may be possible seasonal trends due to the calving season in spring and early summer. When looking at Figure 10 below, there is a visible increasing trend in the number of strandings of odontocetes over the years. All of these strandings can be seen in the Map 4 below.
 
 <br>
 
@@ -635,8 +636,6 @@ summary(odontocete_model2)
 *Monthly Analysis*:
 <br>We reject the null hypothesis that there is no effect of month on the total number of odontocete strandings. There were four months in which the odonotocete strandings were statistically significant: January, March, May, and June. The most statistucally significant months were January and May with p-values of 4.35e-11 and 0.00858 respectively. March had a p-value of  0.02389 and June had a p-value of 0.03344. The null deviance was 3.7282e+01 and the residual deviance was -3.5527e-15.
 
-This indicates that there is a difference in the number of odontocete strandings across the years and months of the study. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
-
 <br>
 
 
@@ -678,7 +677,7 @@ mapview(odontocete_sf_utm,
 </center>
 <br>
 
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Charlestown to Newport, in the Rhode Island Sound.
+Of the 155 odontocete strandings used in our analysis, 125 (80.1%) of them were within 40km of the mean stranding location. This was followed by 20 (12.9%) strandings that were within 40km to 60km from the mean stranding location. The remaining 10 (6.5%) strandings were scattered farther than 60km, and there was one stranding that was greater than 180km from the mean stranding location. These values can be seen in Table 3 above. The majority of strandings occurred from Charlestown to Newport in the Rhode Island Sound (Map 5). Most of the strandings were centered near Newport and many were also located up in Narragansett Bay.
 
 <br>
 
@@ -741,22 +740,20 @@ odontocete_distances <- odontocete_sf_utm_final %>%
 kable(odontocete_distances)
 ```
 
-<center>***Table 3**: Number of Odontocete Strandings per Distance (m) from the Mean*</center>
-Distance (m) | Number of Odontocete Strandings
+<center>***Table 3**: Number of Odontocete Strandings per Distance (km) from the Mean*</center>
+Distance (km) | Number of Odontocete Strandings
 ---------------|--------------------
-less than 40,000 | 125
-40,000 - 60,000 | 20
-60,000 - 80,000 | 1
-80,000 - 100,000 | 0
-100,000 - 120,000 | 3
-120,000 - 140,000 | 2
-140,000 - 160,000 | 1
-160,000 - 180,000 | 2
-grater than 180,000 | 1
+less than 40 | 125
+40 - 60 | 20
+60 - 80 | 1
+80 - 100 | 0
+100 - 120 | 3
+120 - 140 | 2
+140 - 160 | 1
+160 - 180 | 2
+greater than 180 | 1
 
 <br>
-
-Of the 155 odontocete strandings used in our analysis, 125 of them were within 40,000m of mean latitude and longitude stranding location. This was followed by 20 strandings that were within 40,000m to 60,000m from the mean stranding location. The remaining 10 strandings were scattered farther than 60,000m, and there was one stranding that was greater than 180,000m from the mean stranding location. These values can be seen in Table 3 above. Most of the strandings were centered near Newport, in the Rhode Island Sound. There were also many strandings that were located up in Narragansett Bay. The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the odontocetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to odontocetes stranding from Charlestown to Newport, in the Rhode Island Sound. 
 
 <br>
 
@@ -765,7 +762,6 @@ Of the 155 odontocete strandings used in our analysis, 125 of them were within 4
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
 **Null Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is stationary.
-
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal odontocete stranding data is not stationary.
 <br>
 
@@ -799,10 +795,9 @@ summary(odontocete_ts_monthly_trend)
 ```
 <br>
 
-A Mann Kendall test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
+Based on the results of the MannKendall test, we reject the null hypothesis and say that odontocete yearly stranding data is not stationary due to a p-value of 4.4296e-13.
 
-A seasonal Mann Kendall test was run for our monthly time series. Based on the results, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
-
+Based on the results from the seasonal MannKendall test, we reject the null hypothesis and say that odontocetes monthly stranding data is not stationary due to a p-value of 1.3611e-07. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 11). 
 
 <br>
 
@@ -883,7 +878,7 @@ ggplot(mysticete_stranding_data) +
 ```
 <br>
 
-There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004 and the second highest was 2009. There was also lots of variation with the species of that were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends, where the early summer see a greater number of strandings than the other months due to migration. The area may be a common feeding ground during their seasonal migrations along the east coast.
+There appears to be an increasing trend in the number of mysticete strandings in the later years of the study. The year with the highest number of strandings was 2004, followed by 2009. There was variation in which species were stranded in each year. When looking at Figure 13, there also appears to be a seasonal trend based on the number of strandings per each month, where the months of June and July have a much greater amount than the rest of the year. There may be possible seasonal trends due to higher concentrations of animals in the area in the early summer due to migration. When looking at Figure 14 below, there is a slightly increasing trend in the number of strandings of mysticetes over the years. It appears that the number of strandings is consistent until 2000, where the numbers increase before dropping down again in 2009. All of these strandings can be seen in Map 6 below.
 
 <br>
 
@@ -899,8 +894,6 @@ ggplot(annual_mysticetes_strandings, aes(x = Year, y = Mysticetes_Total)) +
 print(mysticete_stranding_plot)
 ```
 <br>
-
-When looking at Figure 14 above, you can see the trend in the number of strandings of mysticetes over the years is increasing, but not by much. It appears that the number of strandings is consistent until 2000, where the numbers increase before dropping down again in 2009. All of these strandings can be seen in Map 6 below.
 
 <br>
 
@@ -938,9 +931,6 @@ summary(mysticete_model2)
 
 *Monthly Analysis*:
 <br>We  fail to reject the null hypothesis that there is no effect of month on the total number of mysticete strandings. There were two months in which the mysticete strandings were statistically significant: May and June. The most statistically significant month was May with a p-value of 0.00874 while June had a p-value of 0.01345. The null deviance had a p-value of 5.7723e+01 the residual deviance had a p-value of 3.0330e-10.
-
-
-This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to seasonal migration to feeding grounds, but further research would be needed to determine the cause.
 
 <br>
 
@@ -982,7 +972,8 @@ mapview(mysticete_sf_utm,
 </center>
 <br>
 
-Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why mysticete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings. Much of the strandings occurred from Stonington to Newport, in the Rhode Island Sound with one stranding that was farther away.
+Of the 50 mysticete strandings used in our analysis, 44 (88%) of them were within 40km of mean stranding location. This was followed by 5 (10%) strandings that were within 40km to 60km from the mean stranding location. The remaining stranding was located between 140km to 160km away from the mean stranding location. These values can be seen in Table 4 below. The majority of strandings occurred from Stonington to Newport in the Rhode Island Sound. Most were centered near Newport and some were located in Narragansett Bay (Map 7).
+
 <br>
 
 ```{r Mysticete Distance Table, warning = FALSE, message = FALSE, include = FALSE}
@@ -1039,21 +1030,17 @@ kable(mysticete_distances)
 ```
 <br>
 
-<center>***Table 4**: Number of Mysticete Strandings per Distance (m) from the Mean* </center>
-Distance (m) | Number of Strandings
+<center>***Table 4**: Number of Mysticete Strandings per Distance (km) from the Mean* </center>
+Distance (km) | Number of Strandings
 ---------------|--------------------
-less than 40,000 | 44
-40,000 - 60,000 | 5
-60,000 - 80,000 | 0
-80,000 - 100,000 | 0
-100,000 - 120,000 | 0
-120,000 - 140,000 | 0
-140,000 - 160,000 | 1
+less than 40 | 44
+40 - 60 | 5
+60 - 80 | 0
+80 - 100 | 0
+100 - 120 | 0
+120 - 140 | 0
+140 - 160 | 1
 <br>
-
-
-Of the 50 mysticete strandings used in our analysis, 44 of them were within 40,000m of mean latitude and longitude stranding location. This was followed by 5 strandings that were within 40,000m to 60,000m from the mean stranding location. The remaining stranding was located between 140,000m to 160,000m away from the mean stranding location. These values can be seen in Table 4 above. Most of the strandings were centered near Newport, in the Rhode Island Sound. There were also some strandings that were located up in Narragansett Bay. The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the mysticetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to mysticetes stranding from Charlestown to Newport, in the Rhode Island Sound.
-
 
 <br>
 
@@ -1061,7 +1048,6 @@ Of the 50 mysticete strandings used in our analysis, 44 of them were within 40,0
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
 **Null Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is stationary.
-
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal mysticete stranding data is not stationary.
 <br>
 
@@ -1095,9 +1081,9 @@ summary(mysticete_ts_monthly_trend)
 
 ```
 
-A Mann Kendall Test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
+Based on the results from the MannKendall test, we reject the null hypothesis and say that mysticete yearly stranding data is not stationary due to a p-value of less than 2.22e-16.
 
-A seasonal Mann Kendall Test was run for our yearly time series. Based on the results, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
+Based on the results from the seasonal MannKendall test, we reject the null hypothesis and say that mysticetes monthly stranding data is not stationary due to a p-value of 0.014425. This can also be seen in our decomposition where there appears to be a seasonal trend in the data over the years (Figure 15). 
 
 
 <br>
@@ -1170,6 +1156,11 @@ ggplot(Turtle_Stranding_Data) +
 ```
 <br>
 
+
+The highest amounts of sea turtles strandings occurred in the early 1990s and late 2000s, with the highest amount in 1995 (Figure 16). The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Monthly data exploration indicates that sea turtle strandings peak from July to September and occur less frequently the remainder of the year (Figure 17). This could be due to higher concentrations of sea turtles in the area for the summer nesting season. When looking at Figure 18 below, there is a very slight increasing trend in the number of strandings of sea turtles over the years.  All of the sea turtle strandings can be seen in Map 8 below.
+
+<br>
+
 <center>***Figure 18**: Sea Turtle Strandings per Year*</center>
 ```{r Turtle Exploratory Analysis3, message = FALSE, warning = FALSE, echo = FALSE, fig.align="center"}
 #Plot of annual turtle strandings with trend line
@@ -1180,8 +1171,6 @@ ggplot(Strandings_Totals_Year, aes(x = Year, y = Turtles_Total)) +
   labs(title = "Turtle Strandings Per Year")
 ```
 <br>
-
-Exploratory analysis of the sea turtle stranding data set by year shows higher amounts of strandings in the early 1990s and late 2000s, with the highest amount in 1995 (Figure 16). The most prominent species throughout our study period appear to be leatherback sea turtles, followed by loggerhead sea turtles. Through monthly data exploration, strandings peak from July to September and occur less frequently the remainder of the year (Figure 17).
 
 <br>
 
@@ -1263,6 +1252,10 @@ mapview(Turtle_sf_utm, zcol="mean_distance", layer.name = "Distance (m) from Mea
 </center>
 <br>
 
+Of the 256 sea turtle strandings used in our analysis, 92 (36%) were within 20km of the mean stranding location and 113 (44%) were within 20 - 40km of the mean stranding location. These values can be seen in Table 5 below. These points were in the areas around Charlestown, Newport, and New Shoreham. Some sea turtle strandings were reported inland, which could be due to tides/currents bringing the animal upstream into rivers (Map 9).
+
+<br>
+
 ```{r Turtle Spatial Table, message = FALSE, warning = FALSE, include = FALSE}
 # points within 20,000m
 Turtle_20 <- Turtle_sf_utm %>%
@@ -1323,30 +1316,26 @@ Turtle_distances <- Turtle_sf_utm_final %>%
 kable(Turtle_distances)
 ```
 
-Of the 256 sea turtle strandings used in our analysis, 113 of them occured within 20,000 - 40,000m of the mean stranding location, followed by 92 strandings within 20,000m of the mean location (Table 5). These points were in the areas around Charlestown, RI, Newport, RI and New Shoreham, RI. Some sea turtle strandings were reported inland, which could be due to tides/currents bringing the animal upstream into rivers (Map 9).This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing pressure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas. 
-
-
 <br>
 
-<center>***Table 5**: Number of Sea Turtle Strandings per Distance (m) from the Mean*</center>
-Distance (m) | Number of Strandings
+<center>***Table 5**: Number of Sea Turtle Strandings per Distance (km) from the Mean*</center>
+Distance (km) | Number of Strandings
 ---------------|--------------------
-less than 20,000 | 92
-20,000 - 40,000 | 113
-40,000 - 60,000 | 32
-60,000 - 80,000 | 2
-80,000 - 100,000 | 4
-100,000 - 120,000 | 2
-120,000 - 140,000 | 6
-140,000 - 160,000 | 4
-greater than 160,000 | 1
+less than 20 | 92
+20 - 40 | 113
+40 - 60 | 32
+60 - 80 | 2
+80 - 100 | 4
+100 - 120 | 2
+120 - 140 | 6
+140 - 160 | 4
+greater than 160 | 1
 <br>
 
 ##### Sea Turtle Temporal Analysis
 The following are the null and alternative hypothesis for the yearly and monthly time series:
 
 **Null Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is stationary.
-
 **Alternative Hypothesis**: The yearly and/or monthly/seasonal turtle stranding data is not stationary.
 
 <br>
@@ -1378,9 +1367,9 @@ summary(Turtle_ts_monthly_trend)
 ```
 <br>
 
-A Mann Kendall Test was run for our yearly time series. Based on the results, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
+Based on the results from the MannKendall test, we reject the null hypothesis that yearly turtle strandings are stationary with a p-value =< 2.22e-16.
 
-A seasonal Mann Kendall Test was run for our monthly time series. Based on the results, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
+Based on the results from the seasonal MannKendall test, we fail to reject the null hypothesis that monthly turtle strandings are stationary with a p-value = 0.270.
 
 
 \newpage
@@ -1389,17 +1378,31 @@ A seasonal Mann Kendall Test was run for our monthly time series. Based on the r
 # Summary and Conclusions
 
 ### 1. Pinnipeds:
-Both graphing and a time series analysis indicate that there is trend in the yearly totals of pinniped strandings and this trend is increasing.  Additionally, 85.7 percent of the years were statistically significant for pinniped strandings.  The monthly time series indicated that there was a slight upward monthly trend along with seasonality, which could be attributed to pupping seasons. 11 of the 12 months were statistically significant for strandings.  Realizing there are trends is the first step in studying what is causing these trends and to determine if there are ways to stop or manage them.
+(1) 85.7% of the years were statistically significant for pinniped strandings. 11 of the 12 months were statistically significant for pinniped strandings.
 
-62.5 percent of pinniped strandings happened within 40km of the "mean stranding point."  By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
+(2) 62.5% of pinniped strandings occurred within 40km of the mean stranding point.
+
+(3) Time series analysis indicated that there was a trend in the yearly totals of pinnipend strandings and this trend is increasing. The monthly time series indicated that there was a slight upward monthly trend along with seasonality, which could be attributed to pupping seasons.
+
+ 
+
+Realizing there are trends is the first step in studying what is causing these trends and to determine if there are ways to stop or manage them.
+
+By knowing where and when pinnipeds are most likely to strand, the environmental factors of those places and times can be studied in order to determine the conditions that cause strandings.  This knowledge could aid in stranding prevention and/or mitigation measures.  Further study could also be conducted at the species level to determine what if any differences occur.
 
 
 
 
 ### 2. Odontocetes:
-Our analysis indicated there were was change in the total number of strandings over the years of the study. The year 1990 and 2011 were statistically significant, which meant that those years were different than the rest of the study. There was also to be an increase in the number of strandings during the months of January, March, May, and June. This was further shown in our time series where the strandings were not stationary over the years or the months. The increasing stranding over the years may be in indicator that there is an issue that needs to be address through further research. The increased strandings during the earlier months may be contributed to calving season or seasonal migrations. Again, further research would be needed to determine the cause.
+(1) There were was change in the total number of strandings over the years of the study. The year 1990 and 2011 were statistically significant, which meant that those years were different than the rest of the study. There was also to be an increase in the number of strandings during the months of January, March, May, and June. The increased strandings during the earlier months may be contributed to calving season or seasonal migrations.
+(2)
+(3)
 
-We found that 80.6% of our strandings were within 40,000m of the mean stranding point and 93.5% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to odonotocetes. This is another area that needs have further research in attempt to understand why the area is a common stranding point for odontocetes and what can be done to prevent these strandings.
+This was further shown in our time series where the strandings were not stationary over the years or the months. The increasing stranding over the years may be in indicator that there is an issue that needs to be address through further research.  Again, further research would be needed to determine the cause.
+
+We found that 80.6% of our strandings were within 40,000m of the mean stranding point and 93.5% fell within 60,000m of the mean stranding point. This is an indicator that majority of the strandings were located in very similar areas which may show that area is a hazard to odonotocetes. 
+
+This is another area that needs have further research in attempt to understand why the area is a common stranding point for odontocetes and what can be done to prevent these strandings.
 
 
 ### 3. Mysticetes:
@@ -1411,6 +1414,35 @@ We found that 88% of our strandings were within 40,000m of the mean stranding po
 
 ### 4. Sea Turtles:
 80% of sea turtles strandings all occurred within 40km of the mean stranding location. This can indicate that this area could be a hot spot for sea turtle strandings, whether it be due to high abundance of sea turtles in the area or due to oceanic currents. 47.6% of years were statistically significant for sea turtle strandings. 41.7% of months were statistically significant, which are the May - September. This monthly breakdown corresponds with the timing of the sea turtle nesting season and when there is likely to be a higher abundance of them in the area. However, time series analysis indicated that there was a slight significance in year and there was not a significant seasonal component for sea turtle strandings. While our data exploration showed that most of the strandings occurred in the summer months, this could be due to certain months of certain years having disproportionately higher amounts of strandings and could be the reason seasonality was not significant in our sea turtle data.
+
+
+Copied and pasted from above:
+
+ although a more detailed species level analysis is beyond the scope of this project
+
+This information can lead to further study as to why years and months differ and develop ways to predict and/or mitigate particularly bad years and/or months for pinniped strandings.
+
+By finding the "mean" stranding location based on the all of the data points it can be determined how far each stranding point is from the mean.
+
+what makes this area a hotspot can be studied and hopefully also determined. 
+
+This data also could allow for reallocation of stranding resources and personnel to this range in order to put them to the most efficient use possible. 
+
+This indicates that there is a difference in the number of odontocete strandings across the years and months of the study. This could be explained by increase boat and shipping traffic as the years progress that contribute to increased ocean noise and interference with their communication that have led them to become stranded. Seasonality may not have an effect because of the consistency of boat and ship traffic throughout each year.
+
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why odontocete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings.
+
+The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the odontocetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to odontocetes stranding from Charlestown to Newport, in the Rhode Island Sound.
+
+The area may be a common feeding ground during their seasonal migrations along the east coast.
+
+This indicates that there is no difference in the number of mysticete strandings across the years, but there is a difference in the months of the May and June study. Seasonality appears to affect the number of mysticete strandings as there are more occurances druring May and June than any other month while there is not a significant difference in the number of strandings in different years. The seasonal increase in strandings may be due to seasonal migration to feeding grounds, but further research would be needed to determine the cause.
+
+Knowing where the "mean" stranding location is could allow for a study of that area in order to determine why mysticete strandings are so prominent on this area and allow for the allocation of more recovery resources and personnel to that area to compensate for the higher levels of strandings.
+
+The increased stranding areas in Rhode Island Sound may be due to anthropogenic effects such as higher boat traffic and increased amounts of fishing. It may also be due to the area having an abundance of food for the mysticetes, which push them closer to shore. This area is densely populated, so the stranding count may be higher because of closer monitoring. Further research will be needed to determine what may contribute to mysticetes stranding from Charlestown to Newport, in the Rhode Island Sound.
+
+This high concentration of strandings can indicate that these areas may be sea turtle stranding hotspots. This could be due to various factors, such as the flow of oceanic currents, anthropogenic impacts (such as higher fishing pressure), or the fact that there may be more manpower employed in these areas that could make stranding detection easier. Further research is needed to determine how these underlying factors may be contributing to sea turtle strandings in these areas.
 
 \newpage
 <br>
